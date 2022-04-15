@@ -1,4 +1,3 @@
-# easybank
 
 ## Project setup
 ```
