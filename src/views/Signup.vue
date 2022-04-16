@@ -4,8 +4,10 @@
     <div class="flex justify-center ">
     <div class="bg-white w-7/12 h-144 my-12 rounded-md flex flex-row justify-between">
         <Signupform />
-        <div class="h-144 w-80 p-2">
-            <img src="..\assets\Signup.png" class="w-full h-full" alt="Pattern">
+        <div class="py-2 px-1">
+          <div class="2xl:w-80 xl:w-64 lg:w-52 h-full">
+            <img src="../assets/Signup.png" class="w-auto h-full" alt="Pattern">
+          </div>
         </div>
     </div>
 </div>
