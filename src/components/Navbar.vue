@@ -3,8 +3,15 @@
         <div class="ml-16">
             <img src="..\assets\logo.jpg" class="h-10 w-24" alt="">
         </div>
-        <div class="mr-16">
-          <img src="..\assets\User.png" class='w-10 h-10 rounded-full border border-4 border-white' alt="">
-        </div>
+        <Dropdown />
     </div>
 </template>
+
+<script>
+import Dropdown from '@/components/Dropdown.vue'
+export default {
+    components: {
+        Dropdown
+    }
+}
+</script>
