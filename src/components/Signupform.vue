@@ -157,14 +157,14 @@ export default {
   methods:{
     async signUpUser()
     {
-      let result = await axios.post("http://127.0.0.1:8000/signup/user/", {
+      let result = await axios.post("http://127.0.0.1:8000/signup/user/", JSON.stringify({
         first_name:this.first_name,
         last_name:this.last_name,
         email:this.email,
         phone:this.phone,
         password:this.password,
         department:this.department
-      });
+      }));
       console.warn(result);
       if(result.status==201){
         alert("Signup Done!")
