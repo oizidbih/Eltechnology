@@ -3,12 +3,14 @@
     <h1 class="font-bold text-center text-xl sm:text-3xl lg:text-3xl mb-6 mr-6">
       Login
     </h1>
+    <form @submit.prevent="handleSubmit">
     <div>
       <label for="Email" class="block text-black text-md font-bold mb-1"
         >Email</label
       >
       <input
         type="text"
+        v-model="email"
         placeholder="Enter Email"
         class="shadow appearance-none border rounded w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
       />
@@ -18,7 +20,8 @@
         >Password</label
       >
       <input
-        type="text"
+        type="password"
+        v-model="password"
         placeholder="Enter Password"
         class="shadow appearance-none border rounded w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
@@ -29,8 +32,42 @@
       Login
     </button>
     <br>
-    <a href="#" class="text-center mt-12"
-      >New User? <span class="font-bold">Signup</span>
-    </a>
+    <button class="text-center mt-12"
+      >New User? <span class="font-bold">Login</span>
+    </button>
+    </form>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  data() {
+    return{
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    async handleSubmit(){
+        const response = await axios.post('http://127.0.0.1:8000/login/', {
+          email: this.email,
+          password: this.password
+        });
+        localStorage.setItem('token', response.data.token)
+        if(response.data.status == 'user'){
+          this.$router.push('/create')
+        }
+        if(response.data.status == 'Demand Manager'){
+          this.$router.push('/evaluate')
+        }
+        if(response.data.status == 'Solution Designer'){
+          this.$router.push('/map')
+        }
+        if(response.data.status == 'Manager'){
+          this.$router.push('/manager')
+        }
+    }
+  }
+}
+</script>
