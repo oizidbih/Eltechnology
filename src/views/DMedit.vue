@@ -13,7 +13,7 @@
           >
           <input
             type="text"
-            class="shadow appearance-none border rounded w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+            class="shadow appearance-none border rounded w-full sm:w-112 lg:w-128  mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
             </div>
         
             <div>
@@ -22,17 +22,17 @@
                 class="block text-black text-md font-bold mb-1"
                 >Description</label
               >
-              <textarea name="description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-128 mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
+              <textarea name="description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex flex-col md:flex-row justify-between">
             <div>
                 <label
                 for="comments"
                 class="block text-black text-md font-bold mb-1"
                 >Comments</label
               >
-              <textarea name="comments" id="comments" rows="6" class="shadow appearance-none border border-gray-200 rounded w-128 mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
+              <textarea name="comments" id="comments" rows="6" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
             </div>
             <div class="flex flex-col ml-12">
                 <div class="block">
@@ -55,7 +55,7 @@
                 
             <div class="flex flex-col items-center">
                 <button
-                class="text-white bg-black p-2 w-40 rounded-md mt-6"
+                class="mr-24 md:mr-0 text-white bg-black p-2 w-40 rounded-md mt-6"
               >
                 Save
               </button>

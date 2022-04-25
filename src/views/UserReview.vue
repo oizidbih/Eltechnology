@@ -3,7 +3,7 @@
     <Navbar />
     <MainHeading title="Review Status" />
     <div class="flex justify-center items-center">
-      <div class="w-10/12 flex justify-center rounded-md my-auto">
+      <div class="sm:w-8/12 lg:w-10/12 flex justify-center rounded-md md:my-auto lg:my-auto">
         <ReviewStatus current='review' />
       </div>
     </div>

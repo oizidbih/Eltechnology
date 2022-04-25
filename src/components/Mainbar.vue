@@ -6,11 +6,11 @@
         </div>
         <div class="">
           <button
-          class="w-20 text-sm text-white bg-black border-2 border-white p-1 lg:text-base lg:font-normal lg:w-32 lg:mr-2 rounded-full "
+         class="w-20 text-sm mb-1 mr-1 text-white bg-black border-2 border-white p-0 sm:p-1 lg:text-base lg:font-normal lg:w-32 lg:mr-2 rounded-full "
           > <router-link to="/">Login </router-link>
             
           </button>
-          <button class="mr-4 w-20 text-sm text-black bg-white p-1 rounded-full lg:mr-16 lg:text-base lg:font-normal lg:w-32"><router-link to="/signupAs"
+          <button class="mr-4 w-20 text-sm text-black bg-white p-0 sm:p-1 rounded-full lg:mr-16 lg:text-base lg:font-normal lg:w-32"><router-link to="/signupAs"
           >
             Signup
           </router-link>

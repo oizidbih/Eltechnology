@@ -10,6 +10,7 @@ import DMevaluate from "../views/DMevaluate.vue"
 import DMassign from "../views/DMassign.vue"
 import DMedit from "../views/DMedit.vue"
 import Manager from "../views/Manager.vue"
+import MobileDropDown from "../views/MobileDropDown.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -84,6 +85,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/manager',
     name: 'Manage',
     component: Manager
+  },
+  {
+    path: '/logout',
+    name: 'MobileDropDown',
+    component: MobileDropDown
   }
 ];
 

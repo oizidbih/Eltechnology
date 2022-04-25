@@ -1,8 +1,8 @@
 <template>
-  <div class="my-auto px-7 w-auto lg:w-80 md:w-64">
+  <div class="w-full md:w-96 my-auto md:px-7">
     <h1 class="font-bold text-2xl mb-10">Create Account</h1>
     <form @submit.prevent="signUpUser">
-    <div class="flex flex-col lg:flex-row">
+    <div class="flex flex-col md:flex-row">
       <div class="">
         <label for="Fname" class="block text-black text-md font-bold mb-1"
           >First Name</label
@@ -11,10 +11,10 @@
           type="text"
           v-model="FormData.first_name"
           placeholder="Enter First Name"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
-      <div class="lg:px-4">
+      <div class="md:px-4">
         <label for="Lname" class="block text-black text-md font-bold mb-1"
           >Last Name</label
         >
@@ -22,12 +22,12 @@
           type="text"
           placeholder="Enter Last Name"
           v-model="FormData.last_name"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row">
+    <div class="flex flex-col md:flex-row">
       <div class="">
         <label for="Email" class="block text-black text-md font-bold mb-1"
           >Email</label
@@ -36,10 +36,10 @@
           type="email"
           v-model="FormData.email"
           placeholder="Enter Email"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
-      <div class="lg:px-4">
+      <div class="md:px-4">
         <label for="mobile" class="block text-black text-md font-bold mb-1"
           >Mobile Number</label
         >
@@ -50,12 +50,12 @@
           id="mobile"
           placeholder="Enter your mobile number"
           pattern="[0-9]{4}[0-9]{7}"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row">
+    <div class="flex flex-col md:flex-row">
       <div class="">
         <label for="password" class="block text-black text-md font-bold mb-1"
           >Password</label
@@ -66,13 +66,13 @@
           id="password"
           placeholder="Enter password"
           v-model="FormData.password"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         <p class="mb-4 text-xs text-gray-600">
           Use 8 or more characters with a mix of letters, numbers & symbols
         </p>
       </div>
-      <div class="lg:px-4">
+      <div class="md:px-4">
         <label
           for="confirmPassword"
           class="block text-black text-md font-bold mb-1"
@@ -84,12 +84,12 @@
           id="confirmPassword"
           placeholder="Confirm Password"
           v-model="FormData.Cpassword"
-          class="shadow appearance-none border rounded xl:w-56 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row items-center">
+    <div class="flex flex-col  md:flex-row">
       <div class="">
         <label for="Department" class="block text-black text-md font-bold mb-1"
           >Department</label
@@ -99,7 +99,7 @@
           id="Department"
           v-model="FormData.department"
           placeholder="Select"
-          class="shadow border rounded xl:w-64 lg:w-52 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         >
           <option selected disabled>Select</option>
           <option  v-for="dep in department" :key="dep">{{ dep }}</option>
@@ -107,7 +107,7 @@
       </div>
       <div>
         <button
-          class="text-white bg-black p-2 lg:w-32 xl:w-40 rounded-full lg:mt-6 lg:ml-12"
+          class="text-white bg-black p-2 w-40 rounded-full mt-6 ml-24"
         >
           Signup
         </button>

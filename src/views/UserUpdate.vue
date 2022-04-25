@@ -3,7 +3,7 @@
     <Navbar />
     <MainHeading title="Update Requests" />
     <div class="flex justify-center items-center">
-      <div class="w-10/12 flex justify-center rounded-md my-auto">
+      <div class="lg:w-8/12 lg:w-10/12 flex justify-center rounded-md lg:my-auto">
         <div>
           <Update />
         </div>

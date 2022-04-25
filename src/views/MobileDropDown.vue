@@ -1,11 +1,7 @@
 <template>
+    <div class="h-screen w-screen bg-white p-4 md:hidden ">
 
-    <!-- <div class="block mr-16 relative cursor-pointer md:hidden" @click="GoMobileDrop" >
-        <img src="..\assets\User.png" class='w-10 h-10 rounded-full border border-4 border-white' alt="">
-    </div> -->
-    <div class="mr-4 md:mr-16 relative cursor-pointer" @click="toggleDropdown">
-          <img src="..\assets\User.png" class='w-10 h-10 rounded-full border border-4 border-white' alt="">
-           <div v-if="showDropdown === true" class="absolute z-10 right-0 bg-white w-56 rounded-md mt-1 saturate shadow shadow-md rounded px-3 py-1">
+        <div>
                <div class="flex flex-col justify-center items-center my-2">
             
                <ChangeDisplay />
@@ -23,6 +19,7 @@
                 <i class="fas fa-sign-out-alt text-PrimaryColor"></i>
               </button>
             </div>
+
     </div>
 </template>
 
@@ -31,7 +28,6 @@ import ChangeDisplay from '@/components/ChangeDisplay.vue'
 export default {
   data () {
     return {
-      showDropdown: false,
       pages: [
         { name: 'Account & Settings', path: '/' },
         { name: 'Help & Support', path: '/' }
@@ -39,15 +35,12 @@ export default {
     }
   },
   methods: {
-    toggleDropdown () {
-      this.showDropdown = !this.showDropdown
-    },
     GoToMain () {
       this.$router.push('/')
     },
-    // GoMobileDrop () {
-    //   this.$router.push('/logout')
-    // }
+    GoMobileDrop () {
+      this.$router.push('/logout')
+    }
   },
   components: {
       ChangeDisplay

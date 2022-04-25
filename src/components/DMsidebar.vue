@@ -1,8 +1,8 @@
 <template>
-    <div class="bg-black h-screen w-16 fixed top-16">
-       <div>
+    <div class="fixed bg-black w-screen bottom-0 lg:h-screen lg:w-16 lg:fixed md:fixed lg:top-16">
+       <div class="flex justify-around -mt-2 mb-1 items-center lg:flex-col">
        <router-link v-for="page in pages" :key="page" @click="page(page.name)" :to=page.path >
-       <div :class=" [current == page.name ? 'border-l-2 border-white text-white mt-5 text-xs': 'text-gray-300 mt-5 text-sm']">
+       <div :class=" [current == page.name ? 'border-b-2 border-white lg:border-l-2 text-white mt-6 text-xs': 'text-gray-300 mt-5 text-sm']">
            <div class="flex items-center flex-col">
             <a href="#"><img :src="page.icon" class="h-6 w-6" alt=""></a>
             <p class="text-sm">{{ page.name }}</p>
@@ -11,7 +11,7 @@
         </router-link>
 </div>
 <div>
-  <div class="text-white fixed bottom-0 flex items-center left-4">
+  <div class="hidden lg:text-white lg:fixed lg:bottom-0 lg:flex lg:items-center lg:left-4">
         <div class="flex items-center flex-col">
             <a href="#"><img src="../assets/help-circle.png" class="h-6 w-6" alt=""></a>
          <p class="text-sm">Help</p>

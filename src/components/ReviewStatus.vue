@@ -1,8 +1,8 @@
 <template>
     <div>
-          <div class="relative bg-white sm:rounded-lg rounded-md p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll absolute h-128 my-10 ml-12 w-full">
+          <div class="relative p-2 bg-white sm:rounded-lg rounded-md lg:p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll absolute h-128 ml-0 my-0 lg:my-10 lg:ml-12 lg:w-full">
             <table
-              class="w-full text-md text-left text-gray-500 dark:text-gray-400 "
+              class="w-full lg:w-full text-md text-left text-gray-500 dark:text-gray-400 text-center "
             >
               <thead
                 class="text-md text-gray-700 dark:bg-gray-700 border-b dark:text-gray-400"
@@ -10,7 +10,7 @@
                 <tr>
                   <th scope="col" class="px-6 py-3">Date</th>
                   <th scope="col" class="px-6 py-3">Request Name</th>
-                  <th scope="col" class="px-6 py-3">Feedback
+                  <th scope="col" class="pl-8 sm:pl-6 lg:pl-10 py-3">Feedback
                   </th>
                 </tr>
               </thead>
@@ -20,7 +20,7 @@
                 >
                   <td
                     
-                    class="px-6 py-4"
+                    class="py-4"
                   >
                   31/02/2021
                   </td>

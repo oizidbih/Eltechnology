@@ -2,12 +2,10 @@
 <div>
     <Mainbar />
     <div class="flex justify-center ">
-    <div class="bg-white w-7/12 h-144 my-12 rounded-md flex flex-row justify-between">
+    <div class="bg-white w-full my-6 mx-8 p-6 lg:w-8/12 xl:w-8/12 lg:h-144 lg:my-12 rounded-md flex lg:flex-row justify-between">
         <Signupform />
-        <div class="py-2 px-1">
-          <div class="2xl:w-80 xl:w-64 lg:w-52 h-full">
-            <img src="../assets/Signup.png" class="w-auto h-full" alt="Pattern">
-          </div>
+        <div class="w-14 p-1 sm:w-28 md:w-36 lg:h-144 lg:w-56 xl:w-72 lg:-mt-6 lg:-mr-4 ">
+            <img src="..\assets\Signup.png" class="w-full h-full" alt="Pattern">
         </div>
     </div>
 </div>

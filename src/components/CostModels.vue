@@ -1,6 +1,6 @@
 <template>
-     <div class="mr-72 flex flex-col">
-      <div class="text-md font-bold">Cost Models</div>
+     <div class="sm:ml-4 lg:block lg:mr-64 hidden flex flex-col">
+      <div class="text-sm sm:text-md font-bold">Cost Models</div>
       <div class="bg-white p-4 h-96 rounded-md sm:rounded-lg scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll ">
           <div class="block">
               <div class="p-2" v-for="model in costModels" :key='model'>

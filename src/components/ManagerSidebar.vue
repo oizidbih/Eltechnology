@@ -1,17 +1,14 @@
 <template>
-    <div class="sticky bg-black w-screen bottom-0 lg:h-screen lg:w-16 lg:fixed md:fixed lg:top-16">
-       <div>
-       <router-link v-for="page in pages" :key="page" @click="page(page.name)" :to=page.path >
-       <div :class=" [current == page.name ? 'border-b-2 border-white lg:border-l-2 text-white mt-6 text-xs': 'text-gray-300 mt-5 text-sm']">
+  <div class="fixed bg-black w-screen bottom-0 lg:h-screen lg:w-16 lg:fixed md:fixed lg:top-16">
+       <div class="flex justify-around -mt-2 mb-1 items-center lg:flex-col">
+        <router-link v-for="page in pages" :key="page" @click="page(page.name)" :to=page.path >
+       <div :class=" [current == page.name ? 'sm:border-b-2 border-white md:border-l-2 text-white mt-6 text-xs': 'text-gray-300 mt-5 text-sm']">
            <div class="flex items-center flex-col">
             <a href="#"><img :src="page.icon" class="h-6 w-6" alt=""></a>
             <p class="text-sm">{{ page.name }}</p>
            </div>
        </div>
         </router-link>
-      
-</div>
-<div>
   <div class="hidden lg:text-white lg:fixed lg:bottom-0 lg:flex lg:items-center lg:left-4">
         <div class="flex items-center flex-col">
             <a href="#"><img src="../assets/help-circle.png" class="h-6 w-6" alt=""></a>
@@ -27,7 +24,7 @@ export default {
     data () {
     return {
       pages: [
-        { name: 'Map', path: '/map' , icon: require('../assets/locate-fixed.png')}
+        { name: 'Evaluate', path: '/Managerevaluate' , icon: require('../assets/check-circle.png')},
       ],
     }
   },
