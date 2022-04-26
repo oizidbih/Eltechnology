@@ -3,6 +3,10 @@
     <h1 class="font-bold text-center text-xl sm:text-3xl lg:text-3xl mb-6 mr-6">
       Login
     </h1>
+
+    <div v-if="error" class="text-red-900 h-12 flex items-center  w-11/12 text-center border-2 border-red-600 mb-2 bg-red-100">
+      <p class="ml-4">{{error}}</p>
+    </div>
     <form @submit.prevent="handleSubmit">
     <div>
       <label for="Email" class="block text-black text-md font-bold mb-1"
@@ -45,11 +49,13 @@ export default {
   data() {
     return{
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   },
   methods: {
     async handleSubmit(){
+      try {
         const response = await axios.post('http://127.0.0.1:8000/login/', {
           email: this.email,
           password: this.password
@@ -66,6 +72,15 @@ export default {
         }
         if(response.data.status == 'Manager'){
           this.$router.push('/manager')
+        }
+      }
+        catch(e) {
+          if (e) {
+              this.error = "Invalid Email or Password"
+          }
+          if (this.email == '' || this.password == ''){
+            this.error = "Fields cannot be empty."
+          }
         }
     }
   }
