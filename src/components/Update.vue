@@ -16,18 +16,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
+                <tr v-for="request in requests" :key="request.id"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <td
                     
                     class="px-6 py-4 hidden sm:block lg:mr-4"
                   >
-                  31/02/2021
+                  {{ request.timestamp.slice(0, 10) }}
                   </td>
-                  <td class="px-6 py-4">Access to OSS</td>
-                  <td class="px-6 py-4 hidden sm:hidden lg:block">31/02/2021</td>
-                  <td class="px-6 py-4">In Progress</td>
+                  <td class="px-6 py-4">{{ request.name }}</td>
+                  <td class="px-6 py-4 hidden sm:hidden lg:block">{{ request.last_modified.slice(0, 10) }}</td>
+                  <td class="px-6 py-4">{{ request.status }}</td>
                   <td class="px-6 py-4 text-right">
                     <router-link
                       to=""
@@ -40,3 +40,24 @@
             </table>
           </div>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  data() {
+    return{
+      requests: null
+    }
+  },
+   mounted() {
+      let token = localStorage.getItem('token')
+      axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
+        "Authorization": "Token " + token
+      }})
+      .then(response => this.requests = response.data)
+      .catch(error => {
+        console.log(error);
+    })
+    }
+}
+</script>
