@@ -20,18 +20,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
+                <tr v-for="request in requests" :key="request.id"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                   <td
                     
                     class="px-6 py-4 hidden sm:block lg:mr-4"
                   >
-                  31/02/2021
+                  {{ request.timestamp.slice(0, 10) }}
                   </td>
-                  <td class="px-6 py-3">Access to OSS</td>
-                  <td class="px-6 py-3 hidden sm:hidden lg:block">31/02/2021</td>
-                  <td class="px-6 py-4">In Progress</td>
+                  <td class="px-6 py-3">{{ request.name }}</td>
+                  <td class="px-6 py-3 hidden sm:hidden lg:block">{{ request.last_modified.slice(0, 10) }}</td>
+                  <td class="px-6 py-4">{{ request.status }}</td>
                 </tr>
               </tbody>
             </table>
@@ -48,11 +48,30 @@
 import Navbar from '@/components/Navbar.vue'
 import MainHeading from '@/components/MainHeading.vue'
 import ManagerSidebar from '@/components/ManagerSidebar.vue'
+import axios from 'axios'
 export default {
     components: {
         Navbar,
         MainHeading,
         ManagerSidebar
+    },
+    data() {
+    return{
+      requests: ''
     }
+  },
+  mounted() {
+    let status = localStorage.getItem('status')
+    let token = localStorage.getItem('token')
+    if (status == 'Manager'){
+      axios.get('http://127.0.0.1:8000/requests/' ,{headers: {
+        "Authorization": "Token " + token
+      }})
+       .then(response => this.requests = response.data)
+      .catch(error => {
+        console.log(error);
+    })
+    }
+  }
 }
 </script>

@@ -61,6 +61,7 @@ export default {
           password: this.password
         });
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('status', response.data.status)
         if(response.data.status == 'user'){
           this.$router.push('/create')
         }
