@@ -18,7 +18,7 @@
               </router-link>
               <hr>
               <router-view/>
-              <button @click="GoToMain()" class="p-2 text-md text-black w-full opacity-75 hover:bg-gray-100 hover:rounded flex justify-between items-center">
+              <button @click="logout" class="p-2 text-md text-black w-full opacity-75 hover:bg-gray-100 hover:rounded flex justify-between items-center">
                 Logout
                 <i class="fas fa-sign-out-alt text-PrimaryColor"></i>
               </button>
@@ -38,16 +38,24 @@ export default {
       ]
     }
   },
+  mounted() {
+    let user = localStorage.getItem('token');
+    let userinfo = localStorage.getItem('user-info');
+    if(!user && !userinfo)
+    {
+      this.$router.push({name:'Login'})
+    }
+  },
   methods: {
     toggleDropdown () {
       this.showDropdown = !this.showDropdown
     },
-    GoToMain () {
-      this.$router.push('/')
-    },
-    // GoMobileDrop () {
-    //   this.$router.push('/logout')
-    // }
+    logout() {
+      {
+          localStorage.clear();
+          this.$router.push({name:'Login'})
+      }
+    }
   },
   components: {
       ChangeDisplay

@@ -1,7 +1,7 @@
 <template>
     <div class="sticky bg-black w-screen bottom-0 lg:h-screen lg:w-16 lg:fixed md:fixed lg:top-16">
        <div>
-       <router-link v-for="page in pages" :key="page" @click="page(page.name)" :to=page.path >
+       <router-link v-for="page in pages" :key="page" :to=page.path >
        <div :class=" [current == page.name ? 'border-b-2 border-white lg:border-l-2 text-white mt-6 text-xs': 'text-gray-300 mt-5 text-sm']">
            <div class="flex items-center flex-col">
             <a href="#"><img :src="page.icon" class="h-6 w-6" alt=""></a>
