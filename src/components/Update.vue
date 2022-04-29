@@ -29,10 +29,10 @@
                   <td class="px-6 py-4 hidden sm:hidden lg:block">{{ request.last_modified.slice(0, 10) }}</td>
                   <td class="px-6 py-4">{{ request.status }}</td>
                   <td class="px-6 py-4 text-right">
-                    <router-link
-                      to=""
+                    <a
+                      @click="editRequest(request.attachments[0])" href=""
                       class="font-medium text-white  mr-12 bg-black rounded-full py-1 px-6 sm:mr-12 lg:mr-3"
-                      >Edit</router-link
+                      >Edit</a
                     >
                   </td>
                 </tr>
@@ -46,18 +46,26 @@ import axios from 'axios'
 export default {
   data() {
     return{
-      requests: null
+      requests: null,
     }
   },
-   mounted() {
+   async mounted() {
+     localStorage.removeItem('requestNo')
       let token = localStorage.getItem('token')
-      axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
+      await axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.requests = response.data)
       .catch(error => {
         console.log(error);
     })
+    },
+    methods: {
+      editRequest(req){
+
+        this.$router.push('/EditRequest')
+        localStorage.setItem('requestNo',req)
+      }
     }
 }
 </script>

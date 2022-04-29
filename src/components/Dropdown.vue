@@ -38,14 +38,13 @@ export default {
       ]
     }
   },
-  mounted() {
-    let user = localStorage.getItem('token');
-    let userinfo = localStorage.getItem('user-info');
-    if(!user && !userinfo)
-    {
-      this.$router.push({name:'Login'})
-    }
-  },
+  // mounted() {
+  //   let user = localStorage.getItem('token');
+  //   if(!user)
+  //   {
+  //     this.$router.push({name:'Login'})
+  //   }
+  // },
   methods: {
     toggleDropdown () {
       this.showDropdown = !this.showDropdown

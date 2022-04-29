@@ -11,6 +11,7 @@ import DMassign from "../views/DMassign.vue"
 import DMedit from "../views/DMedit.vue"
 import Manager from "../views/Manager.vue"
 import MobileDropDown from "../views/MobileDropDown.vue"
+import UserEditRequest from "../views/UserEditRequest.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -90,7 +91,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/logout',
     name: 'MobileDropDown',
     component: MobileDropDown
-  }
+  },
+  {
+    path: '/EditRequest',
+    name: 'UserEditRequest',
+    component: UserEditRequest,
+    props: true
+  },
 ];
 
 const router = createRouter({
