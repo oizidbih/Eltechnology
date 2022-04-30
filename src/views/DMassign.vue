@@ -24,6 +24,7 @@
               >
               <select name="Designer"  class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
                   <option selected disabled>Select Solution Designer</option>
+                  <option v-for="des in designers" :key="des.id" class="capitalize">{{ des.user.first_name + " " + des.user.last_name  + " ,Department: "+ des.department }}</option>
               </select>
             </div>
 
@@ -78,12 +79,32 @@
 import Navbar from '@/components/Navbar.vue'
 import MainHeading from '@/components/MainHeading.vue'
 import DMsidebar from '@/components/DMsidebar.vue'
+import axios from 'axios'
 
 export default {
     components: {
         Navbar,
         MainHeading,
         DMsidebar
+    },
+    data() {
+      return{
+        designers: ''
+      }
+    },
+  async mounted() {
+      let token = localStorage.getItem('token')
+      await axios.get('http://127.0.0.1:8000/designers/', {headers: {
+        "Authorization": "Token " + token
+      }})
+      .then(response => this.designers = response.data)
+      .catch(error => {
+        console.log(error);
+    })
+    console.log(this.designers)
     }
 }
+    
+    
+    
 </script>
