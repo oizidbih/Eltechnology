@@ -5,16 +5,19 @@
             <img src="../assets/logo.jpg" class="h-10 w-16 lg:w-24 " alt="">
         </div>
         <div class="">
+          <router-link to="/">
           <button
          class="w-20 text-sm mb-1 mr-1 text-white bg-black border-2 border-white p-0 sm:p-1 lg:text-base lg:font-normal lg:w-32 lg:mr-2 rounded-full "
-          > <router-link to="/">Login </router-link>
+          >  Login
             
-          </button>
-          <button class="mr-4 w-20 text-sm text-black bg-white p-0 sm:p-1 rounded-full lg:mr-16 lg:text-base lg:font-normal lg:w-32"><router-link to="/signupAs"
+          </button> </router-link>
+          <router-link to="/signupAs"
           >
+          <button class="mr-4 w-20 text-sm text-black bg-white p-0 sm:p-1 rounded-full lg:mr-16 lg:text-base lg:font-normal lg:w-32">
             Signup
-          </router-link>
+          
           </button>
+          </router-link>
         </div>
     </div>
     <div class="h-1 bg-gray-300"></div>
