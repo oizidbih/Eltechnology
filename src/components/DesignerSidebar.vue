@@ -27,7 +27,7 @@ export default {
     data () {
     return {
       pages: [
-        { name: 'Map', path: '/map' , icon: require('../assets/locate-fixed.png')}
+        { name: 'Map', path: '/mapRequest' , icon: require('../assets/locate-fixed.png')}
       ],
     }
   },

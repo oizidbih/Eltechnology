@@ -37,7 +37,7 @@
     </button>
     <br>
     <button class="text-center mt-12"
-      >New User? <span class="font-bold">Login</span>
+      >New User? <router-link to="/signupAs"><span class="font-bold">Signup</span></router-link>
     </button>
     </form>
   </div>
@@ -69,7 +69,7 @@ export default {
           this.$router.push('/evaluate')
         }
         if(response.data.status == 'Solution Designer'){
-          this.$router.push('/map')
+          this.$router.push('/mapRequest')
         }
         if(response.data.status == 'Manager'){
           this.$router.push('/manager')

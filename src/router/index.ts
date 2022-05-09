@@ -12,6 +12,7 @@ import DMedit from "../views/DMedit.vue"
 import Manager from "../views/Manager.vue"
 import MobileDropDown from "../views/MobileDropDown.vue"
 import UserEditRequest from "../views/UserEditRequest.vue"
+import MapRequests from "../views/MapRequests.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -97,6 +98,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'UserEditRequest',
     component: UserEditRequest,
     props: true
+  },
+  {
+    path: '/mapRequest',
+    name: 'MapRequests',
+    component: MapRequests
   },
 ];
 
