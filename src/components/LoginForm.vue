@@ -62,6 +62,8 @@ export default {
         });
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('status', response.data.status)
+        const unwrapped = JSON.parse(JSON.stringify(response.data.profile));
+        localStorage.setItem('name',unwrapped.user.first_name + ' ' + unwrapped.user.last_name)
         if(response.data.status == 'user'){
           this.$router.push('/create')
         }
