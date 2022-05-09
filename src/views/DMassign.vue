@@ -13,18 +13,19 @@
           >
           <input
             type="text"
-            class="shadow appearance-none border rounded  w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+            v-model="request.name"
+            class="shadow appearance-none border rounded  w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6"
+            readonly>
             </div>
         
-            <div>
-                <label
+            <div v-for="des in designers" :key="des.id" >
+                <label 
                 for="Designer"
                 class="block text-black text-md font-bold mb-1"
                 >Solution Designer</label
               >
-              <select name="Designer"  class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
-                  <option selected disabled>Select Solution Designer</option>
-                  <option v-for="des in designers" :key="des.id" class="capitalize">{{ des.user.first_name + " " + des.user.last_name  + " ,Department: "+ des.department }}</option>
+              <select name="Designer" v-model="request.designer" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+                  <option :value="des.id"  class="capitalize">{{ des.user.first_name + " " + des.user.last_name  + " ,Department: "+ des.department }}</option>
               </select>
             </div>
 
@@ -62,7 +63,7 @@
     </div>
     </div>
     <div class="flex flex-col items-center">
-        <button
+        <button @click="save"
         class="mb-10 text-white bg-black p-2 w-40 rounded-full mt-4"
       >
         Save
@@ -89,11 +90,20 @@ export default {
     },
     data() {
       return{
+        request:{
+          name: '',
+          designer: ''
+        },
         designers: ''
       }
     },
   async mounted() {
       let token = localStorage.getItem('token')
+      let requestNo = localStorage.getItem('requestNo')
+         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+        "Authorization": "Token " + token
+      }})
+      this.request=response.data
       await axios.get('http://127.0.0.1:8000/designers/', {headers: {
         "Authorization": "Token " + token
       }})
@@ -101,8 +111,19 @@ export default {
       .catch(error => {
         console.log(error);
     })
-    console.log(this.designers)
-    }
+    },
+    methods: {
+  async save() {
+    let token = localStorage.getItem('token')
+    let requestNo = localStorage.getItem('requestNo')
+      let result = await axios.post('http://127.0.0.1:8000/request/assign-designer/' + requestNo + '/' , ({designer: this.request.designer}) , {headers: {
+        "Authorization" : "Token " + token
+      }})
+      if(result.status==201){
+        this.$router.push('/evaluate')
+      }
+  }
+}
 }
     
     

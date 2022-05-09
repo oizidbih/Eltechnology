@@ -1,7 +1,7 @@
 <template>
 <div>
     <Navbar />
-    <MainHeading title="Evaluate Requests / Request Name" />
+    <MainHeading :title="'Evaluate Request / ' + (request.name)"  />
     <div class="flex justify-center my-auto w-full ">
         <div class="w-full flex items-center flex-row justify-center">
             <div class="p-6">
@@ -13,7 +13,8 @@
           >
           <input
             type="text"
-            class="shadow appearance-none border rounded w-full sm:w-112 lg:w-128  mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+            v-model="request.name"
+            class="shadow appearance-none border rounded w-full sm:w-112 lg:w-128  mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6" readonly>
             </div>
         
             <div>
@@ -22,7 +23,7 @@
                 class="block text-black text-md font-bold mb-1"
                 >Description</label
               >
-              <textarea name="description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
+              <textarea name="description" v-model="request.description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto" readonly></textarea>
             </div>
 
             <div class="flex flex-col md:flex-row justify-between">
@@ -46,7 +47,8 @@
                   <div class="block">
                     <div class="mt-2">
                       <label class="inline-flex items-center">
-                        <input type="checkbox"/>
+                        
+                        <input type="checkbox" id="Assigned" value="Assigned" v-model="status"/>
                         <span class="ml-2">Assign to Solution Designer</span>
                       </label>
                     </div>
@@ -54,7 +56,7 @@
                 
                 
             <div class="flex flex-col items-center">
-                <button
+                <button @click="check"
                 class="mr-24 md:mr-0 text-white bg-black p-2 w-40 rounded-md mt-6"
               >
                 Save
@@ -74,11 +76,44 @@
 import Navbar from '@/components/Navbar.vue'
 import MainHeading from '@/components/MainHeading.vue'
 import DMsidebar from '@/components/DMsidebar.vue'
+import axios from 'axios'
 export default {
     components: {
         Navbar,
         MainHeading,
         DMsidebar
-    }
+    },
+    data() {
+        return{
+          status: [],
+          request: {
+            name: '',
+            description: '',
+          },
+          error: ''
+        }
+    },
+    async mounted(){
+        let token = localStorage.getItem('token')
+        let requestNo = localStorage.getItem('requestNo')
+         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+        "Authorization": "Token " + token
+      }})
+      this.request=response.data
+},
+methods: {
+  async check() {
+    let token = localStorage.getItem('token')
+    let requestNo = localStorage.getItem('requestNo')
+    if( this.status == 'Assigned'){
+      let result = await axios.post('http://127.0.0.1:8000/request/assign-status/' + requestNo + '/' , ({status: this.status }) , {headers: {
+        "Authorization" : "Token " + token
+      }})
+      if(result.status==201){
+        this.$router.push('/assign')
+      }
+      }
+  }
+}
 }
 </script>

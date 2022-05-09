@@ -30,10 +30,9 @@
                   <td class="px-6 py-3 hidden sm:hidden lg:block">{{ request.last_modified.slice(0, 10) }}</td>
                   <td class="px-6 py-4">{{ request.status }}</td>
                   <td class="py-4 text-right">
-                    <router-link
-                      to="/edit"
+                    <button @click="editRequest(request.attachments[0])" 
                       class="font-medium text-white  mr-12 bg-black rounded-full py-1 px-6 sm:mr-12 lg:mr-3"
-                      >Edit</router-link
+                      >Edit</button
                     >
                   </td>
                   </tr>
@@ -52,10 +51,11 @@ export default {
     }
   },
   mounted() {
+    localStorage.removeItem('requestNo')
     let status = localStorage.getItem('status')
     let token = localStorage.getItem('token')
     if (status == 'Demand Manager'){
-      axios.get('http://127.0.0.1:8000/requests/' ,{headers: {
+      axios.get('http://127.0.0.1:8000/requests/?status=In Progress' ,{headers: {
         "Authorization": "Token " + token
       }})
        .then(response => this.requests = response.data)
@@ -63,6 +63,12 @@ export default {
         console.log(error);
     })
     }
-  }
+  },
+  methods: {
+      editRequest(req){
+        this.$router.push('/edit')
+        localStorage.setItem('requestNo',req)
+      }
+    }
 }
 </script>
