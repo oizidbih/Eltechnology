@@ -1,7 +1,10 @@
 <template>
   <div class="w-full md:w-96 my-auto md:px-7">
-    <h1 class="font-bold text-2xl mb-10">Create Account</h1>
-    <form @submit.prevent="signUpUser">
+    <h1 class="font-bold text-2xl mb-5">Create Account</h1>
+    <div v-if="error" class="text-red-900 h-12 flex items-center  w-11/12 text-center border-2 border-red-600 mb-2 bg-red-100">
+      <p class="ml-4">{{error}}</p>
+    </div>
+    <form @submit.prevent="signUpUser(); passwordValidation();">
     <div class="flex flex-col md:flex-row">
       <div class="">
         <label for="Fname" class="block text-black text-md font-bold mb-1"
@@ -9,9 +12,10 @@
         >
         <input
           type="text"
+          v-on:keypress="isLetter($event)"
           v-model="FormData.first_name"
           placeholder="Enter First Name"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="capitalize shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
       <div class="md:px-4">
@@ -21,8 +25,9 @@
         <input
           type="text"
           placeholder="Enter Last Name"
+          v-on:keypress="isLetter($event)"
           v-model="FormData.last_name"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="capitalize shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
         />
       </div>
     </div>
@@ -36,8 +41,11 @@
           type="email"
           v-model="FormData.email"
           placeholder="Enter Email"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-1"
         />
+        <!-- <span v-if="!v$.email.$required" class="text-red-600">
+        {{ v$.email.$errors[0].$message }}
+      </span> -->
       </div>
       <div class="md:px-4">
         <label for="mobile" class="block text-black text-md font-bold mb-1"
@@ -68,9 +76,12 @@
           v-model="FormData.password"
           class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-        <p class="mb-4 text-xs text-gray-600">
+        <p class="mb-1 text-xs text-gray-600">
           Use 8 or more characters with a mix of letters, numbers & symbols
         </p>
+         <!-- <span v-if="passwordError" class="text-red-600 mb-1 text-xs">
+        <p>{{ passwordError }}</p>
+      </span>  -->
       </div>
       <div class="md:px-4">
         <label
@@ -84,9 +95,13 @@
           id="confirmPassword"
           placeholder="Confirm Password"
           v-model="FormData.Cpassword"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
         />
+        <!-- <span v-if="FormData.confirmPassword !== FormData.password " class="text-red-600">
+        <p>Passwords must match.</p>
+      </span>  -->
       </div>
+      
     </div>
 
     <div class="flex flex-col  md:flex-row">
@@ -132,11 +147,17 @@ export default {
         confirmPassword: "",
         department: "",
       },
-      department: ['Finance','Procurement','Public Relations','Information Technology','Technical Affairs','Water Affairs','Water Projects','Electricity Affairs','Planning and Quality','Customer Service','Human Resources','General Services','Conservation','District Cooling','President Office']
-    };
+      error: '',
+      passwordError: '',
+      department: ['Finance','Procurement','Public Relations','Information Technology','Technical Affairs','Water Affairs','Water Projects','Electricity Affairs','Planning and Quality','Customer Service','Human Resources','General Services','Conservation','District Cooling','President Office'],
+    }
   },
+  
   methods: {
     async signUpUser() {
+      
+
+       try{
       if(this.$route.name=='User'){
       let result = await axios.post(
         "http://127.0.0.1:8000/signup/user/", JSON.stringify(
@@ -152,8 +173,9 @@ export default {
       )
       console.warn(result);
       if (result.status == 201) {
-        localStorage.setItem("user-info",result.data)
         this.$router.push("/create")
+        localStorage.setItem("user-info",result.data)
+        localStorage.setItem("status",result.status)
       }
       }
 
@@ -173,6 +195,7 @@ export default {
       console.warn(result1);
       if (result1.status == 201) {
         localStorage.setItem("user-info",result1.data)
+        // localStorage.setItem("status",this.$route.name)
         this.$router.push("/evaluate")
       }
       }
@@ -192,8 +215,8 @@ export default {
       )
       console.warn(result2);
       if (result2.status == 201) {
+        this.$router.push("/mapRequest")
         localStorage.setItem("user-info",result2.data)
-        this.$router.push("/map")
       }
       }
 
@@ -212,11 +235,25 @@ export default {
       )
       console.warn(result3);
       if (result3.status == 201) {
-        localStorage.setItem("user-info",result3.data)
         this.$router.push("/manager")
+        localStorage.setItem("user-info",result3.data)
       }
       }
+      
+       }
+    catch(e){
+      this.passwordError = 'Password must be greater than 8 characters.'
+      if(e){
+        this.error = "Fields cannot be empty."
+      }
+    }
     },
+    isLetter(e) {
+      let char = String.fromCharCode(e.keyCode); 
+      if(/^[A-Za-z]+$/.test(char)) return true; 
+      else e.preventDefault(); 
+    },
+    
   },
   mounted () {
     let user= localStorage.getItem('user-info');

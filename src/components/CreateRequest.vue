@@ -73,7 +73,8 @@ export default {
 
       let token = localStorage.getItem('token')
       return await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
-        "Authorization" : "Token " + token
+        "Authorization" : "Token " + token,
+        'Content-Type': 'multipart/form-data'
       }})
       .then(res => {
         console.log(res)
