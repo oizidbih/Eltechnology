@@ -106,7 +106,7 @@ methods: {
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
     if( this.status == 'Assigned'){
-      let result = await axios.post('http://127.0.0.1:8000/request/assign-status/' + requestNo + '/' , ({status: this.status }) , {headers: {
+      let result = await axios.post('http://127.0.0.1:8000/request/assign-status/' + requestNo + '/' , ({status: this.status[0] }) , {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==201){
