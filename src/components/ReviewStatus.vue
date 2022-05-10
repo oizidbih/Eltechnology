@@ -1,6 +1,6 @@
 <template>
     <div>
-          <div class="relative p-2 bg-white sm:rounded-lg rounded-md lg:p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll absolute h-128 ml-0 my-0 lg:my-10 lg:ml-12 lg:w-full">
+          <div class="p-2 bg-white sm:rounded-lg rounded-md lg:p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll h-128 ml-0 my-0 lg:my-10 lg:ml-12 lg:w-full">
             <table
               class="w-full lg:w-full text-md text-left text-gray-500 dark:text-gray-400 text-center "
             >
