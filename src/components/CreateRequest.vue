@@ -38,13 +38,16 @@
       </div>
       <div class="flex flex-col items-center">
         <label class="text-white bg-black p-2 rounded-md mt-6">
-          <input type="file"  @change="onFileSelected"/>
+          <input type="file" accept=".doc, .docx, .txt, .pdf"  @change="onFileSelected"/>
         </label>
         <button 
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
         >
           Send Requirements
         </button>
+          <div v-if="Error" class="text-red-900 h-12 flex items-center  w-11/12 text-center border-2 border-red-600 mb-2 bg-red-100">
+      <p class="ml-4">{{Error}}</p>
+    </div>
       </div>
     </div>
   </div>
@@ -58,7 +61,8 @@ export default {
     return{
       name: '',
       description: '',
-      selectedFile: null
+      selectedFile: null,
+      Error: ''
     }
   },
   methods: {
@@ -66,25 +70,25 @@ export default {
       this.selectedFile = event.target.files[0]
     },
     async OnUpload() {
+      try{
       const fd = new FormData();
       fd.append('name', this.name)
       fd.append('description', this.description)
       fd.append('attachment',this.selectedFile, this.selectedFile.name)
 
       let token = localStorage.getItem('token')
-      return await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
+      let response = await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
         "Authorization" : "Token " + token,
         'Content-Type': 'multipart/form-data'
       }})
-      .then(res => {
-        console.log(res)
+        console.log(response)
         this.name = '',
         this.description = '',
         this.selectedFile = ''
-      })
-      .catch(error => {
-        console.log(error);
-    })
+      }
+      catch(e) {
+          this.Error = 'Please provide all details to create request.'
+    }
     }
   },
 }

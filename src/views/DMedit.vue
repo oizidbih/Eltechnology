@@ -57,11 +57,14 @@
                 
             <div class="flex flex-col items-center">
                 <button @click="check"
-                class="mr-24 md:mr-0 text-white bg-black p-2 w-40 rounded-md mt-6"
+                class="mr-24 md:mr-0 text-white bg-black p-2 w-40 rounded-md my-6"
               >
                 Save
               </button>
             </div>
+              <div v-if="error" class="text-red-900 h-12 flex items-center text-center border-2 mb-12 bg-red-100 border-red-600">
+      <p class="ml-4">{{error}}</p>
+    </div>
             </div>
         </div>
         </div>
@@ -113,6 +116,9 @@ methods: {
         this.$router.push('/assign')
       }
       }
+    else{
+      this.error = "Please select the status."
+    }
   }
 }
 }
