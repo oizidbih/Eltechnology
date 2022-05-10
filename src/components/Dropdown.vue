@@ -1,7 +1,12 @@
 <template>
-    <div class="mr-4 md:mr-16 relative cursor-pointer" @click="toggleDropdown">
+  <div>
+    <div class="sm:hidden mr-4 md:mr-16 relative cursor-pointer" @click="MobileDrop">
           <img src="..\assets\User.png" class='w-10 h-10 rounded-full border border-4 border-white' alt="">
-           <div v-if="showDropdown === true" class="absolute z-10 right-0 bg-white w-56 rounded-md mt-1 saturate shadow shadow-md rounded px-3 py-1">
+
+    </div>
+    <div class="hidden sm:block mr-4 md:mr-16 relative cursor-pointer" @click="toggleDropdown">
+          <img src="..\assets\User.png" class='w-10 h-10 rounded-full border border-4 border-white' alt="">
+           <div v-if="showDropdown === true" class="hidden sm:block absolute z-10 right-0 bg-white w-56 rounded-md mt-1 saturate shadow shadow-md rounded px-3 py-1">
                <div class="flex flex-col justify-center items-center my-2">
             
                <ChangeDisplay />
@@ -20,6 +25,7 @@
               </button>
             </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -53,6 +59,9 @@ export default {
           localStorage.clear();
           this.$router.push({name:'Login'})
       }
+    },
+    MobileDrop() {
+      this.$router.push('/logout')
     }
   },
   components: {
