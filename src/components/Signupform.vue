@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full md:w-96 my-auto md:px-7">
-    <h1 class="font-bold text-2xl mb-1">Create Account</h1>
+  <div class="w-full md:w-96 my-auto md:px-7 lg:px-0 ml-4">
+    <h1 class="font-bold text-2xl mb-1 pt-6 lg:pt-0">Create Account</h1>
     <form @submit.prevent="signUpUser()">
     <div class="mt-5 flex flex-col md:flex-row">
       <div class="mb-4">
@@ -135,7 +135,7 @@
     </div>
 
     <div class="flex flex-col  md:flex-row">
-      <div class="mb-4">
+      <div class="mb-8">
         <label for="Department" class="block text-black text-md font-bold mb-1"
           >Department</label
         >
@@ -159,7 +159,7 @@
       </div>
       <div>
         <button
-          class="text-white bg-black p-2 w-40 rounded-full mt-6 ml-20"
+          class="text-white bg-black p-2 w-40 rounded-full my-6 ml-20"
         >
           Signup
         </button>
