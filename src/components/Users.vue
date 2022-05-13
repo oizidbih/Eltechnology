@@ -1,5 +1,5 @@
 <template>
-    <div class="w-96 my-auto ml-3 md:ml-4 lg:ml-auto lg:mr-auto">
+    <div class="w-96 my-auto p-3 md:ml-4 lg:ml-auto lg:mr-auto">
             <h1 class="font-bold text-2xl mb-12">Signup As,</h1>
         <router-link to="/signup/user">
          <div class="px-2 text-sm text-white bg-black py-3 lg:px-6 w-11/12 rounded-md mt-6 flex justify-between">
