@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-4 sm:mr-10 md:mx-auto lg:mx-4 lg:w-96 xl:mr-16 my-auto">
+  <div class="mx-auto md:mx-auto lg:mx-4 lg:w-96 xl:mr-16 my-auto">
     <h1 class="font-bold text-center text-xl sm:text-3xl lg:text-3xl mb-6 mr-6">
       Login
     </h1>
@@ -16,7 +16,7 @@
         type="text"
         v-model="email"
         placeholder="Enter Email"
-        class="shadow appearance-none border rounded w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+        class="shadow appearance-none border rounded sm:w-60 md:w-96 lg:w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
       />
     </div>
     <div class="">
@@ -27,12 +27,18 @@
         type="password"
         v-model="password"
         placeholder="Enter Password"
-        class="shadow appearance-none border rounded w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        class="shadow appearance-none border rounded sm:w-60  md:w-96 lg:w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <a href="#" class="text-sm font-medium">Forget Password?</a>
+    
     </div>
 
-    <button class="text-white bg-black p-2 w-11/12 rounded-md mt-6">
+      <!-- <div class="flex flex-row">
+      <p class="text-sm"><input  type="checkbox" name="show/hide" @click="showPassword = !showPassword" > Show Password</p>
+      <a href="#" class="text-PrimaryColor lg:ml-24 xl:ml-28 text-sm">Forget Password?</a>
+      </div> -->
+
+    <button class="text-white bg-black p-2 w-52 sm:w-60 md:w-96 lg:w-11/12 rounded-md mt-6">
       Login
     </button>
     <br>
@@ -50,7 +56,8 @@ export default {
     return{
       email: '',
       password: '',
-      error: ''
+      error: '',
+      // showPassword: false
     }
   },
   methods: {
