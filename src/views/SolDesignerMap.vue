@@ -43,23 +43,24 @@
           </div>
         </div>
 
-        <div v-if="checked" class="block mt-4 lg:hidden md:mr-24 lg:mr-44 flex flex-col">
+        <div v-if="checkedStatus" class="block mt-4 lg:hidden md:mr-24 lg:mr-44 flex flex-col">
           <div class="text-md font-bold">Cost Models</div>
-          <div class="bg-white p-4 rounded-md">
+          <div class="bg-white p-4 rounded-md h-60 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll">
               <div class="block">
-                  <div class="px-2 py-1">
-                    <label class="flex items-center">
-                      <input type="checkbox" />
-                      <span class="ml-2">Assign to Solution Designer</span>
-                    </label>
-                  </div>
+                <div class="p-2" v-for="model in costModels" :key="model.id" >
+                <div class="flex items-center " >
+                  <input class="mr-2" type="checkbox" v-model="costmodel"
+                      :value="model.name" /> 
+                      <label>{{ model.name }}</label>
+                </div>
+                </div>
                 </div>
           </div>
       </div>
 
         <div>
           <button @click="AssignCostModel"
-          class="mb-52 text-white bg-black p-2 w-40 rounded-md mt-6 md:mb-6"
+          class="mb-52 lg:mb-6 text-white bg-black p-2 w-40 rounded-md mt-6 "
         >
           Save
         </button>
