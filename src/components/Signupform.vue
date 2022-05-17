@@ -1,6 +1,9 @@
 <template>
   <div class="w-full md:w-96 my-auto md:px-7 lg:px-0 ml-4">
     <h1 class="font-bold text-2xl mb-1 pt-6 lg:pt-0">Create Account</h1>
+    <div v-if="error" class="text-red-900 h-12 flex items-center  w-11/12 text-center border-2 border-red-600 mb-2 bg-red-100">
+      <p class="ml-4">{{error}}</p>
+    </div>
     <form @submit.prevent="signUpUser()">
     <div class="mt-5 flex flex-col md:flex-row">
       <div class="mb-4">
@@ -179,6 +182,7 @@ export default {
   data() {
     return {    
       department: ['Finance','Procurement','Public Relations','Information Technology','Technical Affairs','Water Affairs','Water Projects','Electricity Affairs','Planning and Quality','Customer Service','Human Resources','General Services','Conservation','District Cooling','President Office'],
+      error: ''
     }
   },
   setup() {
@@ -223,6 +227,7 @@ export default {
     
       this.v$.$validate()
       
+      try{
       if(this.v$.$error == false){
       if(this.$route.name=='User'){
       let result = await axios.post(
@@ -234,7 +239,6 @@ export default {
           phone: this.state.FormData.phone,
           password: this.state.FormData.password.password,
           department: this.state.FormData.department,
-          
         })
       )
       console.warn(result);
@@ -305,6 +309,10 @@ export default {
         localStorage.setItem("user-info",result3.data)
       }
       }
+      }
+      }
+      catch(e){
+        this.error = "Email is already taken."
       }
       
     },
