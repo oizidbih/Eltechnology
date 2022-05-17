@@ -74,7 +74,11 @@ export default {
       const fd = new FormData();
       fd.append('name', this.name)
       fd.append('description', this.description)
+      if(this.selectedFile == null){
+        // ..
+      } else{
       fd.append('attachment',this.selectedFile, this.selectedFile.name)
+      }
 
       let token = localStorage.getItem('token')
       let response = await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
@@ -87,9 +91,11 @@ export default {
         this.selectedFile = ''
       }
       catch(e) {
+          if (this.name == '' || this.description == ''){
           this.Error = 'Please provide all details to create request.'
+          }
     }
     }
-  },
+  }
 }
 </script>
