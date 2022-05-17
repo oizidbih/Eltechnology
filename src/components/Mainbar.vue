@@ -2,7 +2,7 @@
     <div>
     <div class="bg-black h-16 w-full flex items-center flex-row justify-between">
         <div class=" ml-4 lg:ml-16">
-            <img src="../assets/logo.jpg" class="h-10 w-16 lg:w-24 " alt="">
+            <img src="../assets/logo.jpg" class="h-8 w-14 md:w-16 " alt="">
         </div>
         <div class="">
           <router-link to="/">
