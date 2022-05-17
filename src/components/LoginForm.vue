@@ -63,10 +63,10 @@ export default {
   methods: {
     async handleSubmit(){
       try {
-        const response = await axios.post('http://127.0.0.1:8000/login/', {
+        const response = await axios.post('http://127.0.0.1:8000/login/', JSON.stringify({
           email: this.email,
           password: this.password
-        });
+        }));
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('status', response.data.status)
         const unwrapped = JSON.parse(JSON.stringify(response.data.profile));
