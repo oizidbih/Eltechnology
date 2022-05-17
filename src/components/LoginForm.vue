@@ -27,16 +27,11 @@
         type="password"
         v-model="password"
         placeholder="Enter Password"
-        class="shadow appearance-none border rounded sm:w-60  md:w-96 lg:w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        class="shadow appearance-none border lg:mr-8 rounded block sm:w-60  md:w-96 lg:w-11/12 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <a href="#" class="text-sm font-medium">Forget Password?</a>
     
     </div>
-
-      <!-- <div class="flex flex-row">
-      <p class="text-sm"><input  type="checkbox" name="show/hide" @click="showPassword = !showPassword" > Show Password</p>
-      <a href="#" class="text-PrimaryColor lg:ml-24 xl:ml-28 text-sm">Forget Password?</a>
-      </div> -->
 
     <button class="text-white bg-black p-2 w-52 sm:w-60 md:w-96 lg:w-11/12 rounded-md mt-6">
       Login
