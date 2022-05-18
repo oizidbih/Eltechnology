@@ -244,8 +244,8 @@ export default {
       console.warn(result);
       if (result.status == 201) {
         this.$router.push("/create")
-        localStorage.setItem("user-info",result.data)
-        localStorage.setItem("status",result.status)
+        // localStorage.setItem("user-info",result.data)
+        // localStorage.setItem("status",result.status)
       }
       }
 
@@ -264,7 +264,7 @@ export default {
       )
       console.warn(result1);
       if (result1.status == 201) {
-        localStorage.setItem("user-info",result1.data)
+        // localStorage.setItem("user-info",result1.data)
         // localStorage.setItem("status",this.$route.name)
         this.$router.push("/evaluate")
       }
@@ -286,7 +286,7 @@ export default {
       console.warn(result2);
       if (result2.status == 201) {
         this.$router.push("/mapRequest")
-        localStorage.setItem("user-info",result2.data)
+        // localStorage.setItem("user-info",result2.data)
       }
       }
 
@@ -306,7 +306,7 @@ export default {
       console.warn(result3);
       if (result3.status == 201) {
         this.$router.push("/manager")
-        localStorage.setItem("user-info",result3.data)
+        // localStorage.setItem("user-info",result3.data)
       }
       }
       }
