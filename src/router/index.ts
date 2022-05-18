@@ -13,6 +13,8 @@ import Manager from "../views/Manager.vue"
 import MobileDropDown from "../views/MobileDropDown.vue"
 import UserEditRequest from "../views/UserEditRequest.vue"
 import MapRequests from "../views/MapRequests.vue"
+import Assign from '../views/Assign.vue'
+// import store from "../store"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -103,6 +105,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/mapRequest',
     name: 'MapRequests',
     component: MapRequests
+  },
+  {
+    path: '/assignDesigner',
+    name: 'Assign',
+    component: Assign
   },
 ];
 

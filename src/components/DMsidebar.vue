@@ -27,7 +27,7 @@ export default {
     return {
       pages: [
         { name: 'Evaluate', path: '/evaluate' , icon: require('../assets/check-circle.png')},
-        { name: 'Assign', path: '/assign', icon: require('../assets/user-check.png') }
+        { name: 'Assign', path: '/assignDesigner', icon: require('../assets/user-check.png') }
       ],
     }
   },

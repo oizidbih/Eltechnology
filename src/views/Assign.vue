@@ -1,30 +1,28 @@
 <template>
 <div>
     <Navbar />
-    <MainHeading title="Assign Solution Designers" />
+    <MainHeading title="Assign Solution Designer" />
     <div class="flex justify-center w-full mt-8 lg:mt-0 ">
         <div class="w-full flex flex-col md:flex-row md:justify-evenly lg:justify-center">
             <div class="ml-auto mr-auto md:mr-6 md:ml-0 lg:p-16">
-            <div>
-                <label
-            for="RequestName"
-            class="block text-black text-md font-bold mb-1"
-            >Request Name</label
-          >
-          <input
-            type="text"
-            v-model="request.name"
-            class="shadow appearance-none border rounded  w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6"
-            readonly>
+             <div  >
+                <label 
+                for="RequestName"
+               
+                class="block text-black text-md font-bold mb-1"
+                >Request Name</label
+              >
+              <select name="request" v-model="requestNo" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+                  <option v-for="request in requests" :key="request.id" :value="request.attachments[0]" class="capitalize">{{ request.name  }}</option>
+              </select>
             </div>
-        
-            <div >
+            <div  >
                 <label 
                 for="Designer"
                 class="block text-black text-md font-bold mb-1"
                 >Solution Designer</label
               >
-              <select name="Designer" v-model="request.designer" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+              <select name="Designer" v-model="designer" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
                   <option v-for="des in designers" :key="des.id" :value="des.id"  class="capitalize">{{ des.user.first_name + " " + des.user.last_name  + " ,Department: "+ des.department }}</option>
               </select>
             </div>
@@ -81,6 +79,7 @@ import Navbar from '@/components/Navbar.vue'
 import MainHeading from '@/components/MainHeading.vue'
 import DMsidebar from '@/components/DMsidebar.vue'
 import axios from 'axios'
+
 export default {
     components: {
         Navbar,
@@ -89,20 +88,23 @@ export default {
     },
     data() {
       return{
-        request:{
-          name: '',
-          designer: ''
-        },
         designers: '',
+        requests: null,
+        designer: '',
+        requestNo: '',
+        status: ''
       }
     },
   async mounted() {
-      let token = localStorage.getItem('token')
-      let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+       let token = localStorage.getItem('token')
+      await axios.get('http://127.0.0.1:8000/requests/', {headers: {
         "Authorization": "Token " + token
       }})
-      this.request=response.data
+      .then(response => this.requests = response.data)
+      .catch(error => {
+        console.log(error);
+    })
+    //   this.request=response.data
       await axios.get('http://127.0.0.1:8000/designers/', {headers: {
         "Authorization": "Token " + token
       }})
@@ -114,14 +116,29 @@ export default {
     methods: {
   async save() {
     let token = localStorage.getItem('token')
-    let requestNo = localStorage.getItem('requestNo')
-      let result = await axios.post('http://127.0.0.1:8000/request/assign-designer/' + requestNo + '/' , ({designer: this.request.designer}) , {headers: {
+    // let requestNo = localStorage.getItem('requestNo')
+      let result = await axios.post('http://127.0.0.1:8000/request/assign-designer/' + this.requestNo + '/' , ({designer: this.designer }) , {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==201){
-        this.$router.push('/evaluate')
+        this.status = 'Assigned'
+        if( this.status == 'Assigned'){
+      let result = await axios.post('http://127.0.0.1:8000/request/assign-status/' + this.requestNo + '/' , ({status: this.status }) , {headers: {
+        "Authorization" : "Token " + token
+      }})
+      if(result.status==201){
+        this.$router.push('/assign')
       }
-  }
+      }
+        this.$router.push('/evaluate')
+
+      }
+  },
+  // methods: {
+  //     editRequest(req){
+  //       localStorage.setItem('requestNo',req)
+  //     }
+  //   }
 }
 }
     
