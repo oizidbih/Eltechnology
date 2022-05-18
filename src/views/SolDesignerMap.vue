@@ -101,13 +101,14 @@ export default {
     },
     data() {
       return{
-        costModels: [ {"id":1, "name": 'Software Development/Customization'},{"id":2, "name": 'Application Install/ de-Install'},{"id":3, "name": 'Application Configuration'}, {"id":4, "name": 'Application Licenses'} , {"id":5, "name": 'Application Support & Maintenance'}, {"id":6, "name": 'Applications Integration'} ,{"id":7, "name": 'Application Migration'} , {"id":8, "name": 'Application Operation'}  , {"id":9, "name": 'Application Hosting'} , {"id":10, "name": 'Hardware Implementation'} , {"id":11, "name": 'HW Support & Maintenance'}],
+        // costModels: [ {"id":1, "name": 'Software Development/Customization'},{"id":2, "name": 'Application Install/ de-Install'},{"id":3, "name": 'Application Configuration'}, {"id":4, "name": 'Application Licenses'} , {"id":5, "name": 'Application Support & Maintenance'}, {"id":6, "name": 'Applications Integration'} ,{"id":7, "name": 'Application Migration'} , {"id":8, "name": 'Application Operation'}  , {"id":9, "name": 'Application Hosting'} , {"id":10, "name": 'Hardware Implementation'} , {"id":11, "name": 'HW Support & Maintenance'}],
+        costModels: [],
          request: {
             name: '',
             description: '',
           },
           checkedStatus: false,
-          costmodel: []
+          costmodel: [],
       }
     },
      async mounted(){
@@ -117,6 +118,11 @@ export default {
         "Authorization": "Token " + token
       }})
       this.request=response.data
+       let response1 = await axios.get('http://127.0.0.1:8000/cost-models/' , {headers: {
+        "Authorization": "Token " + token
+      }})
+      console.log(response1.data)
+      this.costModels = response1.data
 },
 methods:{
   async AssignCostModel() {
