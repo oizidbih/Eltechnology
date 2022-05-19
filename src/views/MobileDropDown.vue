@@ -2,6 +2,7 @@
     <div class="h-screen w-screen bg-white p-4 md:hidden ">
 
         <div>
+          <i class="fas fa-arrow-left cursor-pointer" @click="GoBack"></i>
                <div class="flex flex-col justify-center items-center my-2">
             
                <ChangeDisplay />
@@ -41,6 +42,9 @@ export default {
     },
     GoMobileDrop () {
       this.$router.push('/logout')
+    },
+    GoBack () {
+      this.$router.go(-1)
     }
   },
   components: {
