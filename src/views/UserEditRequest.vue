@@ -43,9 +43,10 @@
         </p>
       </div>
       <div class="flex flex-col items-center">
-        <label class="text-white bg-black p-2 rounded-md mt-6">
-          <input type="file"/>
-        </label>
+         <label class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
+        <span class="text-lg leading-normal">Choose File</span>
+        <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf" @change="onFileSelected" />
+      </label>
         <button @click="updateRequest"
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
         >
@@ -65,7 +66,6 @@ import Navbar from '@/components/Navbar.vue'
 import MainHeading from '@/components/MainHeading.vue'
 import UserSidebar from '@/components/UserSidebar.vue'
 import axios from 'axios'
-import router from '@/router'
 export default {
     components: {
         Navbar,
@@ -74,6 +74,7 @@ export default {
     },
     data() {
         return{
+          selectedFile: null,
           request: {
             name: '',
             description: '',
@@ -89,18 +90,22 @@ export default {
       this.request=response.data
 },
 methods:{
+  onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
+    },
   async updateRequest(){
     const fd = new FormData();
       fd.append('name', this.request.name)
       fd.append('description', this.request.description)
+      fd.append('attachment',this.selectedFile, this.selectedFile.name)
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
       let result = await axios.put('http://127.0.0.1:8000/request/' + requestNo + '/', fd, {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==200){
+        this.$router.push('/update')
         localStorage.removeItem('requestNo')
-        this.$router.push({name:'UserUpdate'})
       }
   }
 }

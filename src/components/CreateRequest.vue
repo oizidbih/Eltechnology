@@ -36,10 +36,17 @@
           (txt,doc,docx,pdf)
         </p>
       </div>
+      
       <div class="flex flex-col items-center">
-        <label class="text-white bg-black p-2 rounded-md mt-6">
+        <!-- <label class="text-white bg-black p-2 rounded-md mt-6">
           <input type="file" accept=".doc, .docx, .txt, .pdf"  @change="onFileSelected"/>
-        </label>
+        </label> -->
+         <!-- <div class="flex w-full h-screen items-center justify-center bg-grey-lighter"> -->
+    <label class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
+        <span class="text-lg leading-normal">Choose File</span>
+        <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf"  @change="onFileSelected" />
+    </label>
+<!-- </div> -->
         <button 
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
         >
@@ -49,6 +56,7 @@
       <p class="ml-4">{{Error}}</p>
     </div>
       </div>
+    
     </div>
   </div>
   </form>
