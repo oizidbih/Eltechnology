@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full md:w-96 my-auto md:px-7 lg:px-0 ml-4">
+  <div class="my-auto px-2 ">
     <h1 class="font-bold text-2xl mb-1 pt-6 lg:pt-0">Create Account</h1>
     <div v-if="error" class="text-red-900 h-12 flex items-center  w-11/12 text-center border-2 border-red-600 mb-2 bg-red-100">
       <p class="ml-4">{{error}}</p>
@@ -15,7 +15,7 @@
           v-on:keypress="isLetter($event)"
           v-model="state.FormData.first_name"
           placeholder="Enter First Name"
-          class="capitalize shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="capitalize shadow appearance-none border rounded  xl:w-64 p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         <p
           class="text-red-600 font-bold capitalize"
@@ -34,7 +34,7 @@
           placeholder="Enter Last Name"
           v-on:keypress="isLetter($event)"
           v-model="state.FormData.last_name"
-          class="capitalize shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="capitalize shadow appearance-none border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         <p
           class="text-red-600 font-bold capitalize"
@@ -55,7 +55,7 @@
           type="email"
           v-model="state.FormData.email"
           placeholder="Enter Email"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-1"
+          class="shadow appearance-none border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-1"
         />
         <p
           class="text-red-600 font-bold capitalize"
@@ -76,7 +76,7 @@
           id="mobile"
           placeholder="Enter your mobile number"
           pattern="[0-9]{4}[0-9]{7}"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         <p
           class="text-red-600 font-bold capitalize"
@@ -99,10 +99,10 @@
           id="password"
           placeholder="Enter password"
           v-model="state.FormData.password.password"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
         <p class="mb-1 text-xs text-gray-600">
-          Use 8 or more characters with a mix of letters, numbers & symbols
+          Use 8 or more characters with a mix of <br> letters, numbers & symbols
         </p>
         <p
           class="text-red-600 font-bold capitalize"
@@ -124,7 +124,7 @@
           id="confirmPassword"
           placeholder="Confirm Password"
           v-model="state.FormData.password.ConfirmPassword"
-          class="shadow appearance-none border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+          class="shadow appearance-none border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
         />
         <p
           class="text-red-600 font-bold capitalize"
@@ -147,7 +147,7 @@
           id="Department"
           v-model="state.FormData.department"
           placeholder="Select"
-          class="shadow border rounded w-56 xl:w-64 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow border rounded  xl:w-64  p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option selected disabled>Select</option>
           <option  v-for="dep in department" :key="dep">{{ dep }}</option>
@@ -162,7 +162,7 @@
       </div>
       <div>
         <button
-          class="text-white bg-black p-2 w-40 rounded-full my-6 ml-20"
+          class="text-white bg-black p-2 w-40 rounded-full my-6 ml-12 2xl:ml-20"
         >
           Signup
         </button>
