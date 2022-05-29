@@ -4,7 +4,7 @@
         <div class=" ml-4 lg:ml-16">
             <img src="../assets/logo.jpg" class="h-8 w-14 md:w-16 " alt="">
         </div>
-        <div class="">
+        <div class="flex flex-col sm:flex-row">
           <router-link to="/">
           <button
          class="w-20 text-sm mb-1 mr-1 text-white bg-black border-2 border-white p-0 sm:p-1 lg:text-base lg:font-normal lg:w-32 lg:mr-2 rounded-full "

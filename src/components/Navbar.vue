@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-black h-16 w-full flex items-center flex-row justify-between sticky top-0">
+    <div class="bg-black h-16 w-screen flex items-center flex-row justify-between sticky top-0 ">
         <div class=" ml-4 lg:ml-16">
             <img src="..\assets\logo.jpg" class="h-8 w-14 md:w-16" alt="">
         </div>
