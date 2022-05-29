@@ -14,6 +14,7 @@ import MobileDropDown from "../views/MobileDropDown.vue"
 import UserEditRequest from "../views/UserEditRequest.vue"
 import MapRequests from "../views/MapRequests.vue"
 import Assign from '../views/Assign.vue'
+import ReturnedRequest from '../views/ReturnedRequest.vue'
 // import store from "../store"
 
 const routes: Array<RouteRecordRaw> = [
@@ -111,6 +112,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Assign',
     component: Assign
   },
+  {
+    path: '/reviewRequest',
+    name: 'ReturnedRequest',
+    component: ReturnedRequest
+  }
 ];
 
 const router = createRouter({
