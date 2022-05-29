@@ -2,7 +2,7 @@
     <div>
             <div class="p-2 bg-white sm:rounded-lg rounded-md lg:p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll h-128 ml-0 my-0 lg:my-10 lg:ml-12 lg:w-full">
               <table
-               class="w-screen lg:w-full text-md text-left text-gray-500 dark:text-gray-400 "
+               class="w-screen lg:w-full text-md text-left text-gray-500 dark:text-gray-400 text-sm sm:text-base"
               >
                 <thead
                   class="text-md text-gray-700 dark:bg-gray-700 border-b dark:text-gray-400"
@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="request in requests" :key="request.id"
+                  <tr v-for="request in requests" :key="request"
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
                     <td
@@ -30,7 +30,7 @@
                   <td class="px-6 py-3 hidden sm:hidden lg:block">{{ request.last_modified.slice(0, 10) }}</td>
                   <td class="px-6 py-4">{{ request.status }}</td>
                   <td class="py-4 text-right">
-                    <button @click="editRequest(request.attachments[0])" 
+                    <button @click="editRequest(request.id)" 
                       class="font-medium text-white  mr-12 bg-black rounded-full py-1 px-6 sm:mr-12 lg:mr-3"
                       >Edit</button
                     >
