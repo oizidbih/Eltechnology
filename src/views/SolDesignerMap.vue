@@ -29,7 +29,7 @@
       <div class="block">
           <div class="mt-2">
             <label class="inline-flex items-center">
-              <input type="checkbox"/>
+              <input type="checkbox" />
               <span class="ml-2">Return to Demand Manager</span>
             </label>
           </div>
@@ -37,7 +37,7 @@
         <div class="block">
           <div class="mt-2">
             <label class="inline-flex items-center">
-              <input type="checkbox" v-model="checkedStatus"/>
+              <input type="checkbox"  v-model="checkedStatus"/>
               <span class="ml-2">Assign the Cost Models</span>
             </label>
           </div>
