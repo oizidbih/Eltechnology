@@ -12,8 +12,8 @@
                 class="block text-black text-md font-bold mb-1"
                 >Request Name</label
               >
-              <select name="request" v-model="requestNo" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
-                  <option v-for="request in requests" :key="request.id" :value="request.attachments[0]" class="capitalize">{{ request.name  }}</option>
+              <select name="request" v-model="requestNo" class="shadow border rounded w-72 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+                  <option v-for="request in requests" :key="request.id" :value="request.id" class="capitalize">{{ request.name  }}</option>
               </select>
             </div>
             <div  >
@@ -22,7 +22,7 @@
                 class="block text-black text-md font-bold mb-1"
                 >Solution Designer</label
               >
-              <select name="Designer" v-model="designer" class="shadow border rounded w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
+              <select name="Designer" v-model="designer" class="shadow border rounded w-72 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6">
                   <option v-for="des in designers" :key="des.id" :value="des.id"  class="capitalize">{{ des.user.first_name + " " + des.user.last_name  + " ,Department: "+ des.department }}</option>
               </select>
             </div>
@@ -38,7 +38,7 @@
           </div>
           <textarea
             rows="8"
-            class="shadow appearance-none border rounded  w-80 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6"></textarea>
+            class="shadow appearance-none border rounded  w-72 sm:w-112 lg:w-128 mx-auto p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-6"></textarea>
             <div class="flex flex-col items-center">
         <button
         class="mb-10 text-white bg-black p-2 w-40 rounded-full mt-6"
@@ -62,7 +62,7 @@
     </div>
     <div class="flex flex-col items-center">
         <button @click="save"
-        class="mb-10 text-white bg-black p-2 w-40 rounded-full mt-4"
+        class="mb-32 text-white bg-black p-2 w-40 rounded-full mt-4"
       >
         Save
       </button>

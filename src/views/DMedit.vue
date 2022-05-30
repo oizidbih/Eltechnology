@@ -33,13 +33,13 @@
                 class="block text-black text-md font-bold mb-1"
                 >Comments</label
               >
-              <textarea name="comments" id="comments" rows="6" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
+              <textarea name="comments" id="comments" rows="6" v-model="comment" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto"></textarea>
             </div>
             <div class="flex flex-col ml-12">
                 <div class="block">
                     <div class="mt-2">
                       <label class="inline-flex items-center">
-                        <input type="checkbox"/>
+                        <input type="checkbox" v-model="User" value="ReturnedUser" :disabled="status=='Assigned' ? true : false"/>
                         <span class="ml-2">Return to User</span>
                       </label>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="mt-2">
                       <label class="inline-flex items-center">
                         
-                        <input type="checkbox" id="Assigned" value="Assigned" v-model="status"/>
+                        <input type="checkbox" id="Assigned" value="Assigned" v-model="status" :disabled="User ? true : false"/>
                         <span class="ml-2">Assign to Solution Designer</span>
                       </label>
                     </div>
@@ -93,7 +93,9 @@ export default {
             name: '',
             description: '',
           },
-          error: ''
+          comment: '',
+          error: '',
+          User: false
         }
     },
     async mounted(){
@@ -116,6 +118,15 @@ methods: {
         this.$router.push('/assign')
       }
       }
+      else if(this.User == true){
+       let result1 = await axios.post('http://127.0.0.1:8000/create-comment/' , ({comment: this.comment }) , 
+       {headers: {
+        "Authorization" : "Token " + token
+      }})
+      if(result1.status==201){
+        this.$router.push('/evaluate')
+      }
+    }
     else{
       this.error = "Please select the status."
     }

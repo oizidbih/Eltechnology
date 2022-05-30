@@ -2,7 +2,7 @@
     <div>
           <div class="p-2 bg-white sm:rounded-lg rounded-md lg:p-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-300 overflow-y-scroll h-128 ml-0 my-0 lg:my-10 lg:ml-12 lg:w-full">
             <table
-              class="w-full lg:w-full text-md text-left text-gray-500 dark:text-gray-400 text-center "
+              class="w-full lg:w-full text-md text-left text-gray-500 dark:text-gray-400 text-center text-sm sm:text-base"
             >
               <thead
                 class="text-md text-gray-700 dark:bg-gray-700 border-b dark:text-gray-400"
@@ -28,7 +28,8 @@
                   <td class="px-6 py-4 text-right">
                     <a
                       href="#"
-                      class="font-medium text-white bg-black rounded-full py-1 px-6 "
+                      @click="editRequest(request.id)" 
+                      class="font-medium text-white bg-black rounded-full py-1 px-4 "
                       >View</a
                     >
                   </td>
@@ -57,6 +58,12 @@ export default {
       .catch(error => {
         console.log(error);
     })
+    },
+    methods: {
+      editRequest(req){
+        this.$router.push('/ReviewRequest')
+        localStorage.setItem('requestNo',req)
+      },
     }
 }
 </script>
