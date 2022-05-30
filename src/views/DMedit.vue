@@ -119,7 +119,7 @@ methods: {
       }
       }
       else if(this.User == true){
-       let result1 = await axios.post('http://127.0.0.1:8000/create-comment/' , ({comment: this.comment }) , 
+       let result1 = await axios.post('http://127.0.0.1:8000/create-comment/' , ({request_id: requestNo,comment: this.comment }) , 
        {headers: {
         "Authorization" : "Token " + token
       }})
