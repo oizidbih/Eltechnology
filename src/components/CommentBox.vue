@@ -22,7 +22,7 @@
     
       <div class="flex flex-col justify-center items-center p-5">
           <img src="../assets/message-circle.png" class="w-8 h-8" alt="">
-           <textarea name="comment" id="" cols="30" rows="4"  class="rounded-lg mt-6 mx-auto border-2 border-gray-200" readonly></textarea>
+           <textarea name="comment" id="" cols="30" rows="4" v-model="com"  class="rounded-lg mt-6 mx-auto border-2 border-gray-200" readonly></textarea>
       </div>
     
 
@@ -32,7 +32,23 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     props: ["toggle"],
+    data() {
+      return{
+      com : ''
+    }
+    },
+    async mounted(){
+      let requestNo = localStorage.getItem('requestNo')
+      let token = localStorage.getItem('token')
+      let comments = await axios.get('http://127.0.0.1:8000/get-comment/' +  requestNo  +'/', {headers: {
+        "Authorization": "Token " + token
+      }})
+      this.com = comments.data.comment
+      console.log(comments.data.comment)
+      localStorage.removeItem('requestNo')
+    }
 }
 </script>
