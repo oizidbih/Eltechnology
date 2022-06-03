@@ -74,7 +74,7 @@ export default {
    async mounted() {
      localStorage.removeItem('requestNo')
       let token = localStorage.getItem('token')
-      await axios.get('http://127.0.0.1:8000/solution-designer/requests/', {headers: {
+      await axios.get('https://elbackendapp.azurewebsites.net/solution-designer/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.requests = response.data)

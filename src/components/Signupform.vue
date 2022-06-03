@@ -231,7 +231,7 @@ export default {
       if(this.v$.$error == false){
       if(this.$route.name=='User'){
       let result = await axios.post(
-        "http://127.0.0.1:8000/signup/user/", JSON.stringify(
+        "https://elbackendapp.azurewebsites.net/signup/user/", JSON.stringify(
         {
           first_name: this.state.FormData.first_name,
           last_name: this.state.FormData.last_name,
