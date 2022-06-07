@@ -60,17 +60,23 @@
     </div>
   </div>
   </form>
+  <SuccessMessage v-if="successful" :toggle="toggleMessage" />
 </template>
 
 <script>
 import axios from 'axios'
+import SuccessMessage from '@/components/SuccessMessage.vue'
 export default {
+  components: {
+    SuccessMessage
+  },
   data() {
     return{
       name: '',
       description: '',
       selectedFile: null,
-      Error: ''
+      Error: '',
+      successful: false
     }
   },
   methods: {
@@ -97,12 +103,16 @@ export default {
         this.name = '',
         this.description = '',
         this.selectedFile = ''
+        this.successful = true
       }
       catch(e) {
           if (this.name == '' || this.description == ''){
           this.Error = 'Please provide all details to create request.'
           }
     }
+    },
+    toggleMessage() {
+      this.successful = !this.successful
     }
   }
 }
