@@ -74,7 +74,7 @@ export default {
    async mounted() {
      localStorage.removeItem('requestNo')
      let token = localStorage.getItem('token')
-      let response  = await axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
+      let response  = await axios.get('https://elbackendapp.azurewebsites.net/user/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       this.requests = response.data
@@ -86,6 +86,7 @@ export default {
       },
       async view(req){        
         localStorage.setItem('requestNo',req)
+
       //   let token = localStorage.getItem('token')
       // let comments = await axios.get('http://127.0.0.1:8000/get-comment/' +  requestNo  +'/', {headers: {
       //   "Authorization": "Token " + token
@@ -93,6 +94,7 @@ export default {
       // this.Comment = comments.data.comment
       // localStorage.removeItem('requestNo')
       // console.log(comments.data.comment)
+
       },
       toggleFeedback(){
         this.feedback = !this.feedback

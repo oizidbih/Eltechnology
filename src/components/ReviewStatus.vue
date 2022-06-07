@@ -58,7 +58,7 @@ export default {
   },
    mounted() {
       let token = localStorage.getItem('token')
-      axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
+      axios.get('https://elbackendapp.azurewebsites.net/user/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.requests = response.data)
