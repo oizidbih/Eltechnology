@@ -84,7 +84,7 @@ export default {
     async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
+         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data
@@ -100,7 +100,7 @@ methods:{
       fd.append('attachment',this.selectedFile, this.selectedFile.name)
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
-      let result = await axios.put('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', fd, {headers: {
+      let result = await axios.put('http://127.0.0.1:8000/request/' + requestNo + '/', fd, {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==200){
