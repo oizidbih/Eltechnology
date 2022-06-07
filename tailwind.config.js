@@ -1,8 +1,9 @@
 module.exports = {
-  purge: {
-    content: ['./public/**/*.html'],
-  },
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./index.html",
+    "./src/**/*{vue,js,ts,jsx,tsx}"  
+  ],
+  darkMode: false,
   theme: {
     extend: {
       height: {
@@ -19,10 +20,10 @@ module.exports = {
         
         Light: '#FFFFFF'
       }
-    }
-},
-  variants: {
-    extend: {},
+    },
   },
   plugins: [require('tailwind-scrollbar')],
+  variants:{
+    extend: {},
+  }
 }

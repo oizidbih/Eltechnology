@@ -114,11 +114,11 @@ export default {
      async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data
-       let response1 = await axios.get('http://127.0.0.1:8000/cost-models/' , {headers: {
+       let response1 = await axios.get('https://elbackendapp.azurewebsites.net/cost-models/' , {headers: {
         "Authorization": "Token " + token
       }})
       console.log(response1.data)
@@ -129,7 +129,7 @@ methods:{
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
     
-      let result = await axios.post('http://127.0.0.1:8000/requests/assign/' + requestNo + '/' , ({cost_model: this.costmodel }) , {headers: {
+      let result = await axios.post('https://elbackendapp.azurewebsites.net/requests/assign/' + requestNo + '/' , ({cost_model: this.costmodel }) , {headers: {
         "Authorization" : "Token " + token
       }})
 

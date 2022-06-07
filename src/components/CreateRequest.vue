@@ -60,17 +60,23 @@
     </div>
   </div>
   </form>
+  <SuccessMessage v-if="successful" :toggle="toggleMessage" />
 </template>
 
 <script>
 import axios from 'axios'
+import SuccessMessage from '@/components/SuccessMessage.vue'
 export default {
+  components: {
+    SuccessMessage
+  },
   data() {
     return{
       name: '',
       description: '',
       selectedFile: null,
-      Error: ''
+      Error: '',
+      successful: false
     }
   },
   methods: {
@@ -89,7 +95,7 @@ export default {
       }
 
       let token = localStorage.getItem('token')
-      let response = await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
+      let response = await axios.post('https://elbackendapp.azurewebsites.net/request/create/', fd, {headers: {
         "Authorization" : "Token " + token,
         'Content-Type': 'multipart/form-data'
       }})
@@ -97,12 +103,16 @@ export default {
         this.name = '',
         this.description = '',
         this.selectedFile = ''
+        this.successful = true
       }
       catch(e) {
           if (this.name == '' || this.description == ''){
           this.Error = 'Please provide all details to create request.'
           }
     }
+    },
+    toggleMessage() {
+      this.successful = !this.successful
     }
   }
 }
