@@ -99,11 +99,11 @@ export default {
   async mounted() {
       let token = localStorage.getItem('token')
       let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net//request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data
-      await axios.get('http://127.0.0.1:8000/designers/', {headers: {
+      await axios.get('https://elbackendapp.azurewebsites.net//designers/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.designers = response.data)
@@ -115,7 +115,7 @@ export default {
   async save() {
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
-      let result = await axios.post('http://127.0.0.1:8000/request/assign-designer/' + requestNo + '/' , ({designer: this.request.designer}) , {headers: {
+      let result = await axios.post('https://elbackendapp.azurewebsites.net//request/assign-designer/' + requestNo + '/' , ({designer: this.request.designer}) , {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==201){
