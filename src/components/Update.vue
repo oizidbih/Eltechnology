@@ -40,6 +40,7 @@
                       >View</a
                     >
                   
+                 <CommentBox v-if="feedback" :toggle="toggleFeedback"/>
                   </td>
                   <td class="px-6 py-4 text-right">
                     <a
@@ -52,7 +53,6 @@
               </tbody>
               </div>
             </table>
-                 <CommentBox v-if="feedback" :toggle="toggleFeedback" />
           </div>
 </template>
 
@@ -84,14 +84,17 @@ export default {
         this.$router.push('/EditRequest')
         localStorage.setItem('requestNo',req)
       },
-      async view(req){
+      async view(req){        
         localStorage.setItem('requestNo',req)
-        let requestNo = localStorage.getItem('requestNo')
-        let token = localStorage.getItem('token')
-      let comments = await axios.get('https://elbackendapp.azurewebsites.net/get-comment/' +  requestNo  +'/', {headers: {
-        "Authorization": "Token " + token
-      }})
-      this.Comment = comments.data
+
+      //   let token = localStorage.getItem('token')
+      // let comments = await axios.get('http://127.0.0.1:8000/get-comment/' +  requestNo  +'/', {headers: {
+      //   "Authorization": "Token " + token
+      // }})
+      // this.Comment = comments.data.comment
+      // localStorage.removeItem('requestNo')
+      // console.log(comments.data.comment)
+
       },
       toggleFeedback(){
         this.feedback = !this.feedback
