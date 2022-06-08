@@ -43,7 +43,7 @@ export default {
     async mounted(){
       let requestNo = localStorage.getItem('requestNo')
       let token = localStorage.getItem('token')
-      let comments = await axios.get('https://elbackendapp.azurewebsites.net//get-comment/' +  requestNo  +'/', {headers: {
+      let comments = await axios.get('https://elbackendapp.azurewebsites.net/get-comment/' +  requestNo  +'/', {headers: {
         "Authorization": "Token " + token
       }})
       this.com = comments.data.comment

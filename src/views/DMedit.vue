@@ -101,7 +101,7 @@ export default {
     async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('https://elbackendapp.azurewebsites.net//request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data
@@ -111,7 +111,7 @@ methods: {
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
     if( this.status == 'Assigned'){
-      let result = await axios.post('https://elbackendapp.azurewebsites.net//request/assign-status/' + requestNo + '/' , ({status: this.status[0] }) , {headers: {
+      let result = await axios.post('https://elbackendapp.azurewebsites.net/request/assign-status/' + requestNo + '/' , ({status: this.status[0] }) , {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==201){
@@ -119,7 +119,7 @@ methods: {
       }
       }
       else if(this.User == true){
-       let result1 = await axios.post('https://elbackendapp.azurewebsites.net//create-comment/' , ({request_id: requestNo,comment: this.comment }) , 
+       let result1 = await axios.post('https://elbackendapp.azurewebsites.net/create-comment/' , ({request_id: requestNo,comment: this.comment }) , 
        {headers: {
         "Authorization" : "Token " + token
       }})

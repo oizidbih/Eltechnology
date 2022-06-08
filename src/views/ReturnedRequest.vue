@@ -103,7 +103,7 @@ export default {
     async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('https://elbackendapp.azurewebsites.net//request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data

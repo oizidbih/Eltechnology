@@ -58,7 +58,7 @@ export default {
   methods: {
     async handleSubmit(){
       try {
-        const response = await axios.post('https://elbackendapp.azurewebsites.net//login/', JSON.stringify({
+        const response = await axios.post('https://elbackendapp.azurewebsites.net/login/', JSON.stringify({
           email: this.email,
           password: this.password
         }));

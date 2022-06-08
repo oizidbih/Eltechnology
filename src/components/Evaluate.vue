@@ -55,7 +55,7 @@ export default {
     let status = localStorage.getItem('status')
     let token = localStorage.getItem('token')
     if (status == 'Demand Manager'){
-      axios.get('https://elbackendapp.azurewebsites.net//requests/?status=In Progress' ,{headers: {
+      axios.get('https://elbackendapp.azurewebsites.net/requests/?status=In Progress' ,{headers: {
         "Authorization": "Token " + token
       }})
        .then(response => this.requests = response.data)

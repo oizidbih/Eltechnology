@@ -95,7 +95,7 @@ export default {
       }
 
       let token = localStorage.getItem('token')
-      let response = await axios.post('https://elbackendapp.azurewebsites.net//request/create/', fd, {headers: {
+      let response = await axios.post('https://elbackendapp.azurewebsites.net/request/create/', fd, {headers: {
         "Authorization" : "Token " + token,
         'Content-Type': 'multipart/form-data'
       }})

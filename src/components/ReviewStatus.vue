@@ -58,7 +58,7 @@ export default {
   },
    mounted() {
       let token = localStorage.getItem('token')
-      axios.get('https://elbackendapp.azurewebsites.net//user/requests/', {headers: {
+      axios.get('https://elbackendapp.azurewebsites.net/user/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.requests = response.data)

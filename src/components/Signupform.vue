@@ -231,7 +231,7 @@ export default {
       if(this.v$.$error == false){
       if(this.$route.name=='User'){
       let result = await axios.post(
-        "https://elbackendapp.azurewebsites.net//signup/user/", JSON.stringify(
+        "https://elbackendapp.azurewebsites.net/signup/user/", JSON.stringify(
         {
           first_name: this.state.FormData.first_name,
           last_name: this.state.FormData.last_name,
@@ -251,7 +251,7 @@ export default {
 
       if(this.$route.name=='Demand Manager'){
       let result1 = await axios.post(
-        "https://elbackendapp.azurewebsites.net//signup/Demand Manager/", JSON.stringify(
+        "https://elbackendapp.azurewebsites.net/signup/Demand Manager/", JSON.stringify(
         {
           first_name: this.state.FormData.first_name,
           last_name: this.state.FormData.last_name,
@@ -272,7 +272,7 @@ export default {
 
       if(this.$route.name=='Solution Designer'){
       let result2 = await axios.post(
-        "https://elbackendapp.azurewebsites.net//signup/Solution Designer/", JSON.stringify(
+        "https://elbackendapp.azurewebsites.net/signup/Solution Designer/", JSON.stringify(
         {
          first_name: this.state.FormData.first_name,
           last_name: this.state.FormData.last_name,
@@ -292,7 +292,7 @@ export default {
 
       if(this.$route.name=='Manager'){
       let result3 = await axios.post(
-        "https://elbackendapp.azurewebsites.net//signup/Manager/", JSON.stringify(
+        "https://elbackendapp.azurewebsites.net/signup/Manager/", JSON.stringify(
         {
            first_name: this.state.FormData.first_name,
           last_name: this.state.FormData.last_name,
