@@ -48,7 +48,7 @@
         <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf" @change="onFileSelected" />
       </label>
       <label v-if="attachments != ''" class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
-        <a :href="'https://127.0.0.1:8000' + filepath" target="_blank">View File</a>
+        <a :href="'https://elbackendapp.azurewebsites.net' + filepath" target="_blank">View File</a>
     </label>
         <button @click="updateRequest"
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
@@ -89,7 +89,7 @@ export default {
     async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       console.log(response.data)
@@ -108,7 +108,7 @@ methods:{
       fd.append('attachment',this.selectedFile, this.selectedFile.name)
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
-      let result = await axios.put('http://127.0.0.1:8000/request/' + requestNo + '/', fd, {headers: {
+      let result = await axios.put('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', fd, {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==200){

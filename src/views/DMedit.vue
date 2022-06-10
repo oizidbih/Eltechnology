@@ -30,11 +30,11 @@
              <label
                 for="description"
                 class="text-black text-md font-bold mb-1"
-                >File:  <a :href="'https://127.0.0.1:8000' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
+                >File:  <a :href="'https://elbackendapp.azurewebsites.net' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
               >
               
             <!-- <label v-if="attachments != ''" class="mt-4 flex flex-col items-center w-28 px-1 py-1 bg-black text-white rounded-lg shadow-lg border border-blue cursor-pointer overflow-x-hidden">
-        <a :href="'https://127.0.0.1:8000' + filepath" target="_blank">View File</a>
+        <a :href="'https://elbackendapp.azurewebsites.net' + filepath" target="_blank">View File</a>
     </label> -->
           </div> 
 
@@ -114,7 +114,7 @@ export default {
     async mounted(){
         let token = localStorage.getItem('token')
         let requestNo = localStorage.getItem('requestNo')
-         let response = await axios.get('http://127.0.0.1:8000/request/' + requestNo + '/', {headers: {
+         let response = await axios.get('https://elbackendapp.azurewebsites.net/request/' + requestNo + '/', {headers: {
         "Authorization": "Token " + token
       }})
       this.request=response.data
@@ -125,7 +125,7 @@ methods: {
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
     if( this.status == 'Assigned'){
-      let result = await axios.post('http://127.0.0.1:8000/request/assign-status/' + requestNo + '/' , ({status: this.status[0] }) , {headers: {
+      let result = await axios.post('https://elbackendapp.azurewebsites.net/request/assign-status/' + requestNo + '/' , ({status: this.status[0] }) , {headers: {
         "Authorization" : "Token " + token
       }})
       if(result.status==201){
@@ -133,7 +133,7 @@ methods: {
       }
       }
       else if(this.User == true){
-       let result1 = await axios.post('http://127.0.0.1:8000/create-comment/' , ({request_id: requestNo,comment: this.comment }) , 
+       let result1 = await axios.post('https://elbackendapp.azurewebsites.net/create-comment/' , ({request_id: requestNo,comment: this.comment }) , 
        {headers: {
         "Authorization" : "Token " + token
       }})
