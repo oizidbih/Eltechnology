@@ -46,6 +46,9 @@
         <span class="text-lg leading-normal">Choose File</span>
         <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf"  @change="onFileSelected" />
     </label>
+    <label v-if="selectedFile != ''" class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
+        <span>{{ selectedFile.name }}</span>
+    </label>
 <!-- </div> -->
         <button 
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
@@ -74,7 +77,7 @@ export default {
     return{
       name: '',
       description: '',
-      selectedFile: null,
+      selectedFile: '',
       Error: '',
       successful: false
     }
@@ -95,7 +98,7 @@ export default {
       }
 
       let token = localStorage.getItem('token')
-      let response = await axios.post('https://elbackendapp.azurewebsites.net/request/create/', fd, {headers: {
+      let response = await axios.post('http://127.0.0.1:8000/request/create/', fd, {headers: {
         "Authorization" : "Token " + token,
         'Content-Type': 'multipart/form-data'
       }})
