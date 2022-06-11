@@ -48,7 +48,7 @@
         <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf" @change="onFileSelected" />
       </label>
       <label v-if="attachments != ''" class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
-        <a :href="filepath" target="_blank">View File</a>
+        <a :href="filepath" target="_blank" download>View File</a>
     </label>
         <button @click="updateRequest"
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
