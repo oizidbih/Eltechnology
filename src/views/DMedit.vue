@@ -30,7 +30,7 @@
              <label
                 for="description"
                 class="text-black text-md font-bold mb-1"
-                >File:  <a :href="'https://elbackendapp.azurewebsites.net' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
+                >File:  <a :href="filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
               >
               
             <!-- <label v-if="attachments != ''" class="mt-4 flex flex-col items-center w-28 px-1 py-1 bg-black text-white rounded-lg shadow-lg border border-blue cursor-pointer overflow-x-hidden">

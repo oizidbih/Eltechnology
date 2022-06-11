@@ -29,7 +29,7 @@
              <label
                 for="description"
                 class="text-black text-md font-bold mb-1"
-                >File:  <a :href="'https://elbackendapp.azurewebsites.net' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
+                >File:  <a :href="filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
               >
           </div> 
 
