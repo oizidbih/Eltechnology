@@ -1,23 +1,21 @@
+# El Frontend
 
-## Project setup
-```
-npm install
-```
+## Project Setup
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+**Cloning the Repository**
 
-### Compiles and minifies for production
-```
-npm run build
-```
+To clone the repository, enter the following command on your terminal
 
-### Lints and fixes files
-```
-npm run lint
-```
+```git clone https://github.com/syedbilal28/ElTechnology```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+**Installing the packages**
+
+Navigate into the cloned directory and run the following command
+
+```npm install```
+
+**Run the server**
+
+``npm run serve``
+
+After this the server will set itself up and you can see the code up and running on [this link](http://localhost:8080)
