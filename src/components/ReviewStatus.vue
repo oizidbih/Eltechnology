@@ -28,10 +28,12 @@
                   <td class="px-6 py-4 text-right">
                     <a
                       href="#"
-                      @click="editRequest(request.id)" 
+                      @click="view(request.id)"
+                      @click.prevent="toggleFeedback"
                       class="font-medium text-white bg-black rounded-full py-1 px-4 "
                       >View</a
                     >
+                    <CommentBox v-if="feedback" :toggle="toggleFeedback"/>
                   </td>
                 </tr>
                
@@ -43,15 +45,20 @@
 
 <script>
 import axios from 'axios'
+import CommentBox from "@/components/CommentBox.vue"
 export default {
+  components:{
+    CommentBox
+  },
   data() {
     return{
-      requests: null
+      requests: null,
+      feedback: false,
     }
   },
    mounted() {
       let token = localStorage.getItem('token')
-      axios.get('http://127.0.0.1:8000/user/requests/', {headers: {
+      axios.get('https://elbackendapp.azurewebsites.net/user/requests/', {headers: {
         "Authorization": "Token " + token
       }})
       .then(response => this.requests = response.data)
@@ -60,10 +67,12 @@ export default {
     })
     },
     methods: {
-      editRequest(req){
-        this.$router.push('/ReviewRequest')
+       async view(req){        
         localStorage.setItem('requestNo',req)
       },
+      toggleFeedback(){
+        this.feedback = !this.feedback
+      }
     }
 }
 </script>

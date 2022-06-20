@@ -23,13 +23,20 @@
           class="block text-black text-md font-bold mb-1"
           >Description</label
         >
-        <textarea name="description"  v-model="request.description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-80 sm:w-144 lg:w-128 mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto" readonly></textarea>
+        <textarea name="description"  v-model="request.description" id="description" rows="8" class="shadow appearance-none border border-gray-200 rounded w-80 sm:w-144 lg:w-128 mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto" readonly></textarea>
       </div>
+      <div class="my-2">
+             <label
+                for="description"
+                class="text-black text-md font-bold mb-1"
+                >File:  <a :href="'https://127.0.0.1:8000' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
+              >
+          </div> 
 
       <div class="block">
           <div class="mt-2">
             <label class="inline-flex items-center">
-              <input type="checkbox" />
+              <input type="checkbox" v-model="dmReturn" :disabled="checkedStatus ? true : false" />
               <span class="ml-2">Return to Demand Manager</span>
             </label>
           </div>
@@ -37,7 +44,7 @@
         <div class="block">
           <div class="mt-2">
             <label class="inline-flex items-center">
-              <input type="checkbox"  v-model="checkedStatus"/>
+              <input type="checkbox"  v-model="checkedStatus" :disabled="dmReturn ? true : false"/>
               <span class="ml-2">Assign the Cost Models</span>
             </label>
           </div>
@@ -108,7 +115,9 @@ export default {
             description: '',
           },
           checkedStatus: false,
+          dmReturn: false,
           costmodel: [],
+          filepath: ''
       }
     },
      async mounted(){
@@ -118,7 +127,8 @@ export default {
         "Authorization": "Token " + token
       }})
       this.request=response.data
-       let response1 = await axios.get('http://127.0.0.1:8000/cost-models/' , {headers: {
+       this.filepath = this.request.attachments[0].file
+       let response1 = await axios.get('https://elbackendapp.azurewebsites.net/cost-models/' , {headers: {
         "Authorization": "Token " + token
       }})
       console.log(response1.data)
@@ -129,7 +139,7 @@ methods:{
     let token = localStorage.getItem('token')
     let requestNo = localStorage.getItem('requestNo')
     
-      let result = await axios.post('http://127.0.0.1:8000/requests/assign/' + requestNo + '/' , ({cost_model: this.costmodel }) , {headers: {
+      let result = await axios.post('https://elbackendapp.azurewebsites.net/requests/assign/' + requestNo + '/' , ({cost_model: this.costmodel }) , {headers: {
         "Authorization" : "Token " + token
       }})
 

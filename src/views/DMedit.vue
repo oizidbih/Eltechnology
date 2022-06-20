@@ -23,8 +23,20 @@
                 class="block text-black text-md font-bold mb-1"
                 >Description</label
               >
-              <textarea name="description" v-model="request.description" id="description" rows="10" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto" readonly></textarea>
+              <textarea name="description" v-model="request.description" id="description" rows="8" class="shadow appearance-none border border-gray-200 rounded w-full sm:w-112 lg:w-128  mx-auto p-3 leading-tight focus:outline-none focus:shadow-outline overflow-auto" readonly></textarea>
             </div>
+
+          <div class="my-2">
+             <label
+                for="description"
+                class="text-black text-md font-bold mb-1"
+                >File:  <a :href="'https://127.0.0.1:8000' + filepath" target="_blank" class="bg-black px-2 py-1 text-white rounded-md font-light">View File</a></label
+              >
+              
+            <!-- <label v-if="attachments != ''" class="mt-4 flex flex-col items-center w-28 px-1 py-1 bg-black text-white rounded-lg shadow-lg border border-blue cursor-pointer overflow-x-hidden">
+        <a :href="'https://127.0.0.1:8000' + filepath" target="_blank">View File</a>
+    </label> -->
+          </div> 
 
             <div class="flex flex-col md:flex-row justify-between">
             <div>
@@ -95,6 +107,7 @@ export default {
           },
           comment: '',
           error: '',
+          filepath:'',
           User: false
         }
     },
@@ -105,6 +118,7 @@ export default {
         "Authorization": "Token " + token
       }})
       this.request=response.data
+      this.filepath = this.request.attachments[0].file
 },
 methods: {
   async check() {

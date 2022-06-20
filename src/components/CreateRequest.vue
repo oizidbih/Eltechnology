@@ -46,6 +46,9 @@
         <span class="text-lg leading-normal">Choose File</span>
         <input type='file' class="hidden" accept=".doc, .docx, .txt, .pdf"  @change="onFileSelected" />
     </label>
+    <label v-if="selectedFile != ''" class="mt-4 flex flex-col items-center px-8 py-1 bg-black text-white text-blue rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer">
+        <span>{{ selectedFile.name }}</span>
+    </label>
 <!-- </div> -->
         <button 
           class="mb-4 text-white bg-black py-2 px-4 rounded-md mt-12"
@@ -60,17 +63,23 @@
     </div>
   </div>
   </form>
+  <SuccessMessage v-if="successful" :toggle="toggleMessage" />
 </template>
 
 <script>
 import axios from 'axios'
+import SuccessMessage from '@/components/SuccessMessage.vue'
 export default {
+  components: {
+    SuccessMessage
+  },
   data() {
     return{
       name: '',
       description: '',
-      selectedFile: null,
-      Error: ''
+      selectedFile: '',
+      Error: '',
+      successful: false
     }
   },
   methods: {
@@ -97,12 +106,16 @@ export default {
         this.name = '',
         this.description = '',
         this.selectedFile = ''
+        this.successful = true
       }
       catch(e) {
           if (this.name == '' || this.description == ''){
           this.Error = 'Please provide all details to create request.'
           }
     }
+    },
+    toggleMessage() {
+      this.successful = !this.successful
     }
   }
 }
