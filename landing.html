@@ -630,135 +630,16 @@
   </div>
 </section>
 
-<!-- ============ THE SIX ============ -->
-<section class="sect" id="core">
-  <div class="wrap">
-    <div class="sect-head reveal">
-      <div class="left">
-        <span class="label">01 — The Core constants</span>
-        <h2>Six definitions, <em>one consciousness.</em></h2>
-        <p class="lede">Every NawaahOS agent is built from the same six elementals. They orbit the core, wire back to it, and rearrange themselves as the agent encounters its world.</p>
-      </div>
-      <span class="idx mono">/ 0 1</span>
-    </div>
-
-    <div class="surround reveal">
-      <div class="cell">
-        <div class="head"><span class="num mono">// 01</span><span class="tag">Identity</span></div>
-        <h3>Role</h3>
-        <p>The frame of reference. What this agent is for, who it speaks as, and the part of the organization it owns end-to-end.</p>
-        <div class="foot"><span class="mono">defined-once</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
-      </div>
-      <div class="cell">
-        <div class="head"><span class="num mono">// 02</span><span class="tag">Capability</span></div>
-        <h3>Skills</h3>
-        <p>Reasoning patterns the agent has mastered — composed from base templates, refined by deployment, never reset.</p>
-        <div class="foot"><span class="mono">compounding</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
-      </div>
-      <div class="cell">
-        <div class="head"><span class="num mono">// 03</span><span class="tag">Policy</span></div>
-        <h3>Instructions</h3>
-        <p>Your operating doctrine, in plain language. Editable by anyone who owns the agent — versioned, audited, reversible.</p>
-        <div class="foot"><span class="mono">editable</span><span class="dots"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
-      </div>
-      <div class="cell">
-        <div class="head"><span class="num mono">// 04</span><span class="tag">Reach</span></div>
-        <h3>Tools</h3>
-        <p>Every system the agent can touch — databases, mailboxes, calendars, ledgers — wired through one signed, observable bus.</p>
-        <div class="foot"><span class="mono">wired-in</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
-      </div>
-      <div class="cell">
-        <div class="head"><span class="num mono">// 05</span><span class="tag">Boundary</span></div>
-        <h3>Guardrails</h3>
-        <p>What the agent will refuse, escalate, or hand back. Encoded as policy, enforced at runtime, never embedded in prompts.</p>
-        <div class="foot"><span class="mono">enforced</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
-      </div>
-      <div class="cell">
-        <div class="head"><span class="num mono">// 06</span><span class="tag">Memory</span></div>
-        <h3>Experience</h3>
-        <p>Every conversation, decision, and outcome — bound to the agent, not the model. Your moat is what it learned for you.</p>
-        <div class="foot"><span class="mono">accruing</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ORBIT — capabilities split ============ -->
-<section class="sect" id="orbit">
-  <div class="wrap">
-    <div class="sect-head reveal">
-      <div class="left">
-        <span class="label">02 — Orbital mechanics</span>
-        <h2>You speak. The agent <em>moves the world.</em></h2>
-        <p class="lede">Hand the agent intent. It assembles tools, evidence, and policy in milliseconds — and returns the decision, not the homework.</p>
-      </div>
-      <span class="idx mono">/ 0 2</span>
-    </div>
-
-    <div class="split">
-      <div class="rows reveal">
-        <div class="row active">
-          <span class="num">L05</span>
-          <div class="ttl">Experience surface<span>Chat, voice, command bar — the only window users need.</span></div>
-          <span class="meta">UI · API</span>
-        </div>
-        <div class="row">
-          <span class="num">L04</span>
-          <div class="ttl">Agent runtime<span>Planner, executor, tool router, evals, guardrails.</span></div>
-          <span class="meta">PYTHON · GO</span>
-        </div>
-        <div class="row">
-          <span class="num">L03</span>
-          <div class="ttl">Model mesh<span>Open-weight LLMs, fine-tunes, vision, embeddings.</span></div>
-          <span class="meta">vLLM · NIM</span>
-        </div>
-        <div class="row">
-          <span class="num">L02</span>
-          <div class="ttl">Memory &amp; index<span>Vector + relational. Source-aware retrieval with ACLs.</span></div>
-          <span class="meta">PGVECTOR</span>
-        </div>
-        <div class="row">
-          <span class="num">L01</span>
-          <div class="ttl">Sovereign substrate<span>Air-gappable k8s. HSM keys. Append-only audit ledger.</span></div>
-          <span class="meta">K8S · HSM</span>
-        </div>
-      </div>
-
-      <div class="demo-card reveal">
-        <div class="head">
-          <span class="t">Agent · Finance Ops</span>
-          <span class="s mono"><i></i>thinking</span>
-        </div>
-        <div class="body">
-          <div class="msg user">
-            <div class="who">You</div>
-            Reconcile last week's vendor invoices against POs and flag anything off by &gt;2%.
-          </div>
-          <div class="msg agent">
-            <div class="who">Agent</div>
-            Pulled <b>184 invoices</b> against <b>176 POs</b> for the week. Three off-tolerance, one is over-billed by 14% (Acme · #INV-7711) — drafted a hold + dispute email to AP for your sign-off.
-            <span class="tool"><i></i>tool · sap.invoices.read · 184 rows</span>
-          </div>
-        </div>
-        <div class="composer">
-          <input placeholder="Ask the agent anything…">
-          <button class="send">Send</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ PROBLEM ============ -->
 <section class="sect" id="problem">
   <div class="wrap">
     <div class="sect-head reveal">
       <div class="left">
-        <span class="label">03 — The inversion</span>
-        <h2>Enterprise software still makes <em>humans do the work.</em></h2>
+        <span class="label">01 — The inversion</span>
+        <h2>Enterprise Software makes humans learn the software. <em>In NawaahOS, the software learns the organisation.</em></h2>
         <p class="lede">Most systems force people to learn screens, configure processes, chase approvals, update reports, and manually connect decisions across departments. NawaahOS reverses that. The organization gives intent. The agents operate.</p>
       </div>
-      <span class="idx mono">/ 0 3</span>
+      <span class="idx mono">/ 0 1</span>
     </div>
     <div class="contrast reveal">
       <div class="col old">
@@ -792,122 +673,16 @@
   </div>
 </section>
 
-<!-- ============ PARADIGM SHIFT ============ -->
-<section class="sect" id="paradigm">
-  <div class="wrap">
-    <div class="sect-head reveal">
-      <div class="left">
-        <span class="label">04 — The paradigm shift</span>
-        <h2>From workflows to <em>intelligent work ownership.</em></h2>
-        <p class="lede">Four reversals that turn the enterprise from a forms-and-screens factory into an agent-led operating system.</p>
-      </div>
-      <span class="idx mono">/ 0 4</span>
-    </div>
-    <div class="paradigm reveal">
-      <div class="pcard">
-        <div class="ix"><span class="n">// 01</span><span class="glyph mono">↳</span></div>
-        <h3>Intent over <em>configuration</em></h3>
-        <p>You describe the outcome. The agent determines the operating logic, picks the tools, and composes the path.</p>
-        <div class="swap">configure → <b>declare</b></div>
-      </div>
-      <div class="pcard">
-        <div class="ix"><span class="n">// 02</span><span class="glyph mono">∞</span></div>
-        <h3>Memory over <em>repetition</em></h3>
-        <p>Agents remember policies, decisions, exceptions, and organizational preferences. Nothing is re-taught.</p>
-        <div class="swap">repeat → <b>recall</b></div>
-      </div>
-      <div class="pcard">
-        <div class="ix"><span class="n">// 03</span><span class="glyph mono">◈</span></div>
-        <h3>Judgment over <em>static rules</em></h3>
-        <p>Agents learn from feedback, outcomes, and context — applying judgment where rigid rules would have broken.</p>
-        <div class="swap">enforce → <b>reason</b></div>
-      </div>
-      <div class="pcard">
-        <div class="ix"><span class="n">// 04</span><span class="glyph mono">↑</span></div>
-        <h3>Direction over <em>execution</em></h3>
-        <p>Humans define the north star. Agents run the operational layer and surface what only humans can decide.</p>
-        <div class="swap">execute → <b>direct</b></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HOW IT WORKS ============ -->
-<section class="sect" id="how">
-  <div class="wrap">
-    <div class="sect-head reveal">
-      <div class="left">
-        <span class="label">05 — How it works</span>
-        <h2>Three layers of intelligence. <em>One operating system.</em></h2>
-        <p class="lede">Every NawaahOS deployment stratifies into a command structure of agents. Strategic at the top, operational at the base, and a domain layer connecting them.</p>
-      </div>
-      <span class="idx mono">/ 0 5</span>
-    </div>
-    <div class="hierarchy reveal">
-      <div class="tier t1">
-        <div class="left">
-          <span class="t">Tier 01 · Strategic</span>
-          <span class="lv">EXEC</span>
-        </div>
-        <div class="mid">
-          <h3>Executive Agents</h3>
-          <p>Set strategic intent, orchestrate cross-functional work, and synthesize signals for leadership.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">intent</span>
-          <span class="chip">orchestration</span>
-          <span class="chip">synthesis</span>
-          <span class="chip">board-level</span>
-        </div>
-      </div>
-      <div class="tier">
-        <div class="left">
-          <span class="t">Tier 02 · Functional</span>
-          <span class="lv">DOMAIN</span>
-        </div>
-        <div class="mid">
-          <h3>Domain Agents</h3>
-          <p>Own functional areas such as HR, Finance, Projects, Strategy, Audit, Compliance, and Operations.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">HR</span>
-          <span class="chip">Finance</span>
-          <span class="chip">Projects</span>
-          <span class="chip">Audit</span>
-          <span class="chip">Compliance</span>
-          <span class="chip">Ops</span>
-        </div>
-      </div>
-      <div class="tier">
-        <div class="left">
-          <span class="t">Tier 03 · Operational</span>
-          <span class="lv">TASK</span>
-        </div>
-        <div class="mid">
-          <h3>Task Agents</h3>
-          <p>Execute specific work, update artifacts, follow up, and escalate when confidence is low.</p>
-        </div>
-        <div class="chips">
-          <span class="chip">execute</span>
-          <span class="chip">follow-up</span>
-          <span class="chip">artifact-update</span>
-          <span class="chip">escalate</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ BENEFITS ============ -->
 <section class="sect" id="benefits">
   <div class="wrap">
     <div class="sect-head reveal">
       <div class="left">
-        <span class="label">06 — Benefits</span>
+        <span class="label">02 — Benefits</span>
         <h2>What changes when agents <em>run the operating layer.</em></h2>
         <p class="lede">Six observable shifts inside organizations that adopt NawaahOS as their agentic operating system.</p>
       </div>
-      <span class="idx mono">/ 0 6</span>
+      <span class="idx mono">/ 0 2</span>
     </div>
     <div class="benefits reveal">
       <div class="bcard">
@@ -944,28 +719,16 @@
   </div>
 </section>
 
-<!-- ============ MANIFESTO ============ -->
-<section class="manifesto reveal">
-  <div class="wrap">
-    <blockquote>
-      The next operating system isn't a desktop, a browser, or a chat window.
-      It's a <em>swarm of cores</em> — each one owning a discipline, each one wired to your truth,
-      each one quietly turning intent into outcome.
-    </blockquote>
-    <div class="by">— NAWAAHOS · OBSIDIAN DIRECTIVE</div>
-  </div>
-</section>
-
 <!-- ============ TRUST & CONTROL ============ -->
 <section class="sect" id="trust">
   <div class="wrap">
     <div class="sect-head reveal">
       <div class="left">
-        <span class="label">07 — Trust &amp; control</span>
+        <span class="label">03 — Trust &amp; control</span>
         <h2>Autonomous where possible. <em>Human where necessary.</em></h2>
         <p class="lede">NawaahOS is not uncontrolled AI. It is governed intelligence. Every agent operates inside hard constraints, escalates by confidence, and earns autonomy over time.</p>
       </div>
-      <span class="idx mono">/ 0 7</span>
+      <span class="idx mono">/ 0 3</span>
     </div>
     <div class="trust-grid reveal">
       <div class="controls-list">
@@ -997,11 +760,11 @@
   <div class="wrap">
     <div class="sect-head reveal">
       <div class="left">
-        <span class="label">08 — Agent setup</span>
+        <span class="label">04 — Agent setup</span>
         <h2>Configure outcomes, <em>not workflows.</em></h2>
         <p class="lede">An example: the CHRO Agent. You don't draw a flowchart. You define what good looks like — and the agent assembles the operating logic around it.</p>
       </div>
-      <span class="idx mono">/ 0 8</span>
+      <span class="idx mono">/ 0 4</span>
     </div>
     <div class="setup reveal">
       <div class="agent">
@@ -1063,11 +826,11 @@
   <div class="wrap">
     <div class="sect-head reveal">
       <div class="left">
-        <span class="label">09 — Use cases</span>
-        <h2>Every function becomes an <em>intelligent agent.</em></h2>
+        <span class="label">05 — Use cases</span>
+        <h2>Every function in your organization becomes an <em>intelligent agent.</em></h2>
         <p class="lede">Not modules. Not products. Agent domains — each one owning a discipline, each one wired to your truth, each one quietly turning intent into outcome.</p>
       </div>
-      <span class="idx mono">/ 0 9</span>
+      <span class="idx mono">/ 0 5</span>
     </div>
     <div class="usecases reveal">
       <div class="ucard">
@@ -1107,6 +870,243 @@
         <div class="skills"><span class="sk">tickets</span><span class="sk">coordination</span><span class="sk">recurring</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ THE SIX ============ -->
+<section class="sect" id="core">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">06 — The Core constants</span>
+        <h2>Six definitions, <em>one consciousness.</em></h2>
+        <p class="lede">Every NawaahOS agent is built from the same six elementals. They orbit the core, wire back to it, and rearrange themselves as the agent encounters its world.</p>
+      </div>
+      <span class="idx mono">/ 0 6</span>
+    </div>
+
+    <div class="surround reveal">
+      <div class="cell">
+        <div class="head"><span class="num mono">// 01</span><span class="tag">Identity</span></div>
+        <h3>Role</h3>
+        <p>The frame of reference. What this agent is for, who it speaks as, and the part of the organization it owns end-to-end.</p>
+        <div class="foot"><span class="mono">defined-once</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 02</span><span class="tag">Capability</span></div>
+        <h3>Skills</h3>
+        <p>Reasoning patterns the agent has mastered — composed from base templates, refined by deployment, never reset.</p>
+        <div class="foot"><span class="mono">compounding</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 03</span><span class="tag">Policy</span></div>
+        <h3>Instructions</h3>
+        <p>Your operating doctrine, in plain language. Editable by anyone who owns the agent — versioned, audited, reversible.</p>
+        <div class="foot"><span class="mono">editable</span><span class="dots"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 04</span><span class="tag">Reach</span></div>
+        <h3>Tools</h3>
+        <p>Every system the agent can touch — databases, mailboxes, calendars, ledgers — wired through one signed, observable bus.</p>
+        <div class="foot"><span class="mono">wired-in</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 05</span><span class="tag">Boundary</span></div>
+        <h3>Guardrails</h3>
+        <p>What the agent will refuse, escalate, or hand back. Encoded as policy, enforced at runtime, never embedded in prompts.</p>
+        <div class="foot"><span class="mono">enforced</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 06</span><span class="tag">Memory</span></div>
+        <h3>Experience</h3>
+        <p>Every conversation, decision, and outcome — bound to the agent, not the model. Your moat is what it learned for you.</p>
+        <div class="foot"><span class="mono">accruing</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ORBIT — capabilities split ============ -->
+<section class="sect" id="orbit">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">07 — Orbital mechanics</span>
+        <h2>You speak. The agent <em>moves the world.</em></h2>
+        <p class="lede">Hand the agent intent. It assembles tools, evidence, and policy in milliseconds — and returns the decision, not the homework.</p>
+      </div>
+      <span class="idx mono">/ 0 7</span>
+    </div>
+
+    <div class="split">
+      <div class="rows reveal">
+        <div class="row active">
+          <span class="num">L05</span>
+          <div class="ttl">Experience surface<span>Chat, voice, command bar — the only window users need.</span></div>
+          <span class="meta">UI · API</span>
+        </div>
+        <div class="row">
+          <span class="num">L04</span>
+          <div class="ttl">Agent runtime<span>Planner, executor, tool router, evals, guardrails.</span></div>
+          <span class="meta">PYTHON · GO</span>
+        </div>
+        <div class="row">
+          <span class="num">L03</span>
+          <div class="ttl">Model mesh<span>Open-weight LLMs, fine-tunes, vision, embeddings.</span></div>
+          <span class="meta">vLLM · NIM</span>
+        </div>
+        <div class="row">
+          <span class="num">L02</span>
+          <div class="ttl">Memory &amp; index<span>Vector + relational. Source-aware retrieval with ACLs.</span></div>
+          <span class="meta">PGVECTOR</span>
+        </div>
+        <div class="row">
+          <span class="num">L01</span>
+          <div class="ttl">Sovereign substrate<span>Air-gappable k8s. HSM keys. Append-only audit ledger.</span></div>
+          <span class="meta">K8S · HSM</span>
+        </div>
+      </div>
+
+      <div class="demo-card reveal">
+        <div class="head">
+          <span class="t">Agent · Finance Ops</span>
+          <span class="s mono"><i></i>thinking</span>
+        </div>
+        <div class="body">
+          <div class="msg user">
+            <div class="who">You</div>
+            Reconcile last week's vendor invoices against POs and flag anything off by &gt;2%.
+          </div>
+          <div class="msg agent">
+            <div class="who">Agent</div>
+            Pulled <b>184 invoices</b> against <b>176 POs</b> for the week. Three off-tolerance, one is over-billed by 14% (Acme · #INV-7711) — drafted a hold + dispute email to AP for your sign-off.
+            <span class="tool"><i></i>tool · sap.invoices.read · 184 rows</span>
+          </div>
+        </div>
+        <div class="composer">
+          <input placeholder="Ask the agent anything…">
+          <button class="send">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARADIGM SHIFT ============ -->
+<section class="sect" id="paradigm">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">08 — The paradigm shift</span>
+        <h2>From workflows to <em>intelligent work ownership.</em></h2>
+        <p class="lede">Four reversals that turn the enterprise from a forms-and-screens factory into an agent-led operating system.</p>
+      </div>
+      <span class="idx mono">/ 0 8</span>
+    </div>
+    <div class="paradigm reveal">
+      <div class="pcard">
+        <div class="ix"><span class="n">// 01</span><span class="glyph mono">↳</span></div>
+        <h3>Intent over <em>configuration</em></h3>
+        <p>You describe the outcome. The agent determines the operating logic, picks the tools, and composes the path.</p>
+        <div class="swap">configure → <b>declare</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 02</span><span class="glyph mono">∞</span></div>
+        <h3>Memory over <em>repetition</em></h3>
+        <p>Agents remember policies, decisions, exceptions, and organizational preferences. Nothing is re-taught.</p>
+        <div class="swap">repeat → <b>recall</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 03</span><span class="glyph mono">◈</span></div>
+        <h3>Judgment over <em>static rules</em></h3>
+        <p>Agents learn from feedback, outcomes, and context — applying judgment where rigid rules would have broken.</p>
+        <div class="swap">enforce → <b>reason</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 04</span><span class="glyph mono">↑</span></div>
+        <h3>Direction over <em>execution</em></h3>
+        <p>Humans define the north star. Agents run the operational layer and surface what only humans can decide.</p>
+        <div class="swap">execute → <b>direct</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="sect" id="how">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">09 — How it works</span>
+        <h2>Three layers of intelligence. <em>One operating system.</em></h2>
+        <p class="lede">Every NawaahOS deployment stratifies into a command structure of agents. Strategic at the top, operational at the base, and a domain layer connecting them.</p>
+      </div>
+      <span class="idx mono">/ 0 9</span>
+    </div>
+    <div class="hierarchy reveal">
+      <div class="tier t1">
+        <div class="left">
+          <span class="t">Tier 01 · Strategic</span>
+          <span class="lv">EXEC</span>
+        </div>
+        <div class="mid">
+          <h3>Executive Agents</h3>
+          <p>Set strategic intent, orchestrate cross-functional work, and synthesize signals for leadership.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">intent</span>
+          <span class="chip">orchestration</span>
+          <span class="chip">synthesis</span>
+          <span class="chip">board-level</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="left">
+          <span class="t">Tier 02 · Functional</span>
+          <span class="lv">DOMAIN</span>
+        </div>
+        <div class="mid">
+          <h3>Domain Agents</h3>
+          <p>Own functional areas such as HR, Finance, Projects, Strategy, Audit, Compliance, and Operations.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">HR</span>
+          <span class="chip">Finance</span>
+          <span class="chip">Projects</span>
+          <span class="chip">Audit</span>
+          <span class="chip">Compliance</span>
+          <span class="chip">Ops</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="left">
+          <span class="t">Tier 03 · Operational</span>
+          <span class="lv">TASK</span>
+        </div>
+        <div class="mid">
+          <h3>Task Agents</h3>
+          <p>Execute specific work, update artifacts, follow up, and escalate when confidence is low.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">execute</span>
+          <span class="chip">follow-up</span>
+          <span class="chip">artifact-update</span>
+          <span class="chip">escalate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto reveal">
+  <div class="wrap">
+    <blockquote>
+      The next operating system isn't a desktop, a browser, or a chat window.
+      It's a <em>swarm of cores</em> — each one owning a discipline, each one wired to your truth,
+      each one quietly turning intent into outcome.
+    </blockquote>
+    <div class="by">— NAWAAHOS · OBSIDIAN DIRECTIVE</div>
   </div>
 </section>
 
