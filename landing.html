@@ -393,17 +393,11 @@
   }
   .neural-node{
     position:absolute;width:min(42%,230px);
-    display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:center;
+    display:block;
     color:var(--ink-soft);font-size:.88rem;line-height:1.35;
-    padding:9px 10px;border-radius:10px;
+    padding:10px 12px;border-radius:10px;
     background:rgba(12,18,27,.24);border:1px solid rgba(168,85,247,.18);
     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  }
-  .neural-node::before{
-    content:"";width:18px;height:18px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%,#fff,var(--accent-bright) 26%,var(--accent-deep) 76%);
-    border:1px solid rgba(192,132,252,.7);
-    box-shadow:0 0 16px rgba(168,85,247,.55);
   }
   .neural-node.n1{left:0;top:4%}
   .neural-node.n2{right:0;top:18%}
