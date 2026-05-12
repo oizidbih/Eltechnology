@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-04-30T00:00:00Z",
+  "title": "Design System: NawaahOS",
+  "extensions": {
+    "colorMeta": {
+      "paper":               { "role": "neutral",   "displayName": "Deep Navy Paper",       "canonical": "oklch(22% 0.025 240)", "tonalRamp": ["oklch(8% 0.01 240)", "oklch(13% 0.018 240)", "oklch(18% 0.022 240)", "oklch(22% 0.025 240)", "oklch(30% 0.03 240)", "oklch(40% 0.03 240)", "oklch(55% 0.025 240)", "oklch(72% 0.015 240)"] },
+      "surface":             { "role": "neutral",   "displayName": "Elevated Navy Surface",  "canonical": "oklch(26% 0.03 240)", "tonalRamp": ["oklch(10% 0.01 240)", "oklch(16% 0.02 240)", "oklch(22% 0.025 240)", "oklch(26% 0.03 240)", "oklch(33% 0.032 240)", "oklch(44% 0.03 240)", "oklch(58% 0.025 240)", "oklch(74% 0.015 240)"] },
+      "accent":              { "role": "primary",   "displayName": "Violet Operator",        "canonical": "oklch(62% 0.22 290)",  "tonalRamp": ["oklch(18% 0.08 290)", "oklch(28% 0.13 290)", "oklch(38% 0.18 290)", "oklch(48% 0.21 290)", "oklch(58% 0.22 290)", "oklch(68% 0.2 290)", "oklch(78% 0.16 290)", "oklch(88% 0.09 290)"] },
+      "accent-deep":         { "role": "primary",   "displayName": "Violet Deep",            "canonical": "oklch(53% 0.24 290)",  "tonalRamp": ["oklch(15% 0.07 290)", "oklch(24% 0.12 290)", "oklch(33% 0.17 290)", "oklch(43% 0.21 290)", "oklch(53% 0.24 290)", "oklch(63% 0.22 290)", "oklch(73% 0.18 290)", "oklch(85% 0.1 290)"] },
+      "ink":                 { "role": "neutral",   "displayName": "Violet-Tinted White",    "canonical": "oklch(98% 0.006 290)", "tonalRamp": ["oklch(20% 0.005 290)", "oklch(35% 0.005 290)", "oklch(50% 0.005 290)", "oklch(65% 0.006 290)", "oklch(78% 0.006 290)", "oklch(88% 0.006 290)", "oklch(94% 0.006 290)", "oklch(98% 0.006 290)"] },
+      "muted":               { "role": "neutral",   "displayName": "Steel Blue Muted",       "canonical": "oklch(72% 0.04 235)",  "tonalRamp": ["oklch(20% 0.02 235)", "oklch(32% 0.03 235)", "oklch(44% 0.035 235)", "oklch(56% 0.04 235)", "oklch(66% 0.04 235)", "oklch(72% 0.04 235)", "oklch(82% 0.03 235)", "oklch(91% 0.015 235)"] },
+      "status-green":        { "role": "semantic",  "displayName": "Live Emerald",           "canonical": "oklch(83% 0.14 162)",  "tonalRamp": ["oklch(20% 0.06 162)", "oklch(35% 0.09 162)", "oklch(50% 0.12 162)", "oklch(63% 0.14 162)", "oklch(73% 0.14 162)", "oklch(83% 0.14 162)", "oklch(90% 0.1 162)", "oklch(95% 0.06 162)"] },
+      "status-red":          { "role": "semantic",  "displayName": "Alert Rose",             "canonical": "oklch(68% 0.18 22)",   "tonalRamp": ["oklch(20% 0.07 22)", "oklch(32% 0.1 22)", "oklch(44% 0.14 22)", "oklch(56% 0.17 22)", "oklch(68% 0.18 22)", "oklch(78% 0.15 22)", "oklch(87% 0.1 22)", "oklch(94% 0.05 22)"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display",  "purpose": "Hero headings on agent workspaces and product overview pages." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings, view titles, CEO dashboard h2." },
+      "title":    { "displayName": "Title",    "purpose": "Card titles, task titles, command task headings." },
+      "body":     { "displayName": "Body",     "purpose": "Agent lead copy, panel descriptions. Max 65–75ch." },
+      "label":    { "displayName": "Label",    "purpose": "Overlines, nav section headers, status tags. Uppercase, wide tracking." },
+      "mono":     { "displayName": "Mono",     "purpose": "Code blocks, timestamps, monospaced data." }
+    },
+    "shadows": [
+      { "name": "panel",   "value": "0 18px 52px rgba(3, 8, 18, 0.24)",  "purpose": "Structural panels, chat containers, command panels." },
+      { "name": "ambient", "value": "0 22px 70px rgba(3, 8, 18, 0.34)",  "purpose": "Highest-priority panels only — greeting strips, detail headers." },
+      { "name": "hover",   "value": "0 10px 28px rgba(3, 8, 18, 0.22)",  "purpose": "Interactive cards and buttons on hover state." },
+      { "name": "inset-accent",       "value": "inset 4px 0 0 #7356f0",              "purpose": "LTR ownership mark. Primary agent nodes, approval items, active task cards." },
+      { "name": "inset-accent-rtl",   "value": "inset -4px 0 0 #7356f0",             "purpose": "RTL mirror of inset-accent." },
+      { "name": "inset-accent-soft",  "value": "inset 4px 0 0 rgba(154,108,255,0.38)", "purpose": "Softer inset mark for task items and Kanban cards." },
+      { "name": "inset-error",        "value": "inset 4px 0 0 #ef7474",              "purpose": "Error/critical mail items." }
+    ],
+    "motion": [
+      { "name": "ease-enter",    "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "View entrance (opacity + translateY). Fast out, no bounce." },
+      { "name": "ease-standard", "value": "ease",                           "purpose": "Button hover transforms, nav hover, card hover." },
+      { "name": "duration-fast", "value": "160ms",                          "purpose": "Interactive state transitions: hover, focus, active." },
+      { "name": "duration-view", "value": "420ms",                          "purpose": "View entrance animation duration." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "1080px", "purpose": "Sidebar collapses, multi-column layouts stack to single column." },
+      { "name": "sm", "value": "640px",  "purpose": "Mobile: reduced padding, single-column metric grids, stacked topbar." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Constructive actions: create agent, send message, assign, approve.",
+      "html": "<button class=\"ds-btn-primary\">Create Agent</button>",
+      "css": ".ds-btn-primary { min-height: 40px; padding: 10px 14px; border-radius: 8px; background: #9a6cff; color: #f8f7ff; border: 1px solid #9a6cff; font-weight: 700; font-size: 14px; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; cursor: pointer; transition: transform 160ms ease, box-shadow 160ms ease; } .ds-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(3,8,18,0.22); } .ds-btn-primary:focus-visible { outline: 2px solid rgba(154,108,255,0.6); outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Tertiary and cancel actions.",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost { min-height: 40px; padding: 10px 14px; border-radius: 8px; background: transparent; color: #f8f7ff; border: 1px solid rgba(156,111,251,0.62); font-weight: 700; font-size: 14px; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; cursor: pointer; transition: transform 160ms ease, box-shadow 160ms ease; } .ds-btn-ghost:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(3,8,18,0.22); } .ds-btn-ghost:focus-visible { outline: 2px solid rgba(154,108,255,0.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Pill",
+      "kind": "chip",
+      "refersTo": "pill",
+      "description": "Language switcher, persona toggles, filter tabs.",
+      "html": "<div class=\"ds-pill-wrap\"><button class=\"ds-pill\">English</button><button class=\"ds-pill ds-pill-active\">Arabic</button></div>",
+      "css": ".ds-pill-wrap { display: flex; gap: 8px; } .ds-pill { padding: 8px 11px; color: #f8f7ff; background: rgba(153,112,244,0.16); border-radius: 999px; border: 1px solid rgba(153,112,244,0.28); font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; font-size: 13px; cursor: pointer; transition: transform 160ms ease, box-shadow 160ms ease; } .ds-pill:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(3,8,18,0.22); } .ds-pill-active { background: #9a6cff; border-color: #9a6cff; } .ds-pill:focus-visible { outline: 2px solid rgba(154,108,255,0.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Nav Item",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Sidebar navigation button — resting and active states.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-btn\"><span class=\"ds-nav-dot\"></span>Admin Agent Studio</button><button class=\"ds-nav-btn ds-nav-active\"><span class=\"ds-nav-dot\"></span>CEO Dashboard</button></nav>",
+      "css": ".ds-nav { display: grid; gap: 7px; } .ds-nav-btn { min-height: 42px; display: flex; align-items: center; gap: 10px; width: 100%; color: #eef2ff; background: transparent; border: 1px solid transparent; padding: 10px 12px; border-radius: 8px; text-align: left; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; font-size: 14px; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, transform 160ms ease; } .ds-nav-btn:hover, .ds-nav-active { border-color: rgba(156,111,251,0.62); background: rgba(154,108,255,0.14); } .ds-nav-btn:hover { transform: translateX(2px); } .ds-nav-dot { width: 9px; height: 9px; background: #9a6cff; flex-shrink: 0; } .ds-nav-btn:focus-visible { outline: 2px solid rgba(154,108,255,0.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Agent Chat Bubble",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Agent and user message bubbles in the workspace chat.",
+      "html": "<div class=\"ds-messages\"><div class=\"ds-msg ds-msg-agent\">The CPMOO agent has reviewed the portfolio and flagged three work packages for approval.</div><div class=\"ds-msg ds-msg-user\">Approve all three and generate a status brief.</div></div>",
+      "css": ".ds-messages { display: flex; flex-direction: column; gap: 12px; padding: 18px; } .ds-msg { max-width: min(680px, 90%); padding: 12px 14px; border-radius: 8px; line-height: 1.45; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; font-size: 14px; border: 1px solid rgba(153,112,244,0.28); color: #eef2ff; } .ds-msg-agent { align-self: flex-start; background: rgba(12,18,27,0.5); box-shadow: inset 4px 0 0 rgba(154,108,255,0.48); } .ds-msg-user { align-self: flex-end; background: rgba(154,108,255,0.2); border-color: rgba(156,111,251,0.62); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Inline agent or task status indicator. Always includes a colored dot.",
+      "html": "<div class=\"ds-status-wrap\"><span class=\"ds-status ds-status-live\">Live</span><span class=\"ds-status ds-status-pending\">Pending</span><span class=\"ds-status ds-status-done\">Done</span></div>",
+      "css": ".ds-status-wrap { display: flex; gap: 8px; } .ds-status { display: inline-flex; align-items: center; gap: 7px; padding: 5px 8px; border-radius: 999px; font-size: 12px; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; font-weight: 700; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); color: #eef2ff; } .ds-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #74819b; flex-shrink: 0; } .ds-status-live::before { background: #5ce2a6; } .ds-status-pending::before { background: #8e63f3; } .ds-status-done::before { background: #63bb5b; }"
+    },
+    {
+      "name": "Data Surface Card",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Flat data container for metrics, KPI rows, task items. No shadow. Recedes behind panels.",
+      "html": "<div class=\"ds-data-card\"><span class=\"ds-data-label\">Active Agents</span><strong class=\"ds-data-num\">12</strong><span class=\"ds-data-meta\">3 awaiting approval</span></div>",
+      "css": ".ds-data-card { min-height: 104px; padding: 16px; border: 1px solid rgba(153,112,244,0.28); background: rgba(12,18,27,0.34); border-radius: 8px; display: grid; align-content: space-between; gap: 12px; position: relative; overflow: hidden; } .ds-data-card::after { content: ''; position: absolute; right: 14px; top: 14px; width: 34px; height: 34px; border: 1px solid rgba(154,108,255,0.2); border-radius: 50%; pointer-events: none; } .ds-data-label, .ds-data-meta { color: #a9b7ce; font-size: 13px; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; } .ds-data-num { color: #f8f7ff; font-size: 28px; font-weight: 800; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; line-height: 1; }"
+    },
+    {
+      "name": "Primary Agent Node",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Org chart node for a primary (CPMOO-level) agent. Carries the violet inset bar.",
+      "html": "<div class=\"ds-agent-node ds-agent-primary\"><span class=\"ds-tier-label\">Executive Tier</span><strong>CPMOO Agent</strong><span class=\"ds-agent-role\">Portfolio command center</span></div>",
+      "css": ".ds-agent-node { width: 200px; min-height: 110px; padding: 14px; background: rgba(12,18,27,0.42); border: 1px solid rgba(153,112,244,0.28); border-radius: 8px; display: grid; gap: 8px; position: relative; overflow: hidden; font-family: Avenir Next, Trebuchet MS, Segoe UI, sans-serif; } .ds-agent-node::after { content: ''; position: absolute; right: 12px; bottom: 12px; width: 44px; height: 44px; border: 1px solid rgba(154,108,255,0.22); border-radius: 50%; pointer-events: none; } .ds-agent-primary { border-color: #9a6cff; background: rgba(154,108,255,0.14); box-shadow: inset 5px 0 0 #7356f0; } .ds-tier-label { color: #d7ccff; font-size: 10px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; } .ds-agent-node strong { color: #ffffff; font-weight: 800; font-size: 14px; } .ds-agent-role { color: #a9b7ce; font-size: 12px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Silent Director",
+    "overview": "NawaahOS is not a tool users operate — it is an operating model they inhabit. The interface behaves like a well-run executive floor: quiet, purposeful, nothing explained that doesn't need explaining. Every screen is organized around one agent, one context, one conversation. The surface recedes so the work can come forward.\n\nThe palette is deep navy-indigo with a single violet accent. The violet never shouts; it marks focus, ownership, and state. Typography is heavy and authoritative at large sizes, clean and neutral at body size — the kind of type that implies the system already knows what it's doing. Spacing is generous, breathing room is intentional. No grid of identical cards, no fields with labels above every one, no dashboard that tries to show everything at once.\n\nThis system explicitly rejects the enterprise software aesthetic: SAP's dense form grids, Salesforce's candy-colored status noise, Monday.com's card explosion, ServiceNow's everything-visible-at-once philosophy. It also rejects the SaaS-startup reflex: gradient hero metrics, glassmorphism containers, icon+heading+explainer card grids, modal-first interactions.",
+    "keyCharacteristics": [
+      "Deep navy-indigo dark mode; no light-mode equivalent",
+      "Single violet accent, used structurally (borders, state indicators, inset marks), never decoratively",
+      "Heavy display weight (800) at large sizes; neutral weight at body",
+      "Agent chat as primary surface; dashboards and data are secondary",
+      "Inset accent bars (4–5px start-aligned) as the signature structural marker",
+      "Ghost circles as spatial texture (not functional affordances)",
+      "RTL-mirrored on Arabic locale"
+    ],
+    "rules": [
+      { "name": "The Rarity Rule",       "body": "Violet appears on ≤15% of any given surface. Its presence signals something specific — an agent is active, this item requires attention, this card is primary. Spreading it across backgrounds or decorative borders destroys the signal.", "section": "colors" },
+      { "name": "The One Dark Rule",     "body": "There is no light mode. The interface is designed for a desktop operator in a working environment. Do not introduce light surface variants.", "section": "colors" },
+      { "name": "The Weight Contrast Rule", "body": "Every adjacent pair of text elements must differ by at least 300 in font-weight or ≥1.25× in font-size. Flat hierarchies read as noise.", "section": "typography" },
+      { "name": "The Inset Bar Rule",    "body": "The violet inset bar (box-shadow: inset 4–5px 0 0 #7356f0) is a structural semantic: it means this element has ownership, elevated state, or is the primary agent surface. It is not a decorative stripe. Do not apply it to non-semantic cards, list items, or background containers.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use the inset violet bar only on elements that carry ownership, elevation, or agent-primary state.",
+      "Do mirror the inset bar to the end edge on RTL.",
+      "Do keep the violet accent to ≤15% of any screen surface.",
+      "Do use translateY(-1px) + ambient shadow as the sole hover treatment for interactive cards and buttons.",
+      "Do use the pill shape for filter controls, language switches, and persona toggles — never for primary actions.",
+      "Do use label typography only for structural labeling: overlines, section headers, tier labels, status text.",
+      "Do respect prefers-reduced-motion.",
+      "Do include the status dot alongside any status text. Color alone is not sufficient.",
+      "Do structure new pages with one primary agent surface as the focal point."
+    ],
+    "donts": [
+      "Don't use SAP, Salesforce, ServiceNow, or Oracle-style dense layouts.",
+      "Don't build Monday.com or Jira-style identical card grids.",
+      "Don't use gradient text (background-clip: text).",
+      "Don't use glassmorphism as a default surface treatment.",
+      "Don't use the hero-metric template: big number, small label, gradient accent, repeated in a row.",
+      "Don't use modals as the first-response to any action.",
+      "Don't add border-left or border-right greater than 1px as a colored stripe for decoration.",
+      "Don't introduce light-mode surfaces.",
+      "Don't spread the ghost circle texture to interactive components.",
+      "Don't use the violet accent as a large area fill."
+    ]
+  }
+}

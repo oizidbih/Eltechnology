@@ -1,0 +1,1874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NawaahOS — The agentic operating system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#05050A;
+    --paper-mid:#0d0d14;
+    --surface:rgba(20,20,30,0.4);
+    --surface-solid:#14141e;
+    --ink:#ffffff;
+    --ink-soft:rgba(255,255,255,0.85);
+    --muted:rgba(255,255,255,0.5);
+    --muted-warm:rgba(255,255,255,0.35);
+    --nav-title:#d1c6ff;
+    --lavender:#d7ccff;
+    --accent:#A855F7;
+    --accent-2:#D946EF;
+    --accent-deep:#7356f0;
+    --accent-bright:#c084fc;
+    --line:rgba(255,255,255,0.1);
+    --line-soft:rgba(255,255,255,0.06);
+    --line-strong:rgba(168,85,247,0.5);
+    --rose:#ef7474;
+    --green:#5ce2a6;
+    --amber:#8e63f3;
+    --font:'Inter','Avenir Next','Segoe UI',system-ui,sans-serif;
+    --mono:'JetBrains Mono',SFMono-Regular,Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{line-height:1.5;cursor:none}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;color:inherit;background:none;border:none;cursor:none}
+  ::selection{background:rgba(168,85,247,0.45);color:#fff}
+
+  /* ---------- Fixed canvas (electrons + core) ---------- */
+  #stage{position:fixed;inset:0;z-index:1;pointer-events:none}
+  #stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+  /* Background atmosphere */
+  .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .bg::before{
+    content:"";position:absolute;inset:-20%;
+    background:
+      radial-gradient(900px 600px at 50% 0%, rgba(168,85,247,0.15), transparent 60%),
+      radial-gradient(700px 500px at 12% 60%, rgba(115,86,240,0.08), transparent 60%),
+      radial-gradient(800px 500px at 90% 80%, rgba(217,70,239,0.07), transparent 65%);
+    filter:blur(2px);
+  }
+  .bg::after{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 90%);
+  }
+  .noise{
+    position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ---------- Custom cursor ---------- */
+  .cursor{position:fixed;width:14px;height:14px;border:1px solid rgba(168,85,247,0.9);border-radius:50%;pointer-events:none;z-index:90;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s;mix-blend-mode:screen;box-shadow:0 0 18px rgba(168,85,247,0.5)}
+  .cursor::before{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--accent)}
+  .cursor.hover{width:36px;height:36px;border-color:rgba(217,70,239,0.9)}
+  @media (hover:none){body{cursor:auto} .cursor{display:none}}
+
+  /* ---------- Content layer ---------- */
+  main{position:relative;z-index:5}
+  section{position:relative}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+
+  /* ---------- Nav ---------- */
+  nav.top{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    backdrop-filter:blur(18px) saturate(1.2);
+    -webkit-backdrop-filter:blur(18px) saturate(1.2);
+    background:rgba(5,5,10,0.55);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav-inner{max-width:1280px;margin:0 auto;height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.08em;font-size:.92rem}
+  .brand .mark{
+    width:22px;height:22px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--accent-bright) 25%, var(--accent) 55%, var(--accent-deep) 100%);
+    box-shadow:0 0 18px rgba(168,85,247,0.7), inset 0 0 8px rgba(255,255,255,0.4);
+    position:relative;
+  }
+  .brand .mark::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(168,85,247,0.5);animation:ring 3s ease-out infinite}
+  @keyframes ring{0%{transform:scale(.85);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+  .brand .word{font-size:.95rem}
+  .brand .word em{color:var(--accent-bright);font-style:normal;font-weight:500}
+
+  .nav-links{display:flex;gap:2px}
+  .nav-links a{padding:8px 14px;border-radius:6px;font-size:.84rem;color:var(--ink-soft);font-weight:500;transition:color .2s,background .2s}
+  .nav-links a:hover{color:var(--accent-bright);background:rgba(168,85,247,0.08)}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .btn{
+    padding:11px 18px;border-radius:8px;font-size:.72rem;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;
+    transition:all .25s ease;display:inline-flex;align-items:center;gap:8px;
+    backdrop-filter:blur(8px);
+  }
+  .btn.primary{background:rgba(168,85,247,0.5);border:1px solid rgba(168,85,247,0.7);color:#fff}
+  .btn.primary:hover{background:rgba(168,85,247,0.65);box-shadow:0 0 24px rgba(168,85,247,0.5);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border:1px solid rgba(168,85,247,0.4);color:#fff}
+  .btn.ghost:hover{border-color:var(--accent);background:rgba(168,85,247,0.08)}
+  @media(max-width:900px){.nav-links{display:none}}
+
+  .label{font-family:var(--font);font-size:.7rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-bright)}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- Hero ---------- */
+  .hero{min-height:100vh;display:flex;align-items:center;padding-top:64px;position:relative}
+  .hero-inner{width:100%;display:grid;grid-template-rows:auto 1fr auto;min-height:calc(100vh - 64px);padding:48px 0 48px}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .hero-pill{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    background:rgba(168,85,247,0.12);
+    border:1px solid rgba(168,85,247,0.35);
+    font-size:.72rem;letter-spacing:.16em;color:var(--lavender);font-weight:600;text-transform:uppercase;
+  }
+  .hero-pill .live{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 1.6s ease-in-out infinite}
+  @keyframes blink{50%{opacity:.4}}
+  .hero-meta{display:flex;gap:24px;align-items:center;color:var(--muted-warm);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+  .hero-meta .sep{width:1px;height:14px;background:var(--line)}
+
+  .hero-center{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 0;position:relative}
+  /* Core placeholder — the canvas core is drawn here; we just reserve space */
+  .core-slot{width:min(78vw,900px);height:clamp(360px,48vh,560px);position:relative;display:flex;align-items:center;justify-content:center}
+  .core-slot .reticle{
+    position:absolute;inset:-30px;border:1px dashed rgba(168,85,247,0.18);border-radius:50%;
+    animation:spin 60s linear infinite;
+  }
+  .core-slot .reticle.inner{inset:30px;border-style:solid;border-color:rgba(168,85,247,0.08);animation-duration:90s;animation-direction:reverse}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Floating role chips around core */
+  .roles{position:absolute;inset:0;pointer-events:none}
+  .role{
+    position:absolute;
+    padding:8px 12px;border-radius:8px;
+    background:rgba(20,20,30,0.55);
+    border:1px solid rgba(168,85,247,0.4);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+    color:#fff;display:flex;align-items:center;gap:8px;
+    box-shadow:0 0 24px rgba(168,85,247,0.18);
+    white-space:nowrap;
+    animation:bob 6s ease-in-out infinite;
+  }
+  .role .d{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .role .n{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.05em;text-transform:none;font-weight:500}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  .role.r1{top:6%;left:-2%;animation-delay:0s}
+  .role.r2{top:18%;right:-6%;animation-delay:1.2s}
+  .role.r3{top:54%;right:-12%;animation-delay:.6s}
+  .role.r4{bottom:6%;right:6%;animation-delay:1.8s}
+  .role.r5{bottom:6%;left:6%;animation-delay:.3s}
+  .role.r6{top:54%;left:-12%;animation-delay:1.5s}
+
+  @media(max-width:760px){
+    .core-slot{width:min(96vw,620px);height:clamp(320px,46vh,420px)}
+  }
+
+  .hero-text{margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:20px;max-width:880px}
+  .hero-text .over{
+    display:inline-flex;align-items:center;gap:14px;
+    color:var(--accent-bright);font-size:.7rem;letter-spacing:.28em;font-weight:800;text-transform:uppercase;
+  }
+  .hero-text .over::before,.hero-text .over::after{content:"";width:34px;height:1px;background:linear-gradient(to right,transparent,var(--accent-bright));}
+  .hero-text .over::after{background:linear-gradient(to left,transparent,var(--accent-bright));}
+
+  h1.title{
+    font-size:clamp(2.6rem,6.2vw,5.4rem);
+    font-weight:700;line-height:.96;letter-spacing:-.025em;
+    color:#fff;
+  }
+  h1.title em{
+    font-style:normal;color:var(--accent-bright);font-weight:300;
+    background:linear-gradient(95deg,var(--accent-bright),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1.title .softrow{display:block;font-weight:300;color:var(--ink-soft);font-size:.65em;letter-spacing:-.02em;margin-top:.2em}
+  .hero-sub{color:var(--ink-soft);font-size:1.1rem;max-width:42rem;font-weight:400;line-height:1.55}
+  .hero-sub b{color:#fff;font-weight:600}
+  .hero-support{
+    margin-top:4px;
+    color:var(--muted);font-size:.92rem;max-width:42rem;line-height:1.6;
+    padding-top:18px;border-top:1px solid var(--line-soft);
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .hero-support span{color:var(--lavender)}
+
+  .hero-bottom{display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:end;margin-top:36px}
+  .hero-actions{display:flex;gap:12px;justify-self:center;flex-wrap:wrap;justify-content:center;grid-column:2}
+  .scroll-hint{justify-self:start;font-size:.7rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .scroll-hint .l{width:42px;height:1px;background:linear-gradient(to right,var(--accent-bright),transparent)}
+  .telemetry{justify-self:end;text-align:right;font-family:var(--mono);font-size:.7rem;color:var(--muted);line-height:1.7}
+  .telemetry b{color:var(--accent-bright);font-weight:500}
+
+  /* hero stat strip */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    margin-top:64px;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+    padding:24px 0;
+  }
+  .stat{padding:0 24px;border-right:1px solid var(--line-soft)}
+  .stat:last-child{border-right:none}
+  .stat .v{font-size:1.8rem;font-weight:700;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
+  .stat .v em{font-style:normal;color:var(--accent-bright)}
+  .stat .l{margin-top:6px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- Generic section ---------- */
+  .sect{padding:140px 0;position:relative}
+  .sect-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:56px;flex-wrap:wrap}
+  .sect-head .left{max-width:640px}
+  .sect-head h2{font-size:clamp(2rem,3.4vw,3.2rem);font-weight:700;letter-spacing:-.025em;line-height:1.05;margin-top:14px}
+  .sect-head h2 em{font-style:normal;color:var(--accent-bright);font-weight:300}
+  .sect-head .lede{color:var(--muted);font-size:1rem;margin-top:14px;max-width:36rem;line-height:1.6}
+  .sect-head .idx{font-family:var(--mono);font-size:.75rem;color:var(--muted-warm);letter-spacing:.1em;align-self:flex-end}
+
+  /* ---------- Particles section: 6 surroundings ---------- */
+  .surround{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.surround{grid-template-columns:1fr}}
+  .surround .cell{
+    background:rgba(12,18,27,0.5);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    padding:36px 32px;min-height:280px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    position:relative;overflow:hidden;
+    transition:background .35s;
+  }
+  .surround .cell:hover{background:rgba(168,85,247,0.06)}
+  .surround .cell::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(168,85,247,0.6),transparent);
+    transform:translateX(-100%);transition:transform .9s ease;
+  }
+  .surround .cell:hover::before{transform:translateX(100%)}
+  .surround .cell .head{display:flex;justify-content:space-between;align-items:center}
+  .surround .cell .num{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.1em}
+  .surround .cell .tag{font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-bright);padding:4px 8px;border-radius:4px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3)}
+  .surround .cell h3{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;color:#fff;margin-top:24px}
+  .surround .cell p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-top:12px;max-width:32ch}
+  .surround .cell .foot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;font-family:var(--mono);font-size:.7rem;color:var(--accent-bright)}
+  .surround .cell .foot .dots{display:flex;gap:4px}
+  .surround .cell .foot .dots i{width:5px;height:5px;border-radius:50%;background:rgba(168,85,247,0.3)}
+  .surround .cell .foot .dots i.on{background:var(--accent);box-shadow:0 0 6px var(--accent)}
+
+  /* ---------- Capabilities split ---------- */
+  .split{display:grid;grid-template-columns:1.05fr 0.95fr;gap:64px;align-items:center}
+  @media(max-width:1000px){.split{grid-template-columns:1fr}}
+  .rows{display:flex;flex-direction:column;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:12px;overflow:hidden}
+  .row{
+    background:rgba(12,18,27,0.34);padding:24px 28px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;
+    transition:background .25s, padding .25s;
+    position:relative;
+  }
+  .row:hover{background:rgba(168,85,247,0.07);padding-left:34px}
+  .row.active{background:rgba(168,85,247,0.08);box-shadow:inset 4px 0 0 var(--accent-deep)}
+  .row .num{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.1em}
+  .row .ttl{font-size:1.05rem;font-weight:600;color:#fff}
+  .row .ttl span{display:block;color:var(--muted);font-size:.85rem;margin-top:4px;font-weight:400}
+  .row .meta{font-family:var(--mono);font-size:.7rem;color:var(--accent-bright);letter-spacing:.08em}
+  .row .arrow{margin-left:8px;color:var(--muted);transition:color .2s,transform .2s}
+  .row:hover .arrow{color:var(--accent-bright);transform:translateX(4px)}
+
+  .demo-card{
+    position:relative;
+    background:rgba(20,20,30,0.4);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(168,85,247,0.5);
+    border-radius:14px;padding:24px;
+    box-shadow:0 0 60px rgba(168,85,247,0.12),0 22px 70px rgba(3,8,18,0.34);
+  }
+  .demo-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(168,85,247,0.7),transparent 70%)}
+  .demo-card::after{content:"";position:absolute;inset:0;border-radius:14px;background:radial-gradient(circle at 70% 0%,rgba(168,85,247,0.15),transparent 65%);pointer-events:none}
+  .demo-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;position:relative;z-index:1}
+  .demo-card .head .t{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--accent-bright)}
+  .demo-card .head .s{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+  .demo-card .head .s i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .demo-card .body{position:relative;z-index:1}
+  .msg{padding:14px 16px;border-radius:10px;font-size:.92rem;line-height:1.5;margin-bottom:10px}
+  .msg.user{background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.5);margin-left:28%;color:#fff}
+  .msg.agent{background:rgba(12,18,27,0.5);box-shadow:inset 4px 0 0 rgba(168,85,247,0.48);color:var(--ink-soft);margin-right:8%}
+  .msg .who{font-size:.62rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-bright);margin-bottom:6px}
+  .msg.user .who{color:var(--lavender)}
+  .msg .tool{margin-top:8px;display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;color:var(--accent-bright);background:rgba(168,85,247,0.1);padding:6px 10px;border-radius:6px;border:1px solid rgba(168,85,247,0.25)}
+  .msg .tool i{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
+  .composer{margin-top:18px;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;background:rgba(5,5,10,0.5);border:1px solid var(--line);border-radius:10px}
+  .composer input{flex:1;background:transparent;border:0;outline:0;font-family:inherit;color:#fff;font-size:.9rem;padding:8px 0}
+  .composer input::placeholder{color:var(--muted)}
+  .composer .send{padding:8px 14px;border-radius:6px;background:rgba(168,85,247,0.4);border:1px solid rgba(168,85,247,0.6);font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+
+  /* ---------- Manifesto / quote ---------- */
+  .manifesto{padding:120px 0;text-align:center}
+  .manifesto blockquote{
+    font-size:clamp(1.7rem,3vw,2.6rem);font-weight:300;letter-spacing:-.02em;line-height:1.25;
+    max-width:1000px;margin:0 auto;color:#fff;
+  }
+  .manifesto blockquote em{font-style:normal;color:var(--accent-bright);font-weight:500}
+  .manifesto .by{margin-top:36px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+  /* ---------- Industries marquee ---------- */
+  .ind-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .ind{
+    padding:11px 18px;border-radius:999px;
+    background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.28);
+    color:#fff;font-size:.86rem;font-weight:500;
+    transition:all .25s;
+  }
+  .ind:hover{background:rgba(168,85,247,0.18);transform:translateY(-2px)}
+  .ind .c{color:var(--accent-bright);font-family:var(--mono);margin-right:8px;font-size:.78rem}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    position:relative;
+    background:rgba(20,20,30,0.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(168,85,247,0.5);
+    border-radius:18px;padding:64px;
+    box-shadow:0 0 80px rgba(168,85,247,0.15),0 22px 70px rgba(3,8,18,0.34);
+    overflow:hidden;
+  }
+  .cta::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(168,85,247,0.7),transparent 70%)}
+  .cta::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0%,rgba(168,85,247,0.18),transparent 60%);pointer-events:none}
+  @media(max-width:900px){.cta{padding:36px 24px}}
+  .cta-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;position:relative;z-index:1}
+  @media(max-width:900px){.cta-grid{grid-template-columns:1fr}}
+  .cta h2{font-size:clamp(1.8rem,3.2vw,2.6rem);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .cta h2 em{font-style:normal;color:var(--accent-bright);font-weight:300}
+  .cta p{color:var(--muted);margin-top:14px;line-height:1.6}
+  .cta-form{display:flex;flex-direction:column;gap:14px}
+  .cta-form .row-in{display:flex;gap:8px;background:rgba(5,5,10,0.6);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 20px;align-items:center;transition:border-color .2s}
+  .cta-form .row-in:focus-within{border-color:var(--accent)}
+  .cta-form input{flex:1;background:transparent;border:0;outline:0;color:#fff;font-family:inherit;font-size:.95rem;padding:11px 0}
+  .cta-form input::placeholder{color:var(--muted)}
+  .cta-meta{display:flex;gap:18px;font-size:.74rem;color:var(--muted);flex-wrap:wrap}
+  .cta-meta span{display:inline-flex;align-items:center;gap:6px}
+  .cta-meta i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-bright);box-shadow:0 0 6px var(--accent-bright)}
+
+  /* ---------- Footer ---------- */
+  footer{padding:64px 0 36px;border-top:1px solid var(--line);background:rgba(5,5,10,0.7);position:relative;z-index:5}
+  .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+  @media(max-width:800px){.foot{grid-template-columns:1fr 1fr}}
+  .foot h5{color:var(--accent-bright);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;margin-bottom:16px}
+  .foot a,.foot p{display:block;color:var(--muted);font-size:.86rem;margin-bottom:10px;transition:color .2s}
+  .foot a:hover{color:#fff}
+  .foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;color:var(--muted-warm);font-size:.74rem;flex-wrap:wrap;gap:12px}
+  .foot-bottom .mono{letter-spacing:.05em}
+
+  /* ---------- Contrast (Problem) ---------- */
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:900px){.contrast{grid-template-columns:1fr}}
+  .contrast .col{padding:36px 32px;background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative}
+  .contrast .col.old{background:rgba(8,8,12,0.65)}
+  .contrast .col.new{background:rgba(168,85,247,0.06)}
+  .contrast .col .kicker{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .contrast .col h4{font-size:1.2rem;font-weight:600;color:#fff;letter-spacing:-.01em}
+  .contrast .col.old h4{color:var(--ink-soft);font-weight:500}
+  .contrast .col .badge{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .contrast .col.new .badge{color:var(--accent-bright)}
+  .contrast ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:14px}
+  .contrast li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;font-size:.96rem;color:var(--ink-soft);padding:14px 0;border-top:1px solid var(--line-soft)}
+  .contrast li:first-child{border-top:none}
+  .contrast .ic{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.74rem;font-weight:700}
+  .contrast .col.old .ic{background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted)}
+  .contrast .col.old li{color:var(--muted)}
+  .contrast .col.new .ic{background:rgba(168,85,247,0.16);border:1px solid rgba(168,85,247,0.45);color:var(--accent-bright)}
+  .contrast .arrow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(5,5,10,0.95);border:1px solid rgba(168,85,247,0.5);display:flex;align-items:center;justify-content:center;color:var(--accent-bright);font-family:var(--mono);z-index:2;box-shadow:0 0 30px rgba(168,85,247,0.4)}
+  @media(max-width:900px){.contrast .arrow{left:50%;top:auto;bottom:-23px;transform:translate(-50%,0) rotate(90deg)}}
+
+  /* ---------- Paradigm shift cards ---------- */
+  .paradigm{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:1000px){.paradigm{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.paradigm{grid-template-columns:1fr}}
+  .paradigm .pcard{background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:36px 28px;display:flex;flex-direction:column;gap:18px;position:relative;min-height:280px;transition:background .3s}
+  .paradigm .pcard:hover{background:rgba(168,85,247,0.06)}
+  .paradigm .pcard .ix{display:flex;justify-content:space-between;align-items:flex-start}
+  .paradigm .pcard .n{font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.1em}
+  .paradigm .pcard .glyph{width:36px;height:36px;border-radius:8px;border:1px solid rgba(168,85,247,0.4);display:flex;align-items:center;justify-content:center;color:var(--accent-bright);background:rgba(168,85,247,0.08)}
+  .paradigm .pcard h3{font-size:1.25rem;font-weight:600;color:#fff;letter-spacing:-.015em;line-height:1.2}
+  .paradigm .pcard h3 em{font-style:normal;color:var(--accent-bright);font-weight:300}
+  .paradigm .pcard p{color:var(--muted);font-size:.92rem;line-height:1.6}
+  .paradigm .pcard .swap{font-family:var(--mono);font-size:.68rem;color:var(--muted-warm);letter-spacing:.06em;margin-top:auto;padding-top:18px;border-top:1px solid var(--line-soft)}
+  .paradigm .pcard .swap b{color:var(--accent-bright);font-weight:500}
+
+  /* ---------- How It Works (agent hierarchy) ---------- */
+  .hierarchy{display:flex;flex-direction:column;gap:14px}
+  .tier{position:relative;background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:14px;padding:28px 32px;display:grid;grid-template-columns:140px 1fr 1fr;gap:32px;align-items:center;transition:border-color .3s, transform .3s}
+  .tier:hover{border-color:rgba(168,85,247,0.5);transform:translateX(4px)}
+  @media(max-width:900px){.tier{grid-template-columns:1fr;gap:14px}}
+  .tier .left{display:flex;flex-direction:column;gap:8px}
+  .tier .left .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-bright)}
+  .tier .left .lv{font-size:2rem;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1;font-family:var(--mono)}
+  .tier .mid h3{font-size:1.35rem;font-weight:600;color:#fff;letter-spacing:-.015em}
+  .tier .mid p{color:var(--muted);font-size:.92rem;line-height:1.55;margin-top:8px;max-width:38ch}
+  .tier .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .tier .chip{padding:6px 10px;border-radius:6px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);font-size:.74rem;font-family:var(--mono);color:var(--lavender);letter-spacing:.04em}
+  .tier.t1{background:linear-gradient(180deg,rgba(168,85,247,0.1),rgba(12,18,27,0.5));border-color:rgba(168,85,247,0.45)}
+  .tier.t1::after{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent-deep));border-radius:14px 0 0 14px}
+
+  /* ---------- Benefits ---------- */
+  .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:1000px){.benefits{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.benefits{grid-template-columns:1fr}}
+  .bcard{background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:32px 28px;min-height:240px;display:flex;flex-direction:column;gap:12px;transition:background .3s;position:relative}
+  .bcard:hover{background:rgba(168,85,247,0.06)}
+  .bcard .num{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--accent-bright)}
+  .bcard h3{font-size:1.2rem;font-weight:600;color:#fff;letter-spacing:-.015em;line-height:1.2}
+  .bcard p{color:var(--muted);font-size:.9rem;line-height:1.6}
+
+  /* ---------- Trust / Autonomy journey ---------- */
+  .trust-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:flex-start}
+  @media(max-width:1000px){.trust-grid{grid-template-columns:1fr}}
+  .controls-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ctrl{padding:18px 24px;background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:grid;grid-template-columns:32px 1fr auto;gap:16px;align-items:center;transition:background .3s}
+  .ctrl:hover{background:rgba(168,85,247,0.06)}
+  .ctrl .g{color:var(--accent-bright);font-family:var(--mono);font-size:.9rem}
+  .ctrl .n{font-size:.96rem;color:#fff;font-weight:500}
+  .ctrl .n span{display:block;color:var(--muted);font-size:.82rem;font-weight:400;margin-top:2px}
+  .ctrl .s{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--accent-bright);text-transform:uppercase}
+
+  .journey{position:relative;background:rgba(12,18,27,0.4);border:1px solid var(--line);border-radius:14px;padding:32px;overflow:hidden}
+  .journey::before{content:"";position:absolute;left:64px;right:32px;top:96px;height:1px;background:linear-gradient(90deg,rgba(168,85,247,0.1),rgba(168,85,247,0.6),rgba(168,85,247,0.1))}
+  .journey h4{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-bright);font-weight:800;margin-bottom:24px}
+  .journey-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative;z-index:1}
+  .jstep{display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 6px;text-align:center}
+  .jstep .dot{width:14px;height:14px;border-radius:50%;background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);position:relative;box-shadow:0 0 0 4px rgba(5,5,10,0.95)}
+  .jstep.on .dot{background:var(--accent);box-shadow:0 0 0 4px rgba(5,5,10,0.95), 0 0 16px var(--accent)}
+  .jstep .nm{font-family:var(--mono);font-size:.76rem;color:#fff;font-weight:500;letter-spacing:.04em}
+  .jstep.on .nm{color:var(--accent-bright)}
+  .jstep .lv{font-family:var(--mono);font-size:.6rem;color:var(--muted);letter-spacing:.1em}
+  .journey .desc{margin-top:24px;padding-top:20px;border-top:1px solid var(--line-soft);color:var(--muted);font-size:.88rem;line-height:1.6}
+  .journey .desc b{color:var(--ink-soft);font-weight:500}
+  @media(max-width:600px){.journey-row{grid-template-columns:repeat(5,1fr);font-size:.6rem} .journey::before{display:none}}
+
+  /* ---------- Agent setup ---------- */
+  .setup{display:grid;grid-template-columns:280px 1fr;gap:32px;background:rgba(12,18,27,0.4);border:1px solid var(--line);border-radius:18px;padding:32px;overflow:hidden;position:relative}
+  @media(max-width:1000px){.setup{grid-template-columns:1fr}}
+  .setup .agent{display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding-right:32px;border-right:1px solid var(--line-soft)}
+  @media(max-width:1000px){.setup .agent{border-right:none;padding-right:0;padding-bottom:20px;border-bottom:1px solid var(--line-soft)}}
+  .setup .avatar{width:64px;height:64px;border-radius:16px;background:radial-gradient(circle at 35% 30%, #fff, var(--accent-bright) 25%, var(--accent) 55%, var(--accent-deep) 100%);box-shadow:0 0 28px rgba(168,85,247,0.5)}
+  .setup .agent h3{font-size:1.3rem;font-weight:600;color:#fff;letter-spacing:-.015em}
+  .setup .agent .role-tag{font-family:var(--mono);font-size:.72rem;color:var(--accent-bright);letter-spacing:.1em}
+  .setup .agent p{color:var(--muted);font-size:.86rem;line-height:1.55}
+  .setup .stats{margin-top:8px;display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .setup .stats b{color:var(--accent-bright);font-weight:500}
+  .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.setup-grid{grid-template-columns:1fr}}
+  .scard{padding:20px;background:rgba(20,20,30,0.6);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:8px}
+  .scard h5{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--accent-bright)}
+  .scard h5 .k{font-family:var(--mono);font-size:.64rem;color:var(--muted);letter-spacing:.06em;text-transform:none;font-weight:500}
+  .scard ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .scard li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:.84rem;color:var(--ink-soft);line-height:1.4}
+  .scard li .b{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)}
+  .scard li .b.muted{background:rgba(255,255,255,0.2);box-shadow:none}
+  .scard li .tg{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.06em}
+  .scard li .tg.on{color:var(--green)}
+  .scard.locked{background:rgba(239,116,116,0.04);border-color:rgba(239,116,116,0.2)}
+  .scard.locked h5{color:var(--rose)}
+  .scard.locked li .b{background:var(--rose);box-shadow:0 0 6px var(--rose)}
+
+  /* ---------- Use case tiles ---------- */
+  .usecases{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:1000px){.usecases{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.usecases{grid-template-columns:1fr}}
+  .ucard{background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:32px 28px;min-height:260px;display:flex;flex-direction:column;gap:14px;transition:background .3s;position:relative;overflow:hidden}
+  .ucard:hover{background:rgba(168,85,247,0.06)}
+  .ucard .top{display:flex;justify-content:space-between;align-items:center}
+  .ucard .glyph{width:42px;height:42px;border-radius:10px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);display:flex;align-items:center;justify-content:center;color:var(--accent-bright);font-family:var(--mono);font-size:1rem}
+  .ucard .status{font-family:var(--mono);font-size:.66rem;color:var(--accent-bright);letter-spacing:.1em;display:flex;align-items:center;gap:6px}
+  .ucard .status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.6s infinite}
+  .ucard h3{font-size:1.15rem;font-weight:600;color:#fff;letter-spacing:-.01em}
+  .ucard h3 .agent-tag{display:block;font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.08em;font-weight:500;margin-top:4px}
+  .ucard p{color:var(--muted);font-size:.86rem;line-height:1.55}
+  .ucard .skills{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft)}
+  .ucard .sk{padding:4px 8px;border-radius:4px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);font-family:var(--mono);font-size:.66rem;color:var(--lavender);letter-spacing:.04em}
+
+  /* ---------- Interface (prompts → outputs) ---------- */
+  .iface{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  @media(max-width:900px){.iface{grid-template-columns:1fr}}
+  .iface .panel{background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px}
+  .iface .panel.input{border-color:rgba(168,85,247,0.4)}
+  .iface .panel-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line-soft)}
+  .iface .panel-head h4{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-bright);font-weight:800}
+  .iface .panel-head .meta{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+  .iface .prompt{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.18);color:var(--ink-soft);font-size:.92rem;line-height:1.4;font-style:italic;transition:background .25s,border-color .25s;cursor:none}
+  .iface .prompt:hover{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.5)}
+  .iface .prompt .q{color:var(--accent-bright);font-family:var(--mono);font-style:normal}
+  .iface .output{display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;padding:14px;border-radius:8px;background:rgba(5,5,10,0.5);border:1px solid var(--line-soft)}
+  .iface .output .ic{width:32px;height:32px;border-radius:8px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.8rem}
+  .iface .output .body{display:flex;flex-direction:column;gap:2px}
+  .iface .output .title{font-size:.9rem;color:#fff;font-weight:500}
+  .iface .output .sub{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+  .iface .output .stat{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--green);text-transform:uppercase}
+  .iface .output .stat.warn{color:var(--accent-bright)}
+
+  /* ---------- Transformation timeline ---------- */
+  .timeline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:900px){.timeline{grid-template-columns:1fr}}
+  .tstep{background:rgba(12,18,27,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:32px 22px;display:flex;flex-direction:column;gap:14px;position:relative;transition:background .3s}
+  .tstep:hover{background:rgba(168,85,247,0.06)}
+  .tstep .when{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--accent-bright);text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+  .tstep .when .pct{color:var(--muted);font-weight:400}
+  .tstep h4{font-size:1.05rem;font-weight:600;color:#fff;letter-spacing:-.01em;line-height:1.3}
+  .tstep p{color:var(--muted);font-size:.86rem;line-height:1.55}
+  .tstep .bar{height:3px;border-radius:2px;background:rgba(168,85,247,0.12);overflow:hidden;margin-top:auto}
+  .tstep .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));box-shadow:0 0 8px var(--accent)}
+
+  /* fade-in on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease, transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- atmosphere -->
+<div class="bg" aria-hidden="true"></div>
+<div class="noise" aria-hidden="true"></div>
+
+<!-- Fixed stage: AI core + electrons -->
+<div id="stage" aria-hidden="true">
+  <canvas id="electrons"></canvas>
+</div>
+
+<!-- custom cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="top">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <span class="mark"></span>
+      <span class="word">NAWAAH<em>OS</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#core">The Core</a>
+      <a href="#orbit">Orbit</a>
+      <a href="#agents">Agents</a>
+      <a href="#fabric">Fabric</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn ghost">Sign in</button>
+      <button class="btn primary">Request access</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-inner">
+
+    <div class="hero-top">
+      <div class="hero-pill">
+        <span class="live"></span>
+        <span>Generation II · Online</span>
+      </div>
+      <div class="hero-meta mono">
+        <span>v2.6 · OBSIDIAN</span>
+        <span class="sep"></span>
+        <span id="now">— : —</span>
+        <span class="sep"></span>
+        <span>NODE 0xN4W7</span>
+      </div>
+    </div>
+
+    <div class="hero-center">
+      <div class="core-slot" id="core-slot">
+      </div>
+
+      <div class="hero-text">
+        <span class="over">For the Intelligent Enterprise</span>
+        <h1 class="title">
+          The Agentic Operating System
+          <span class="softrow">for the <em>Intelligent Enterprise.</em></span>
+        </h1>
+        <p class="hero-sub">
+          NawaahOS turns every business function into an intelligent agent that <b>learns your organization</b>,
+          executes work, manages decisions, and escalates only when human judgment is needed.
+        </p>
+        <p class="hero-support">
+          No forms. No rigid workflows. No endless configuration.
+          <span>Just tell the agent what you want to achieve — and it builds the operating logic from there.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="scroll-hint mono">
+        <span class="l"></span>
+        <span>Scroll · the electrons follow</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary" href="#contact">Request a Demo →</a>
+        <a class="btn ghost" href="#how">Explore How It Works</a>
+      </div>
+      <div class="telemetry">
+        <div><b>06</b> definitions · core constants</div>
+        <div><b>1 4 / 1 4</b> models online</div>
+        <div>p95 inference <b>184 ms</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- stat strip -->
+<section>
+  <div class="wrap">
+    <div class="stat-strip">
+      <div class="stat"><div class="v">38<em>×</em></div><div class="l">spec → outcome</div></div>
+      <div class="stat"><div class="v">92<em>%</em></div><div class="l">delegated decisions</div></div>
+      <div class="stat"><div class="v">100<em>%</em></div><div class="l">sovereign · on-prem</div></div>
+      <div class="stat"><div class="v">26<em>+</em></div><div class="l">enterprises deployed</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE SIX ============ -->
+<section class="sect" id="core">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">01 — The Core constants</span>
+        <h2>Six definitions, <em>one consciousness.</em></h2>
+        <p class="lede">Every NawaahOS agent is built from the same six elementals. They orbit the core, wire back to it, and rearrange themselves as the agent encounters its world.</p>
+      </div>
+      <span class="idx mono">/ 0 1</span>
+    </div>
+
+    <div class="surround reveal">
+      <div class="cell">
+        <div class="head"><span class="num mono">// 01</span><span class="tag">Identity</span></div>
+        <h3>Role</h3>
+        <p>The frame of reference. What this agent is for, who it speaks as, and the part of the organization it owns end-to-end.</p>
+        <div class="foot"><span class="mono">defined-once</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 02</span><span class="tag">Capability</span></div>
+        <h3>Skills</h3>
+        <p>Reasoning patterns the agent has mastered — composed from base templates, refined by deployment, never reset.</p>
+        <div class="foot"><span class="mono">compounding</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 03</span><span class="tag">Policy</span></div>
+        <h3>Instructions</h3>
+        <p>Your operating doctrine, in plain language. Editable by anyone who owns the agent — versioned, audited, reversible.</p>
+        <div class="foot"><span class="mono">editable</span><span class="dots"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 04</span><span class="tag">Reach</span></div>
+        <h3>Tools</h3>
+        <p>Every system the agent can touch — databases, mailboxes, calendars, ledgers — wired through one signed, observable bus.</p>
+        <div class="foot"><span class="mono">wired-in</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 05</span><span class="tag">Boundary</span></div>
+        <h3>Guardrails</h3>
+        <p>What the agent will refuse, escalate, or hand back. Encoded as policy, enforced at runtime, never embedded in prompts.</p>
+        <div class="foot"><span class="mono">enforced</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+      </div>
+      <div class="cell">
+        <div class="head"><span class="num mono">// 06</span><span class="tag">Memory</span></div>
+        <h3>Experience</h3>
+        <p>Every conversation, decision, and outcome — bound to the agent, not the model. Your moat is what it learned for you.</p>
+        <div class="foot"><span class="mono">accruing</span><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ORBIT — capabilities split ============ -->
+<section class="sect" id="orbit">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">02 — Orbital mechanics</span>
+        <h2>You speak. The agent <em>moves the world.</em></h2>
+        <p class="lede">Hand the agent intent. It assembles tools, evidence, and policy in milliseconds — and returns the decision, not the homework.</p>
+      </div>
+      <span class="idx mono">/ 0 2</span>
+    </div>
+
+    <div class="split">
+      <div class="rows reveal">
+        <div class="row active">
+          <span class="num">L05</span>
+          <div class="ttl">Experience surface<span>Chat, voice, command bar — the only window users need.</span></div>
+          <span class="meta">UI · API</span>
+        </div>
+        <div class="row">
+          <span class="num">L04</span>
+          <div class="ttl">Agent runtime<span>Planner, executor, tool router, evals, guardrails.</span></div>
+          <span class="meta">PYTHON · GO</span>
+        </div>
+        <div class="row">
+          <span class="num">L03</span>
+          <div class="ttl">Model mesh<span>Open-weight LLMs, fine-tunes, vision, embeddings.</span></div>
+          <span class="meta">vLLM · NIM</span>
+        </div>
+        <div class="row">
+          <span class="num">L02</span>
+          <div class="ttl">Memory &amp; index<span>Vector + relational. Source-aware retrieval with ACLs.</span></div>
+          <span class="meta">PGVECTOR</span>
+        </div>
+        <div class="row">
+          <span class="num">L01</span>
+          <div class="ttl">Sovereign substrate<span>Air-gappable k8s. HSM keys. Append-only audit ledger.</span></div>
+          <span class="meta">K8S · HSM</span>
+        </div>
+      </div>
+
+      <div class="demo-card reveal">
+        <div class="head">
+          <span class="t">Agent · Finance Ops</span>
+          <span class="s mono"><i></i>thinking</span>
+        </div>
+        <div class="body">
+          <div class="msg user">
+            <div class="who">You</div>
+            Reconcile last week's vendor invoices against POs and flag anything off by &gt;2%.
+          </div>
+          <div class="msg agent">
+            <div class="who">Agent</div>
+            Pulled <b>184 invoices</b> against <b>176 POs</b> for the week. Three off-tolerance, one is over-billed by 14% (Acme · #INV-7711) — drafted a hold + dispute email to AP for your sign-off.
+            <span class="tool"><i></i>tool · sap.invoices.read · 184 rows</span>
+          </div>
+        </div>
+        <div class="composer">
+          <input placeholder="Ask the agent anything…">
+          <button class="send">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="sect" id="problem">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">03 — The inversion</span>
+        <h2>Enterprise software still makes <em>humans do the work.</em></h2>
+        <p class="lede">Most systems force people to learn screens, configure processes, chase approvals, update reports, and manually connect decisions across departments. NawaahOS reverses that. The organization gives intent. The agents operate.</p>
+      </div>
+      <span class="idx mono">/ 0 3</span>
+    </div>
+    <div class="contrast reveal">
+      <div class="col old">
+        <div class="kicker">
+          <h4>Traditional systems</h4>
+          <span class="badge">YESTERDAY</span>
+        </div>
+        <ul>
+          <li><span class="ic">×</span>Static workflows that drift the moment reality changes.</li>
+          <li><span class="ic">×</span>Manual handoffs between owners, tools, and inboxes.</li>
+          <li><span class="ic">×</span>Endless configuration before a single decision is made.</li>
+          <li><span class="ic">×</span>Human follow-up to keep work moving forward.</li>
+          <li><span class="ic">×</span>Disconnected decisions across departments and quarters.</li>
+        </ul>
+      </div>
+      <div class="arrow mono">→</div>
+      <div class="col new">
+        <div class="kicker">
+          <h4>NawaahOS</h4>
+          <span class="badge">OPERATING LAYER</span>
+        </div>
+        <ul>
+          <li><span class="ic">◆</span>Intent-driven agents that infer the operating logic.</li>
+          <li><span class="ic">◆</span>Autonomous execution within human-defined guardrails.</li>
+          <li><span class="ic">◆</span>Living memory of policies, exceptions, and outcomes.</li>
+          <li><span class="ic">◆</span>Real-time artifacts — dashboards, reports, approvals.</li>
+          <li><span class="ic">◆</span>Human-guided judgment where it matters most.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARADIGM SHIFT ============ -->
+<section class="sect" id="paradigm">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">04 — The paradigm shift</span>
+        <h2>From workflows to <em>intelligent work ownership.</em></h2>
+        <p class="lede">Four reversals that turn the enterprise from a forms-and-screens factory into an agent-led operating system.</p>
+      </div>
+      <span class="idx mono">/ 0 4</span>
+    </div>
+    <div class="paradigm reveal">
+      <div class="pcard">
+        <div class="ix"><span class="n">// 01</span><span class="glyph mono">↳</span></div>
+        <h3>Intent over <em>configuration</em></h3>
+        <p>You describe the outcome. The agent determines the operating logic, picks the tools, and composes the path.</p>
+        <div class="swap">configure → <b>declare</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 02</span><span class="glyph mono">∞</span></div>
+        <h3>Memory over <em>repetition</em></h3>
+        <p>Agents remember policies, decisions, exceptions, and organizational preferences. Nothing is re-taught.</p>
+        <div class="swap">repeat → <b>recall</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 03</span><span class="glyph mono">◈</span></div>
+        <h3>Judgment over <em>static rules</em></h3>
+        <p>Agents learn from feedback, outcomes, and context — applying judgment where rigid rules would have broken.</p>
+        <div class="swap">enforce → <b>reason</b></div>
+      </div>
+      <div class="pcard">
+        <div class="ix"><span class="n">// 04</span><span class="glyph mono">↑</span></div>
+        <h3>Direction over <em>execution</em></h3>
+        <p>Humans define the north star. Agents run the operational layer and surface what only humans can decide.</p>
+        <div class="swap">execute → <b>direct</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="sect" id="how">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">05 — How it works</span>
+        <h2>Three layers of intelligence. <em>One operating system.</em></h2>
+        <p class="lede">Every NawaahOS deployment stratifies into a command structure of agents. Strategic at the top, operational at the base, and a domain layer connecting them.</p>
+      </div>
+      <span class="idx mono">/ 0 5</span>
+    </div>
+    <div class="hierarchy reveal">
+      <div class="tier t1">
+        <div class="left">
+          <span class="t">Tier 01 · Strategic</span>
+          <span class="lv">EXEC</span>
+        </div>
+        <div class="mid">
+          <h3>Executive Agents</h3>
+          <p>Set strategic intent, orchestrate cross-functional work, and synthesize signals for leadership.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">intent</span>
+          <span class="chip">orchestration</span>
+          <span class="chip">synthesis</span>
+          <span class="chip">board-level</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="left">
+          <span class="t">Tier 02 · Functional</span>
+          <span class="lv">DOMAIN</span>
+        </div>
+        <div class="mid">
+          <h3>Domain Agents</h3>
+          <p>Own functional areas such as HR, Finance, Projects, Strategy, Audit, Compliance, and Operations.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">HR</span>
+          <span class="chip">Finance</span>
+          <span class="chip">Projects</span>
+          <span class="chip">Audit</span>
+          <span class="chip">Compliance</span>
+          <span class="chip">Ops</span>
+        </div>
+      </div>
+      <div class="tier">
+        <div class="left">
+          <span class="t">Tier 03 · Operational</span>
+          <span class="lv">TASK</span>
+        </div>
+        <div class="mid">
+          <h3>Task Agents</h3>
+          <p>Execute specific work, update artifacts, follow up, and escalate when confidence is low.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">execute</span>
+          <span class="chip">follow-up</span>
+          <span class="chip">artifact-update</span>
+          <span class="chip">escalate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFITS ============ -->
+<section class="sect" id="benefits">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">06 — Benefits</span>
+        <h2>What changes when agents <em>run the operating layer.</em></h2>
+        <p class="lede">Six observable shifts inside organizations that adopt NawaahOS as their agentic operating system.</p>
+      </div>
+      <span class="idx mono">/ 0 6</span>
+    </div>
+    <div class="benefits reveal">
+      <div class="bcard">
+        <span class="num">// 01</span>
+        <h3>Work moves faster</h3>
+        <p>Agents decompose requests, assign work, follow up, and keep progress moving — without daily nudges.</p>
+      </div>
+      <div class="bcard">
+        <span class="num">// 02</span>
+        <h3>Managers stop chasing</h3>
+        <p>Approvals, escalations, blockers, and pending decisions are surfaced automatically — in the right order.</p>
+      </div>
+      <div class="bcard">
+        <span class="num">// 03</span>
+        <h3>Knowledge compounds</h3>
+        <p>Every decision, correction, and exception makes the agent more useful. Memory is the moat.</p>
+      </div>
+      <div class="bcard">
+        <span class="num">// 04</span>
+        <h3>Dashboards stay alive</h3>
+        <p>Agents keep dashboards, reports, boards, and approvals continuously updated as work happens.</p>
+      </div>
+      <div class="bcard">
+        <span class="num">// 05</span>
+        <h3>Governance becomes continuous</h3>
+        <p>Compliance, audit, risk, and policy checks happen at the moment of decision — not after the quarter.</p>
+      </div>
+      <div class="bcard">
+        <span class="num">// 06</span>
+        <h3>Humans stay in control</h3>
+        <p>Agents operate within guardrails, escalate sensitive decisions, and earn autonomy gradually.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto reveal">
+  <div class="wrap">
+    <blockquote>
+      The next operating system isn't a desktop, a browser, or a chat window.
+      It's a <em>swarm of cores</em> — each one owning a discipline, each one wired to your truth,
+      each one quietly turning intent into outcome.
+    </blockquote>
+    <div class="by">— NAWAAHOS · OBSIDIAN DIRECTIVE</div>
+  </div>
+</section>
+
+<!-- ============ TRUST & CONTROL ============ -->
+<section class="sect" id="trust">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">07 — Trust &amp; control</span>
+        <h2>Autonomous where possible. <em>Human where necessary.</em></h2>
+        <p class="lede">NawaahOS is not uncontrolled AI. It is governed intelligence. Every agent operates inside hard constraints, escalates by confidence, and earns autonomy over time.</p>
+      </div>
+      <span class="idx mono">/ 0 7</span>
+    </div>
+    <div class="trust-grid reveal">
+      <div class="controls-list">
+        <div class="ctrl"><span class="g">⛨</span><span class="n">Guardrails<span>Encoded as policy, enforced at runtime.</span></span><span class="s">ENFORCED</span></div>
+        <div class="ctrl"><span class="g">▲</span><span class="n">Escalation thresholds<span>Confidence-scored routing to humans.</span></span><span class="s">DYNAMIC</span></div>
+        <div class="ctrl"><span class="g">◈</span><span class="n">Human sign-off<span>Final authority on sensitive decisions.</span></span><span class="s">REQUIRED</span></div>
+        <div class="ctrl"><span class="g">∿</span><span class="n">Confidence scoring<span>Every output carries a calibrated score.</span></span><span class="s">CALIBRATED</span></div>
+        <div class="ctrl"><span class="g">≡</span><span class="n">Audit trails<span>Append-only ledger of every action and decision.</span></span><span class="s">IMMUTABLE</span></div>
+        <div class="ctrl"><span class="g">↺</span><span class="n">Reversible autonomy<span>Revoke or scope down agents at any time.</span></span><span class="s">ON-DEMAND</span></div>
+        <div class="ctrl"><span class="g">◯</span><span class="n">Clear ownership<span>Every agent has a named human accountable.</span></span><span class="s">NAMED</span></div>
+      </div>
+      <div class="journey">
+        <h4>The autonomy journey</h4>
+        <div class="journey-row">
+          <div class="jstep on"><span class="dot"></span><span class="nm">Seeding</span><span class="lv">D 01</span></div>
+          <div class="jstep on"><span class="dot"></span><span class="nm">Supervised</span><span class="lv">W 02</span></div>
+          <div class="jstep on"><span class="dot"></span><span class="nm">Guided</span><span class="lv">W 04</span></div>
+          <div class="jstep"><span class="dot"></span><span class="nm">Autonomous</span><span class="lv">M 02</span></div>
+          <div class="jstep"><span class="dot"></span><span class="nm">Experienced</span><span class="lv">M 03+</span></div>
+        </div>
+        <p class="desc">Autonomy is <b>earned, not granted.</b> Agents move along the journey only when their confidence, accuracy, and behavioral stability cross thresholds your organization defines. At any point, the autonomy slider is reversible — by you, by policy, or by exception.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AGENT SETUP ============ -->
+<section class="sect" id="setup">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">08 — Agent setup</span>
+        <h2>Configure outcomes, <em>not workflows.</em></h2>
+        <p class="lede">An example: the CHRO Agent. You don't draw a flowchart. You define what good looks like — and the agent assembles the operating logic around it.</p>
+      </div>
+      <span class="idx mono">/ 0 8</span>
+    </div>
+    <div class="setup reveal">
+      <div class="agent">
+        <div class="avatar"></div>
+        <span class="role-tag mono">// AGENT · DOMAIN · HR</span>
+        <h3>CHRO Agent</h3>
+        <p>Owns sourcing, screening, scheduling, offers, onboarding, performance, and engagement — within the organization's hiring doctrine.</p>
+        <div class="stats">
+          <span>Owner · <b>VP People</b></span>
+          <span>Tier · <b>Domain</b></span>
+          <span>Trained on · <b>184 hires</b></span>
+          <span>Autonomy · <b>Guided → Autonomous</b></span>
+        </div>
+      </div>
+      <div class="setup-grid">
+        <div class="scard locked">
+          <h5>Hard constraints <span class="k">non-negotiable</span></h5>
+          <ul>
+            <li><span class="b"></span>No AI-only final rejections.<span class="tg">LOCKED</span></li>
+            <li><span class="b"></span>Offers require human sign-off.<span class="tg">LOCKED</span></li>
+            <li><span class="b"></span>No candidate contact outside business hours.<span class="tg">LOCKED</span></li>
+            <li><span class="b"></span>Legal review for sensitive roles.<span class="tg">LOCKED</span></li>
+          </ul>
+        </div>
+        <div class="scard">
+          <h5>Escalation thresholds <span class="k">where humans step in</span></h5>
+          <ul>
+            <li><span class="b"></span>Final selection always human.<span class="tg">ALWAYS</span></li>
+            <li><span class="b"></span>Offer below confidence threshold → review.<span class="tg">&lt; 0.82</span></li>
+            <li><span class="b"></span>Interview scheduling autonomous.<span class="tg on">AUTO</span></li>
+            <li><span class="b"></span>CV screening autonomous within policy.<span class="tg on">AUTO</span></li>
+          </ul>
+        </div>
+        <div class="scard">
+          <h5>Priorities <span class="k">weighted objectives</span></h5>
+          <ul>
+            <li><span class="b"></span>Quality of hire<span class="tg">w 0.35</span></li>
+            <li><span class="b"></span>Time to fill<span class="tg">w 0.25</span></li>
+            <li><span class="b"></span>Saudization compliance<span class="tg">w 0.25</span></li>
+            <li><span class="b"></span>Pipeline diversity<span class="tg">w 0.15</span></li>
+          </ul>
+        </div>
+        <div class="scard">
+          <h5>Behavior toggles <span class="k">how the agent acts</span></h5>
+          <ul>
+            <li><span class="b"></span>Proactive sourcing<span class="tg on">ON</span></li>
+            <li><span class="b"></span>Weekly digest to VP People<span class="tg on">ON</span></li>
+            <li><span class="b"></span>Candidate NPS collection<span class="tg on">ON</span></li>
+            <li><span class="b"></span>Self-proposed improvements<span class="tg on">ON</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USE CASES ============ -->
+<section class="sect" id="agents">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">09 — Use cases</span>
+        <h2>Every function becomes an <em>intelligent agent.</em></h2>
+        <p class="lede">Not modules. Not products. Agent domains — each one owning a discipline, each one wired to your truth, each one quietly turning intent into outcome.</p>
+      </div>
+      <span class="idx mono">/ 0 9</span>
+    </div>
+    <div class="usecases reveal">
+      <div class="ucard">
+        <div class="top"><span class="glyph">⌖</span><span class="status"><i></i>active</span></div>
+        <h3>People &amp; HR<span class="agent-tag">// CHRO AGENT</span></h3>
+        <p>Hiring, screening, scheduling, onboarding, performance, learning, engagement.</p>
+        <div class="skills"><span class="sk">sourcing</span><span class="sk">screening</span><span class="sk">onboarding</span><span class="sk">engagement</span></div>
+      </div>
+      <div class="ucard">
+        <div class="top"><span class="glyph">▣</span><span class="status"><i></i>active</span></div>
+        <h3>Finance<span class="agent-tag">// CFO AGENT</span></h3>
+        <p>Purchase requests, budget checks, invoice review, vendor follow-up, approval routing.</p>
+        <div class="skills"><span class="sk">budget-check</span><span class="sk">invoice-review</span><span class="sk">approvals</span></div>
+      </div>
+      <div class="ucard">
+        <div class="top"><span class="glyph">⬢</span><span class="status"><i></i>active</span></div>
+        <h3>Projects<span class="agent-tag">// PMO AGENT</span></h3>
+        <p>Work packages, risks, dependencies, reporting, stakeholder updates, delivery assurance.</p>
+        <div class="skills"><span class="sk">work-pkg</span><span class="sk">risk</span><span class="sk">delivery</span><span class="sk">stakeholders</span></div>
+      </div>
+      <div class="ucard">
+        <div class="top"><span class="glyph">⛨</span><span class="status"><i></i>active</span></div>
+        <h3>Audit &amp; Compliance<span class="agent-tag">// CAE AGENT</span></h3>
+        <p>Continuous monitoring, policy checks, exception detection, evidence gathering, escalation.</p>
+        <div class="skills"><span class="sk">monitor</span><span class="sk">policy-check</span><span class="sk">evidence</span></div>
+      </div>
+      <div class="ucard">
+        <div class="top"><span class="glyph">◈</span><span class="status"><i></i>active</span></div>
+        <h3>Strategy &amp; KPIs<span class="agent-tag">// CSO AGENT</span></h3>
+        <p>KPI tracking, initiative progress, executive summaries, cross-functional signals.</p>
+        <div class="skills"><span class="sk">KPI</span><span class="sk">initiatives</span><span class="sk">exec-summary</span></div>
+      </div>
+      <div class="ucard">
+        <div class="top"><span class="glyph">⌬</span><span class="status"><i></i>active</span></div>
+        <h3>Operations<span class="agent-tag">// COO AGENT</span></h3>
+        <p>Requests, tasks, service tickets, internal coordination, recurring work.</p>
+        <div class="skills"><span class="sk">tickets</span><span class="sk">coordination</span><span class="sk">recurring</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERFACE ============ -->
+<section class="sect" id="interface">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">10 — Interface</span>
+        <h2>A simple interface for a <em>powerful operating system.</em></h2>
+        <p class="lede">Users interact with NawaahOS by giving instructions. The agent translates intent into work, artifacts, decisions, and follow-up.</p>
+      </div>
+      <span class="idx mono">/ 1 0</span>
+    </div>
+    <div class="iface reveal">
+      <div class="panel input">
+        <div class="panel-head"><h4>You say</h4><span class="meta">// 5 PROMPTS</span></div>
+        <div class="prompt"><span class="q">›</span><span>"Prepare this week's executive project update."</span></div>
+        <div class="prompt"><span class="q">›</span><span>"Screen these candidates and escalate only the top five."</span></div>
+        <div class="prompt"><span class="q">›</span><span>"Show me budget risks across active initiatives."</span></div>
+        <div class="prompt"><span class="q">›</span><span>"Create a recovery plan for delayed work packages."</span></div>
+        <div class="prompt"><span class="q">›</span><span>"Summarize compliance issues that need my decision."</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h4>The agent delivers</h4><span class="meta">// LIVE ARTIFACTS</span></div>
+        <div class="output"><span class="ic mono">⧉</span><div class="body"><span class="title">Work packages created</span><span class="sub">14 new · owners assigned · linked to OKRs</span></div><span class="stat">DONE</span></div>
+        <div class="output"><span class="ic mono">◯</span><div class="body"><span class="title">Owners assigned</span><span class="sub">cross-functional · accepted via Slack</span></div><span class="stat">DONE</span></div>
+        <div class="output"><span class="ic mono">▲</span><div class="body"><span class="title">Risks identified</span><span class="sub">3 high · 7 medium · with mitigations</span></div><span class="stat warn">REVIEW</span></div>
+        <div class="output"><span class="ic mono">↑</span><div class="body"><span class="title">Approvals triggered</span><span class="sub">routed to 4 decision-makers</span></div><span class="stat">PENDING</span></div>
+        <div class="output"><span class="ic mono">≡</span><div class="body"><span class="title">Dashboards updated</span><span class="sub">exec board · finance · delivery</span></div><span class="stat">LIVE</span></div>
+        <div class="output"><span class="ic mono">!</span><div class="body"><span class="title">Decision escalated</span><span class="sub">Acme contract dispute · &gt; $40k</span></div><span class="stat warn">TO YOU</span></div>
+        <div class="output"><span class="ic mono">∎</span><div class="body"><span class="title">Report prepared</span><span class="sub">12-page exec brief · drafted &amp; sourced</span></div><span class="stat">READY</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANSFORMATION ============ -->
+<section class="sect" id="transformation">
+  <div class="wrap">
+    <div class="sect-head reveal">
+      <div class="left">
+        <span class="label">11 — Transformation</span>
+        <h2>The organization becomes <em>smarter every day.</em></h2>
+        <p class="lede">A new agent follows instructions. An experienced agent understands context, preferences, risks, exceptions, and what good looks like inside the organization.</p>
+      </div>
+      <span class="idx mono">/ 1 1</span>
+    </div>
+    <div class="timeline reveal">
+      <div class="tstep">
+        <div class="when"><span>Day 01</span><span class="pct">10%</span></div>
+        <h4>The agent learns the mandate.</h4>
+        <p>Role, guardrails, and tools are wired in. The agent reads your policy library.</p>
+        <div class="bar"><i style="width:10%"></i></div>
+      </div>
+      <div class="tstep">
+        <div class="when"><span>Week 03</span><span class="pct">35%</span></div>
+        <h4>The agent understands patterns.</h4>
+        <p>Recurring requests, preferred phrasing, and unwritten norms are now part of its memory.</p>
+        <div class="bar"><i style="width:35%"></i></div>
+      </div>
+      <div class="tstep">
+        <div class="when"><span>Month 02</span><span class="pct">62%</span></div>
+        <h4>The agent anticipates issues.</h4>
+        <p>It flags risks before they surface, drafts the next step, and proposes corrections.</p>
+        <div class="bar"><i style="width:62%"></i></div>
+      </div>
+      <div class="tstep">
+        <div class="when"><span>Month 03+</span><span class="pct">85%</span></div>
+        <h4>The agent earns autonomy.</h4>
+        <p>Confidence is calibrated. Routine decisions move without you. Escalations are sharper.</p>
+        <div class="bar"><i style="width:85%"></i></div>
+      </div>
+      <div class="tstep">
+        <div class="when"><span>Ongoing</span><span class="pct">∞</span></div>
+        <h4>The agent becomes institutional memory.</h4>
+        <p>Every decision, correction, and exception compounds. People come and go — the agent remembers.</p>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="sect" id="contact" style="padding-top:32px">
+  <div class="wrap">
+    <div class="cta reveal" id="fabric">
+      <div class="cta-grid">
+        <div>
+          <span class="label">12 — Final word</span>
+          <h2 style="margin-top:14px">Build an organization where work <em>runs intelligently.</em></h2>
+          <p>NawaahOS helps leaders move from managing workflows to directing intelligent agents that execute, learn, and improve.</p>
+        </div>
+        <div class="cta-form">
+          <div class="row-in">
+            <input type="email" placeholder="you@enterprise.com" />
+            <button class="btn primary">Request a Demo</button>
+          </div>
+          <a class="btn ghost" href="#how" style="align-self:flex-start">Explore the Agentic Operating Model →</a>
+          <div class="cta-meta">
+            <span><i></i> Sovereign · on-prem</span>
+            <span><i></i> Governed autonomy</span>
+            <span><i></i> ISO 27001</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#" class="brand" style="margin-bottom:18px">
+          <span class="mark"></span>
+          <span class="word">NAWAAH<em>OS</em></span>
+        </a>
+        <p style="max-width:24rem">An agentic operating system for the world's most-regulated rooms. Doha · Riyadh · Cologne.</p>
+      </div>
+      <div>
+        <h5>Platform</h5>
+        <a href="#">The Core</a>
+        <a href="#">Orbit Runtime</a>
+        <a href="#">Model Mesh</a>
+        <a href="#">Sovereign Fabric</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Manifesto</a>
+        <a href="#">Case studies</a>
+        <a href="#">Careers · we're hiring</a>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <p>orbit@nawaah.os</p>
+        <p>+974 4 · Doha HQ</p>
+        <p>+49 221 · Cologne lab</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NawaahOS · All rights reserved.</span>
+      <span class="mono">v2.6.014 · OBSIDIAN · BUILD 0xN4W7</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- ====================================================================== -->
+<!-- ============== THE STAGE: AI core + electrons + lines ================ -->
+<!-- ====================================================================== -->
+<script>
+(() => {
+  const canvas = document.getElementById('electrons');
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  function fit(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ---------- The Core ----------
+  // The core lives at the visual center of the hero core-slot.
+  // We re-measure each frame from DOM so it stays correct on layout shifts.
+  const slot = document.getElementById('core-slot');
+
+  const core = {
+    x: W/2, y: H/2, r: 64,
+  };
+  function measureCore(){
+    const rect = slot.getBoundingClientRect();
+    core.x = rect.left + rect.width/2;
+    core.y = rect.top  + rect.height/2;
+    core.r = Math.min(rect.width * 0.155, rect.height * 0.255, 150);
+  }
+  measureCore();
+  window.addEventListener('resize', measureCore);
+
+  // ---------- Electrons ----------
+  // Six satellites on atom-style angled loops around the core.
+  const DEFS = [
+    { label: 'Tools', plane: -1.08, angle: 4.78, majorR: 2.72, minorR: 1.18, tint: 'blue', speed: 0.0003 },
+    { label: 'Skills', plane: -0.42, angle: 5.42, majorR: 2.78, minorR: 1.12, tint: 'violet', speed: 0.00027 },
+    { label: 'Guardrails', plane: 0.03, angle: 0.08, majorR: 2.92, minorR: 1.18, tint: 'violet', speed: 0.00022 },
+    { label: 'Instructions', plane: 0.62, angle: 0.88, majorR: 2.82, minorR: 1.22, tint: 'violet', speed: 0.00025 },
+    { label: 'Skills / NC', plane: 1.34, angle: 1.58, majorR: 2.6, minorR: 1.18, tint: 'blue', speed: 0.00024 },
+    { label: 'Tools', plane: 2.52, angle: 3.0, majorR: 2.86, minorR: 1.1, tint: 'blue', speed: 0.00028 },
+  ];
+
+  const electrons = [];
+  // Each named electron follows a tilted full ellipse. Depth controls whether
+  // the satellite renders before or after the core for a 3D pass.
+  for (let i = 0; i < DEFS.length; i++){
+    const def = DEFS[i];
+    electrons.push({
+      named: true,
+      label: def.label,
+      tint: def.tint,
+      angle: def.angle,
+      plane: def.plane,
+      speed: def.speed,
+      majorR: def.majorR,
+      minorR: def.minorR,
+      depthPhase: i * 0.9,
+      x: 0, y: 0, z: 0,
+      sx: 0, sy: 0,
+      size: 17 + (i % 2) * 2,
+      glow: 1.0,
+    });
+  }
+  // Ambient electrons — many small ones that flow with scroll and gather on cursor
+  const AMBIENT = 42;
+  for (let i = 0; i < AMBIENT; i++){
+    electrons.push({
+      named: false,
+      angle: Math.random() * Math.PI * 2,
+      orbitR: 0,
+      speed: (Math.random() - 0.4) * 0.0006,
+      x: 0, y: 0, vx: 0, vy: 0, ox: 0, oy: 0,
+      baseR: 1.4 + Math.random() * 2.6,        // wider rings for ambient
+      size: 1 + Math.random() * 2.2,
+      glow: 0.3 + Math.random() * 0.7,
+    });
+  }
+
+  // ---------- Scroll + cursor state ----------
+  let scrollY = window.scrollY;
+  let lastScrollY = scrollY;
+  let scrollOffset = 0;        // accumulated downward pull on electrons (px)
+  let lastScrollAt = performance.now() - 5000;
+  let cursor = { x: W/2, y: H*0.45, tx: W/2, ty: H*0.45, present: false };
+
+  window.addEventListener('scroll', () => {
+    scrollY = window.scrollY;
+    lastScrollAt = performance.now();
+  }, { passive: true });
+
+  // Pointer tracking (global) for cursor + electron gathering
+  const cursorEl = document.getElementById('cursor');
+  let cursorHover = false;
+  window.addEventListener('pointermove', (e) => {
+    cursor.tx = e.clientX;
+    cursor.ty = e.clientY;
+    cursor.present = true;
+    cursorEl.style.left = e.clientX + 'px';
+    cursorEl.style.top  = e.clientY + 'px';
+  });
+  window.addEventListener('pointerleave', () => { cursor.present = false; });
+  document.querySelectorAll('a,button,.row,.ind,.cell').forEach(el => {
+    el.addEventListener('pointerenter', () => cursorEl.classList.add('hover'));
+    el.addEventListener('pointerleave', () => cursorEl.classList.remove('hover'));
+  });
+
+  // ---------- Helper: format ----------
+  function lerp(a,b,t){ return a + (b-a) * t; }
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  function atomOrbitPoint(e, a, includeOffset = true){
+    const ca = Math.cos(a), sa = Math.sin(a);
+    const Rmaj = core.r * e.majorR;
+    const Rmin = core.r * e.minorR;
+    const px = ca * Rmaj;
+    const py = sa * Rmin;
+    const cp = Math.cos(e.plane), sp = Math.sin(e.plane);
+    const ox = px * cp - py * sp;
+    const oy = (px * sp + py * cp) * 0.72;
+    const z = Math.sin(a + e.depthPhase);
+
+    return {
+      x: core.x + ox + (includeOffset ? e.sx : 0),
+      y: core.y + oy + (includeOffset ? e.sy : 0),
+      z,
+      depth: 0.78 + (0.5 + 0.5 * z) * 0.42,
+    };
+  }
+
+  // ---------- Render loop ----------
+  let lastT = performance.now();
+  function frame(now){
+    const dt = Math.min(64, now - lastT);
+    lastT = now;
+
+    measureCore();
+
+    // 1) scroll pull: convert real scroll delta into a downward offset on electrons.
+    //    A fraction of scrollDelta is "absorbed" by the electrons; the rest decays slowly.
+    const sd = scrollY - lastScrollY;
+    lastScrollY = scrollY;
+    // Drag electrons down as you scroll; cap so they don't fly forever
+    scrollOffset += sd * 0.95;
+    // Decay so they slowly come back when scroll stops
+    const idle = now - lastScrollAt;
+    const decay = idle > 200 ? Math.pow(0.985, dt/16) : 1; // start decaying ~200ms after scroll stops
+    scrollOffset *= decay;
+    // Soft cap
+    scrollOffset = clamp(scrollOffset, -H * 1.6, H * 1.6);
+
+    // 2) cursor gather strength rises as scroll has been idle for a moment
+    const idleNorm = clamp((idle - 600) / 1400, 0, 1); // 0 at scroll, 1 when fully idle
+    const cursorPull = 0;
+
+    // Smooth cursor target
+    cursor.x = lerp(cursor.x, cursor.tx, 0.18);
+    cursor.y = lerp(cursor.y, cursor.ty, 0.18);
+
+    // Clear
+    ctx.clearRect(0, 0, W, H);
+
+    // 3) Atmosphere behind everything (faint halo)
+    drawCoreBackdrop(now);
+
+    // 4) Update electrons
+    for (let i = 0; i < electrons.length; i++){
+      const e = electrons[i];
+
+      if (e.named){
+        e.angle += e.speed * dt;
+        const targetOffsetX = 0;
+        const targetOffsetY = 0;
+        e.sx = lerp(e.sx, targetOffsetX, 0.12);
+        e.sy = lerp(e.sy, targetOffsetY, 0.12);
+        const p = atomOrbitPoint(e, e.angle);
+        e.x = p.x;
+        e.y = p.y;
+        e.z = p.z;
+        e.depth = p.depth;
+      } else {
+        // Ambient electrons: same as before — 2D orbit + scroll pull + cursor gather
+        e.angle += e.speed * dt;
+        const baseR = core.r * (1.4 + 2.6 * (((i * 7) % 17) / 17) + 0.8);
+        const tx = core.x + Math.cos(e.angle) * baseR;
+        const ty = core.y + Math.sin(e.angle) * baseR * 0.92;
+        let targetX = tx;
+        let targetY = ty + scrollOffset * (0.75 + (baseR / (core.r * 6)));
+        if (cursorPull > 0){
+          const gather = cursorPull * 0.55;
+          targetX = lerp(targetX, cursor.x + (Math.random()-0.5)*2, gather);
+          targetY = lerp(targetY, cursor.y + (Math.random()-0.5)*2, gather);
+        }
+        e.vx = (e.vx + (targetX - e.x) * 0.04) * 0.85;
+        e.vy = (e.vy + (targetY - e.y) * 0.04) * 0.85;
+        e.x += e.vx;
+        e.y += e.vy;
+        e.z = 0; e.depth = 1;
+      }
+    }
+
+    // 5) Ambient particles stay in the background. Full oval tracks draw
+    // before the sphere, then the bright front-pass segments and front
+    // electrons draw over it.
+    for (const e of electrons){
+      if (!e.named) drawWire(e);
+    }
+    for (const e of electrons){
+      if (!e.named) drawElectron(e, now);
+    }
+    drawOrbitRings(now, 'back');
+    for (const e of electrons){
+      if (e.named && e.z < 0) drawElectron(e, now);
+    }
+    drawCore(now);
+    drawOrbitRings(now, 'front');
+    for (const e of electrons){
+      if (e.named && e.z >= 0) drawElectron(e, now);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function drawWire(e){
+    if (e.named) return;
+    const dx = e.x - core.x;
+    const dy = e.y - core.y;
+    const dist = Math.hypot(dx, dy);
+    // fade with distance
+    const alpha = e.named
+      ? clamp(0.6 - dist / (H * 1.4), 0.06, 0.55)
+      : clamp(0.22 - dist / (H * 1.1), 0.01, 0.14);
+    if (alpha < 0.03) return;
+
+    // Bezier curve from core to electron, with a curl based on angle
+    const mx = (core.x + e.x) / 2;
+    const my = (core.y + e.y) / 2;
+    const nx = -dy / (dist || 1);
+    const ny =  dx / (dist || 1);
+    const curl = Math.sin(performance.now() * 0.0007 + e.angle) * Math.min(60, dist * 0.12);
+    const cx = mx + nx * curl;
+    const cy = my + ny * curl;
+
+    const grd = ctx.createLinearGradient(core.x, core.y, e.x, e.y);
+    grd.addColorStop(0, `rgba(168,85,247,${alpha})`);
+    grd.addColorStop(1, `rgba(217,70,239,${alpha * 0.4})`);
+    ctx.strokeStyle = grd;
+    ctx.lineWidth = e.named ? 1.1 : 0.6;
+    ctx.beginPath();
+    ctx.moveTo(core.x, core.y);
+    ctx.quadraticCurveTo(cx, cy, e.x, e.y);
+    ctx.stroke();
+  }
+
+  function drawElectron(e, now){
+    const depth = e.named ? clamp(e.depth || 1, 0.35, 1.55) : 1;
+    const sizeMul = e.named ? (0.62 + depth * 0.56) : (0.35 + depth * 0.8);
+    // Outer glow
+    const glowR = e.size * (e.named ? 2.65 : 4.2) * e.glow * sizeMul;
+    const g = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, glowR);
+    if (e.named){
+      g.addColorStop(0, 'rgba(255,255,255,0.95)');
+      g.addColorStop(0.25, e.tint === 'blue' ? 'rgba(120,185,255,0.72)' : 'rgba(190,120,255,0.72)');
+      g.addColorStop(1, 'rgba(168,85,247,0)');
+    } else {
+      g.addColorStop(0, 'rgba(199,160,255,0.85)');
+      g.addColorStop(0.4, 'rgba(168,85,247,0.35)');
+      g.addColorStop(1, 'rgba(168,85,247,0)');
+    }
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, glowR, 0, Math.PI*2);
+    ctx.fill();
+
+    if (e.named){
+      // Bubble electron: rim + inner glassy sphere
+      const R = e.size * sizeMul;
+      // outer ring
+      ctx.strokeStyle = e.tint === 'blue'
+        ? (e.z < 0 ? 'rgba(120,185,255,0.5)' : 'rgba(165,215,255,0.95)')
+        : (e.z < 0 ? 'rgba(180,130,255,0.55)' : 'rgba(222,185,255,0.98)');
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, R, 0, Math.PI*2);
+      ctx.stroke();
+      // inner fill
+      const ig = ctx.createRadialGradient(e.x - R*0.35, e.y - R*0.4, 0, e.x, e.y, R);
+      ig.addColorStop(0, e.z < 0 ? 'rgba(220,220,255,0.45)' : 'rgba(255,255,255,0.85)');
+      ig.addColorStop(0.48, e.tint === 'blue'
+        ? (e.z < 0 ? 'rgba(85,140,220,0.35)' : 'rgba(110,170,255,0.62)')
+        : (e.z < 0 ? 'rgba(150,95,230,0.35)' : 'rgba(186,110,255,0.68)'));
+      ig.addColorStop(1, e.tint === 'blue' ? 'rgba(28,64,125,0.42)' : 'rgba(82,32,140,0.42)');
+      ctx.fillStyle = ig;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, R, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, R * 0.9, 0, Math.PI*2);
+      ctx.clip();
+      ctx.font = '500 5.5px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(232,220,255,0.35)';
+      for (let i = -2; i < 3; i++){
+        ctx.fillText('const agent = core.bind()', e.x - R*0.62, e.y + i * 7);
+      }
+      ctx.restore();
+    } else {
+      ctx.fillStyle = 'rgba(233,216,255,0.65)';
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size * sizeMul, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    if (e.named && core.y > -400 && core.y < H + 400){
+      const alpha = clamp(0.45 + depth * 0.5, 0.35, 1);
+      ctx.save();
+      ctx.font = '800 11px "Inter", sans-serif';
+      ctx.letterSpacing = '0.02em';
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      const R = e.size * sizeMul;
+      if (e.label.length <= 7){
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(e.label.toUpperCase(), e.x, e.y);
+      } else {
+        const dir = e.x >= core.x ? 1 : -1;
+        ctx.textAlign = dir > 0 ? 'left' : 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(e.label.toUpperCase(), e.x + dir * (R + 14), e.y);
+      }
+      ctx.restore();
+    }
+  }
+
+  // ---------- Orbital plane rings ----------
+  function drawOrbitRings(now, layer = 'front'){
+    const cx = core.x, cy = core.y, r = core.r;
+    if (cy < -r*3 || cy > H + r*3) return;
+    for (const e of electrons){
+      if (!e.named) continue;
+      const N = 150;
+      let drawing = false;
+      ctx.beginPath();
+      for (let k = 0; k <= N; k++){
+        const a = (k / N) * Math.PI * 2;
+        const p = atomOrbitPoint(e, a, true);
+        const isFront = p.z >= 0;
+        const visible = layer === 'front' ? isFront : true;
+        if (!visible){
+          drawing = false;
+          continue;
+        }
+        if (!drawing){
+          ctx.moveTo(p.x, p.y);
+          drawing = true;
+        } else {
+          ctx.lineTo(p.x, p.y);
+        }
+      }
+      // Continuous full oval base layer; front layer adds the brighter 3D pass.
+      const grd = ctx.createLinearGradient(cx - r*3, cy, cx + r*3, cy);
+      if (e.tint === 'blue'){
+        grd.addColorStop(0, layer === 'front' ? 'rgba(118,190,255,0.22)' : 'rgba(118,190,255,0.16)');
+        grd.addColorStop(0.5, layer === 'front' ? 'rgba(140,210,255,0.78)' : 'rgba(140,210,255,0.42)');
+        grd.addColorStop(1, layer === 'front' ? 'rgba(160,130,255,0.3)' : 'rgba(160,130,255,0.18)');
+      } else {
+        grd.addColorStop(0, layer === 'front' ? 'rgba(158,110,255,0.24)' : 'rgba(158,110,255,0.16)');
+        grd.addColorStop(0.5, layer === 'front' ? 'rgba(200,120,255,0.78)' : 'rgba(200,120,255,0.42)');
+        grd.addColorStop(1, layer === 'front' ? 'rgba(154,118,255,0.32)' : 'rgba(154,118,255,0.18)');
+      }
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = layer === 'front' ? 2.15 : 1.75;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowBlur = layer === 'front' ? 10 : 5;
+      ctx.shadowColor = e.tint === 'blue' ? 'rgba(118,190,255,0.36)' : 'rgba(168,85,247,0.4)';
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  // ---------- Core atmosphere (drawn first, BELOW behind-electrons) ----------
+  function drawCoreBackdrop(now){
+    const cx = core.x, cy = core.y, r = core.r;
+    if (cy < -r*3 || cy > H + r*3) return;
+    // Outer atmospheric halo only
+    const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 5.4);
+    halo.addColorStop(0, 'rgba(188,118,255,0.34)');
+    halo.addColorStop(0.28, 'rgba(168,85,247,0.13)');
+    halo.addColorStop(1, 'rgba(168,85,247,0)');
+    ctx.fillStyle = halo;
+    ctx.fillRect(cx - r*5.4, cy - r*5.4, r*10.8, r*10.8);
+  }
+
+  // ---------- The Core: 3D sphere with a neural-net interior ----------
+  // We pre-generate a set of nodes on/inside the unit sphere and a sparse
+  // adjacency list; each frame we rotate them on Y+X and project with perspective.
+  const NEURAL_NODES = (() => {
+    const arr = [];
+    // Three concentric shells of nodes — input, hidden, output — to feel net-like
+    const shells = [
+      { count: 14, r: 0.96, kind: 'shell' },
+      { count: 22, r: 0.66, kind: 'mid'   },
+      { count: 10, r: 0.34, kind: 'inner' },
+    ];
+    for (const s of shells){
+      for (let i = 0; i < s.count; i++){
+        // Fibonacci sphere distribution
+        const phi = Math.acos(1 - 2 * (i + 0.5) / s.count);
+        const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+        arr.push({
+          x: s.r * Math.sin(phi) * Math.cos(theta),
+          y: s.r * Math.sin(phi) * Math.sin(theta),
+          z: s.r * Math.cos(phi),
+          shell: s.kind,
+          pulse: Math.random() * Math.PI * 2,
+        });
+      }
+    }
+    return arr;
+  })();
+  // Sparse edges: connect each node to its 2-3 nearest neighbors (precomputed once)
+  const NEURAL_EDGES = (() => {
+    const edges = [];
+    for (let i = 0; i < NEURAL_NODES.length; i++){
+      const a = NEURAL_NODES[i];
+      const dists = [];
+      for (let j = 0; j < NEURAL_NODES.length; j++){
+        if (j === i) continue;
+        const b = NEURAL_NODES[j];
+        const d = (a.x-b.x)**2 + (a.y-b.y)**2 + (a.z-b.z)**2;
+        dists.push([d, j]);
+      }
+      dists.sort((p,q) => p[0] - q[0]);
+      const k = 2 + (i % 2); // 2 or 3 neighbors
+      for (let n = 0; n < k; n++){
+        const j = dists[n][1];
+        if (j > i) edges.push([i, j, Math.random()]); // include random seed for signal travel
+      }
+    }
+    return edges;
+  })();
+
+  const CORE_CODE_LINES = [
+    'agent.runtime.bind({',
+    '  role: "enterprise-core",',
+    '  tools: registry.resolve(intent),',
+    '  skills: memory.compose(context),',
+    '  guardrails: policy.enforce(),',
+    '  instructions: planner.trace(),',
+    '});',
+    'const decision = await core.execute({',
+    '  confidence: score.calibrate(),',
+    '  escalation: human.whenNeeded,',
+    '  output: "operating-logic"',
+    '});',
+  ];
+
+  function drawCore(now){
+    const cx = core.x, cy = core.y;
+    const r  = core.r;
+    if (cy < -r*3 || cy > H + r*3) return;
+    const t = now * 0.001;
+
+    const pulse = 0.5 + 0.5 * Math.sin(t * 1.25);
+    const outerGlow = ctx.createRadialGradient(cx - r * 0.12, cy - r * 0.08, r * 0.08, cx, cy, r * 2.35);
+    outerGlow.addColorStop(0, 'rgba(232,190,255,0.48)');
+    outerGlow.addColorStop(0.42, 'rgba(168,85,247,0.28)');
+    outerGlow.addColorStop(0.68, 'rgba(88,145,255,0.12)');
+    outerGlow.addColorStop(1, 'rgba(115,86,240,0)');
+    ctx.fillStyle = outerGlow;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 2.35, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(205,145,255,${0.3 + pulse * 0.18})`;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.12 + pulse * 4, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(168,85,247,0.16)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.26, 0, Math.PI*2);
+    ctx.stroke();
+
+    const shell = ctx.createRadialGradient(cx - r*0.42, cy - r*0.48, r*0.1, cx, cy, r * 1.08);
+    shell.addColorStop(0, 'rgba(238,211,255,0.72)');
+    shell.addColorStop(0.2, 'rgba(190,120,255,0.58)');
+    shell.addColorStop(0.48, 'rgba(126,64,225,0.52)');
+    shell.addColorStop(0.72, 'rgba(74,34,150,0.74)');
+    shell.addColorStop(1, 'rgba(35,16,78,0.92)');
+    ctx.save();
+    ctx.shadowBlur = 28;
+    ctx.shadowColor = 'rgba(190,115,255,0.55)';
+    ctx.fillStyle = shell;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.97, 0, Math.PI*2);
+    ctx.clip();
+
+    const deep = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    deep.addColorStop(0, 'rgba(255,255,255,0.05)');
+    deep.addColorStop(0.4, 'rgba(11,20,45,0.34)');
+    deep.addColorStop(1, 'rgba(8,4,28,0.58)');
+    ctx.fillStyle = deep;
+    ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+
+    ctx.save();
+    ctx.translate(cx - r * 0.62, cy - r * 0.6);
+    ctx.rotate(-0.035 + Math.sin(t * 0.22) * 0.018);
+    const lineHeight = Math.max(9, r * 0.083);
+    ctx.font = `${Math.max(8, r * 0.058)}px "JetBrains Mono", monospace`;
+    ctx.textBaseline = 'top';
+    for (let layer = 0; layer < 3; layer++){
+      const x = layer === 1 ? r * 0.78 : layer === 2 ? r * 0.24 : 0;
+      const y = layer === 1 ? r * 0.18 : layer === 2 ? r * 0.72 : 0;
+      const alpha = layer === 1 ? 0.4 : layer === 2 ? 0.28 : 0.48;
+      ctx.fillStyle = `rgba(226,215,255,${alpha})`;
+      for (let i = 0; i < CORE_CODE_LINES.length; i++){
+        const line = CORE_CODE_LINES[(i + layer * 3) % CORE_CODE_LINES.length];
+        ctx.fillText(line, x, y + i * lineHeight);
+      }
+    }
+    ctx.restore();
+
+    for (let i = 0; i < 16; i++){
+      const y = cy - r * 0.78 + i * r * 0.105 + Math.sin(t * 0.7 + i) * 1.2;
+      const w = r * (0.18 + ((i * 7) % 11) / 18);
+      const x = cx - r * 0.62 + ((i * 19) % 42) * r * 0.01;
+      const alpha = 0.08 + ((i % 4) * 0.025);
+      ctx.strokeStyle = `rgba(185,214,255,${alpha})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + w, y);
+      ctx.stroke();
+    }
+
+    const verticalShade = ctx.createLinearGradient(cx, cy - r, cx, cy + r);
+    verticalShade.addColorStop(0, 'rgba(255,255,255,0.12)');
+    verticalShade.addColorStop(0.45, 'rgba(255,255,255,0)');
+    verticalShade.addColorStop(1, 'rgba(0,0,0,0.36)');
+    ctx.fillStyle = verticalShade;
+    ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    ctx.restore();
+
+    ctx.strokeStyle = 'rgba(234,210,255,0.52)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.985, 0, Math.PI*2);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(222,158,255,0.42)';
+    ctx.lineWidth = 5.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.94, -Math.PI * 0.15, Math.PI * 1.05);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(116,194,255,0.28)';
+    ctx.lineWidth = 3.2;
+    ctx.beginPath();
+    ctx.arc(cx - r * 0.04, cy + r * 0.02, r * 0.82, Math.PI * 0.72, Math.PI * 1.42);
+    ctx.stroke();
+
+    const spec = ctx.createRadialGradient(cx - r*0.38, cy - r*0.48, 0, cx - r*0.38, cy - r*0.48, r*0.62);
+    spec.addColorStop(0, 'rgba(255,255,255,0.5)');
+    spec.addColorStop(0.45, 'rgba(255,255,255,0.12)');
+    spec.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = spec;
+    ctx.beginPath();
+    ctx.arc(cx - r*0.38, cy - r*0.48, r*0.62, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(frame);
+
+  // -------- Reveal on scroll --------
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // -------- Clock --------
+  function tick(){
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    const ss = String(d.getSeconds()).padStart(2,'0');
+    const elc = document.getElementById('now');
+    if (elc) elc.textContent = `${hh} : ${mm} : ${ss} UTC+3`;
+  }
+  tick(); setInterval(tick, 1000);
+
+  // -------- Rows: active state on hover --------
+  document.querySelectorAll('.rows .row').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.rows .row').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
