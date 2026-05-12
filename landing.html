@@ -383,13 +383,34 @@
   .neural-net path{fill:none;stroke:url(#neuralLine);stroke-width:1.3;stroke-linecap:round;opacity:.78}
   .neural-hub{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:112px;height:112px;border-radius:50%;
+    width:124px;height:124px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;text-align:center;
     font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;
-    background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),rgba(192,132,252,.42) 28%,rgba(88,28,135,.32) 62%,rgba(12,18,27,.7));
-    border:1px solid rgba(192,132,252,.68);
-    box-shadow:0 0 34px rgba(168,85,247,.34),inset 0 0 24px rgba(255,255,255,.12);
-    z-index:2;
+    background:
+      radial-gradient(circle at 33% 25%,rgba(255,255,255,.96) 0 7%,rgba(221,192,255,.74) 8% 18%,transparent 28%),
+      radial-gradient(circle at 38% 32%,rgba(205,158,255,.9),rgba(129,83,230,.76) 36%,rgba(52,32,120,.9) 68%,rgba(13,10,35,.96));
+    border:1px solid rgba(222,190,255,.86);
+    box-shadow:
+      0 24px 46px rgba(3,8,18,.58),
+      0 0 46px rgba(168,85,247,.62),
+      0 0 14px rgba(116,194,255,.42),
+      inset -18px -20px 28px rgba(4,3,16,.56),
+      inset 12px 10px 24px rgba(255,255,255,.18);
+    z-index:8;
+  }
+  .neural-hub::before{
+    content:"";position:absolute;inset:-9px;border-radius:50%;
+    border:1px solid rgba(168,85,247,.45);
+    background:radial-gradient(circle,rgba(168,85,247,.14),transparent 66%);
+    box-shadow:0 0 30px rgba(168,85,247,.35);
+    z-index:-1;
+  }
+  .neural-hub::after{
+    content:"";position:absolute;inset:13px;border-radius:50%;
+    border-top:2px solid rgba(255,255,255,.34);
+    border-left:1px solid rgba(255,255,255,.14);
+    transform:rotate(-18deg);
+    pointer-events:none;
   }
   .neural-node{
     position:absolute;width:min(42%,230px);
