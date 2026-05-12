@@ -378,6 +378,43 @@
   .contrast .col.old .ic{background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted)}
   .contrast .col.old li{color:var(--muted)}
   .contrast .col.new .ic{background:rgba(168,85,247,0.16);border:1px solid rgba(168,85,247,0.45);color:var(--accent-bright)}
+  .neural-net{position:relative;min-height:330px;margin-top:4px}
+  .neural-net svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .neural-net path{fill:none;stroke:url(#neuralLine);stroke-width:1.3;stroke-linecap:round;opacity:.78}
+  .neural-hub{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:112px;height:112px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;
+    background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),rgba(192,132,252,.42) 28%,rgba(88,28,135,.32) 62%,rgba(12,18,27,.7));
+    border:1px solid rgba(192,132,252,.68);
+    box-shadow:0 0 34px rgba(168,85,247,.34),inset 0 0 24px rgba(255,255,255,.12);
+    z-index:2;
+  }
+  .neural-node{
+    position:absolute;width:min(42%,230px);
+    display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:center;
+    color:var(--ink-soft);font-size:.88rem;line-height:1.35;
+    padding:9px 10px;border-radius:10px;
+    background:rgba(12,18,27,.24);border:1px solid rgba(168,85,247,.18);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .neural-node::before{
+    content:"";width:18px;height:18px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff,var(--accent-bright) 26%,var(--accent-deep) 76%);
+    border:1px solid rgba(192,132,252,.7);
+    box-shadow:0 0 16px rgba(168,85,247,.55);
+  }
+  .neural-node.n1{left:0;top:4%}
+  .neural-node.n2{right:0;top:18%}
+  .neural-node.n3{left:0;top:46%}
+  .neural-node.n4{right:0;top:61%}
+  .neural-node.n5{left:18%;bottom:0}
+  @media(max-width:900px){
+    .neural-net{min-height:auto;display:flex;flex-direction:column;gap:12px}
+    .neural-net svg,.neural-hub{display:none}
+    .neural-node{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%}
+  }
   .contrast .arrow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(5,5,10,0.95);border:1px solid rgba(168,85,247,0.5);display:flex;align-items:center;justify-content:center;color:var(--accent-bright);font-family:var(--mono);z-index:2;box-shadow:0 0 30px rgba(168,85,247,0.4)}
   @media(max-width:900px){.contrast .arrow{left:50%;top:auto;bottom:-23px;transform:translate(-50%,0) rotate(90deg)}}
 
@@ -661,13 +698,28 @@
           <h4>NawaahOS</h4>
           <span class="badge">OPERATING LAYER</span>
         </div>
-        <ul>
-          <li><span class="ic">◆</span>Intent-driven agents that infer the operating logic.</li>
-          <li><span class="ic">◆</span>Autonomous execution within human-defined guardrails.</li>
-          <li><span class="ic">◆</span>Living memory of policies, exceptions, and outcomes.</li>
-          <li><span class="ic">◆</span>Real-time artifacts — dashboards, reports, approvals.</li>
-          <li><span class="ic">◆</span>Human-guided judgment where it matters most.</li>
-        </ul>
+        <div class="neural-net" aria-label="NawaahOS operating layer neural network">
+          <svg viewBox="0 0 560 330" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="neuralLine" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(116,194,255,0.25)"></stop>
+                <stop offset="52%" stop-color="rgba(192,132,252,0.82)"></stop>
+                <stop offset="100%" stop-color="rgba(217,70,239,0.2)"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M88 38 C178 42 216 122 280 165"></path>
+            <path d="M470 84 C382 86 334 124 280 165"></path>
+            <path d="M86 180 C160 170 208 166 280 165"></path>
+            <path d="M472 226 C382 220 334 190 280 165"></path>
+            <path d="M210 304 C228 242 252 198 280 165"></path>
+          </svg>
+          <div class="neural-hub">NawaahOS</div>
+          <div class="neural-node n1">Intent-driven agents that infer the operating logic.</div>
+          <div class="neural-node n2">Autonomous execution within human-defined guardrails.</div>
+          <div class="neural-node n3">Living memory of policies, exceptions, and outcomes.</div>
+          <div class="neural-node n4">Real-time artifacts — dashboards, reports, approvals.</div>
+          <div class="neural-node n5">Human-guided judgment where it matters most.</div>
+        </div>
       </div>
     </div>
   </div>
